@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1513284068252.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6112ED33",
+    "lastKnownWriteTime" : 1513278579,
+    "last_content_update" : 1513347841253,
+    "path" : "S:/Git/GitHub/CommonDataModel/DDLGeneratr/codeToRun.R",
+    "project_path" : "codeToRun.R",
+    "properties" : {
+        "cursorPosition" : "38,30",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

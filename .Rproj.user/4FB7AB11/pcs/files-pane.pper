@@ -1,0 +1,9 @@
+{
+    "path" : "S:/Git/GitHub/CommonDataModel/DDLGeneratr/inst/sql/sql_server",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
