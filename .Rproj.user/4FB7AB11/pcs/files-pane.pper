@@ -1,5 +1,5 @@
 {
-    "path" : "S:/Git/GitHub/CommonDataModel/DDLGeneratr/inst/sql/sql_server",
+    "path" : "S:/Git/GitHub/DDLGeneratr/output/netezza",
     "sortOrder" : [
         {
             "ascending" : true,

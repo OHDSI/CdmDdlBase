@@ -7,7 +7,7 @@
   cdmVersion <- "v5_3"
 
   # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
-  mdFilesLocation <- "../../Documentation/CommonDataModel_Wiki_Files"
+  mdFilesLocation <- "S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files"
 
 # Step 2: Run the following code to create the DDLs for each dialect:
 
