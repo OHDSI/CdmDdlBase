@@ -816,7 +816,7 @@ CREATE TABLE measurement
 
     measurement_date TIMESTAMP,
 
-    measurement_datetime TIMESTAMP,
+    measurement_time VARCHAR(10),
 
     measurement_type_concept_id INTEGER,
 

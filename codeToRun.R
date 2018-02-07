@@ -4,7 +4,7 @@
 # Step 1: Update the file inst/sql/sql_server/OMOP CDM ddl.sql with the changes for the new version and set the below variables
 
   # Step 1.1: The version of the CDM you are writing. This will be used for the name of the pdf so, for example, write v5.3 as v5_3
-  cdmVersion <- "v5_3"
+  cdmVersion <- "v5_3_1"
 
   # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
   mdFilesLocation <- "S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files"
