@@ -9,6 +9,10 @@
   # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
   mdFilesLocation <- "S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files"
 
+# Step 1.9: Generate the CSV file:
+parseWiki(mdFilesLocation = mdFilesLocation,
+          output_file = paste0("OMOP_CDM_",cdmVersion,".csv"))
+
 # Step 2: Run the following code to create the DDLs for each dialect:
 
 writeDDL("bigquery")

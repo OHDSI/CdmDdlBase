@@ -22,18 +22,18 @@
 #' of the Common Data Model.
 #'
 #' @param mdFilesLocation Path to the root folder of the Wiki repository.
-#'
-#' @return
-#' A data frame with the table definitions culled from the Wiki files.
+#' @param output_file     Path to where the output CSV file should be written.
 #'
 #' @export
-parseWiki <- function(mdFilesLocation) {
-  # mdFilesLocation <- "../../CommonDataModel.wiki"
+parseWiki <- function(mdFilesLocation, output_file) {
+  # mdFilesLocation <- "../CommonDataModel.wiki"
   files <- list.files(mdFilesLocation, pattern = ".*\\.md", recursive = TRUE, full.names = TRUE)
-  file <- files[10]
+  file <- files[18]
   parseTableRow <- function(row) {
     cells <- stringr::str_trim(stringr::str_split(row, "\\|")[[1]])
-    cells <- cells[2:5]
+    if (substr(row, 1, 1) == "|") {
+      cells <- cells[2:5]
+    }
     return(data.frame(field = tolower(cells[1]),
                       required = cells[2],
                       type = toupper(cells[3]),
@@ -53,7 +53,7 @@ parseWiki <- function(mdFilesLocation) {
       tableName <- tolower(stringr::str_sub(tableName, 1, -4))
       writeLines(paste("Parsing table", tableName))
       tableStart <- tableStart + 2
-      tableEnd <- which(lines == "")
+      tableEnd <- c(which(lines == ""), length(lines) + 1)
       tableEnd <- min(tableEnd[tableEnd > tableStart]) - 1
       tableDefinition <- lapply(lines[tableStart:tableEnd], parseTableRow)
       tableDefinition <- do.call(rbind, tableDefinition)
@@ -65,5 +65,5 @@ parseWiki <- function(mdFilesLocation) {
   }
   tableDefinitions <- lapply(files, parseMdFile)
   tableDefinitions <- do.call(rbind, tableDefinitions)
-
+  write.csv(tableDefinitions, output_file, row.names = FALSE)
 }

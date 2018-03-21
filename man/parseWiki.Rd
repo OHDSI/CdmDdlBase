@@ -4,13 +4,12 @@
 \alias{parseWiki}
 \title{Parse Wiki files}
 \usage{
-parseWiki(mdFilesLocation)
+parseWiki(mdFilesLocation, output_file)
 }
 \arguments{
 \item{mdFilesLocation}{Path to the root folder of the Wiki repository.}
-}
-\value{
-A data frame with the table definitions culled from the Wiki files.
+
+\item{output_file}{Path to where the output CSV file should be written.}
 }
 \description{
 Parses all .md files in the specified location (or any subfolders), extracting definitions
