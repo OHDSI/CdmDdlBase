@@ -28,12 +28,12 @@ if(!dir.exists(paste0("output/",targetdialect))){
   dir.create(paste0("output/",targetdialect))
 }
 
-sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM indexes required.sql",
+sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM pk indexes required.sql",
                                          packageName = "DDLGeneratr",
                                          dbms = targetdialect,
                                          targetdialect = targetdialect)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," indexes.txt"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," pk indexes.txt"))
 
 }

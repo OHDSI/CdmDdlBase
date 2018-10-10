@@ -1,5 +1,5 @@
 /*********************************************************************************
-# Copyright 2017-11 Observational Health Data Sciences and Informatics
+# Copyright 2018-08 Observational Health Data Sciences and Informatics
 #
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,18 +17,17 @@
 
 /************************
 
- ####### #     # ####### ######      #####  ######  #     #           #######      #####
- #     # ##   ## #     # #     #    #     # #     # ##   ##    #    # #           #     #
- #     # # # # # #     # #     #    #       #     # # # # #    #    # #                 #
- #     # #  #  # #     # ######     #       #     # #  #  #    #    # ######       #####
- #     # #     # #     # #          #       #     # #     #    #    #       # ###       #
- #     # #     # #     # #          #     # #     # #     #     #  #  #     # ### #     #
- ####### #     # ####### #           #####  ######  #     #      ##    #####  ###  #####
+ ####### #     # ####### ######      #####  ######  #     #            #####        ###
+ #     # ##   ## #     # #     #    #     # #     # ##   ##    #    # #     #      #   #
+ #     # # # # # #     # #     #    #       #     # # # # #    #    # #           #     #
+ #     # #  #  # #     # ######     #       #     # #  #  #    #    # ######      #     #
+ #     # #     # #     # #          #       #     # #     #    #    # #     # ### #     #
+ #     # #     # #     # #          #     # #     # #     #     #  #  #     # ###  #   #
+ ####### #     # ####### #           #####  ######  #     #      ##    #####  ###   ###
 
+impala script to create OMOP common data model version 6.0
 
-impala script to create OMOP common data model version 5.3
-
-last revised: 6-Nov-2017
+last revised: 27-Aug-2018
 
 Authors:  Patrick Ryan, Christian Reich, Clair Blacketer
 
@@ -43,6 +42,7 @@ Standardized vocabulary
 ************************/
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE concept (
   concept_id			    INTEGER			  NOT NULL ,
   concept_name			  VARCHAR(255) ,
@@ -58,6 +58,7 @@ CREATE TABLE concept (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE vocabulary (
   vocabulary_id			    VARCHAR(20),
   vocabulary_name		    VARCHAR(255),
@@ -68,6 +69,7 @@ CREATE TABLE vocabulary (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE domain (
   domain_id			    VARCHAR(20),
   domain_name		    VARCHAR(255),
@@ -76,6 +78,7 @@ CREATE TABLE domain (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE concept_class (
   concept_class_id			    VARCHAR(20),
   concept_class_name		    VARCHAR(255),
@@ -84,6 +87,7 @@ CREATE TABLE concept_class (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE concept_relationship (
   concept_id_1			INTEGER			NOT NULL,
   concept_id_2			INTEGER			NOT NULL,
@@ -95,6 +99,7 @@ CREATE TABLE concept_relationship (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE relationship (
   relationship_id			    VARCHAR(20),
   relationship_name			  VARCHAR(255),
@@ -106,6 +111,7 @@ CREATE TABLE relationship (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE concept_synonym (
   concept_id			      INTEGER			  NOT NULL,
   concept_synonym_name	VARCHAR(1000),
@@ -114,6 +120,7 @@ CREATE TABLE concept_synonym (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE concept_ancestor (
   ancestor_concept_id		    INTEGER		NOT NULL,
   descendant_concept_id		  INTEGER		NOT NULL,
@@ -123,6 +130,7 @@ CREATE TABLE concept_ancestor (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE source_to_concept_map (
   source_code				      VARCHAR(50),
   source_concept_id			  INTEGER			  NOT NULL,
@@ -137,8 +145,7 @@ CREATE TABLE source_to_concept_map (
 ;
 
 
-
-
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE drug_strength (
   drug_concept_id				      INTEGER		  NOT NULL,
   ingredient_concept_id			  INTEGER		  NOT NULL,
@@ -156,7 +163,7 @@ CREATE TABLE drug_strength (
 ;
 
 
-
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE cohort_definition (
   cohort_definition_id				    INTEGER			  NOT NULL,
   cohort_definition_name			    VARCHAR(255),
@@ -169,6 +176,7 @@ CREATE TABLE cohort_definition (
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE attribute_definition (
   attribute_definition_id		  INTEGER			  NOT NULL,
   attribute_name				      VARCHAR(255),
@@ -186,6 +194,7 @@ Standardized meta-data
 ***************************/
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE cdm_source
 (
   cdm_source_name					        VARCHAR(255) ,
@@ -202,6 +211,7 @@ CREATE TABLE cdm_source
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE metadata
 (
   metadata_concept_id       INTEGER       NOT NULL ,
@@ -210,8 +220,12 @@ CREATE TABLE metadata
   value_as_string           VARCHAR(MAX) ,
   value_as_concept_id       INTEGER       NULL ,
   metadata_date             TIMESTAMP ,
-  metadata_datetime         TIMESTAMP
+  metadata_datetime         DATETIME2      NULL
 )
+;
+
+INSERT INTO metadata (name, value_as_string) --Added cdm version record
+VALUES ('CDM Version', '6.0')
 ;
 
 
@@ -221,15 +235,16 @@ Standardized clinical data
 
 ************************/
 
+
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE person
 (
-  person_id						        INTEGER	  	NOT NULL ,
+  person_id						        BIGINT , --BIGINTs added
   gender_concept_id				    INTEGER	  	NOT NULL ,
   year_of_birth					      INTEGER	  	NOT NULL ,
   month_of_birth				      INTEGER	  	NULL,
   day_of_birth					      INTEGER	  	NULL,
-  birth_datetime				      TIMESTAMP,
+  birth_datetime				      DATETIME2	  NULL,
   race_concept_id				      INTEGER		  NOT NULL,
   ethnicity_concept_id			  INTEGER	  	NOT NULL,
   location_id					        INTEGER		  NULL,
@@ -249,8 +264,8 @@ CREATE TABLE person
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE observation_period
 (
-  observation_period_id				      INTEGER		NOT NULL ,
-  person_id							            INTEGER		NOT NULL ,
+  observation_period_id				      BIGINT ,
+  person_id							      BIGINT ,
   observation_period_start_date		  TIMESTAMP ,
   observation_period_end_date		    TIMESTAMP ,
   period_type_concept_id			      INTEGER		NOT NULL
@@ -261,12 +276,12 @@ CREATE TABLE observation_period
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE specimen
 (
-  specimen_id						      INTEGER			NOT NULL ,
-  person_id							      INTEGER			NOT NULL ,
+  specimen_id						      BIGINT ,
+  person_id							      BIGINT ,
   specimen_concept_id				  INTEGER			NOT NULL ,
   specimen_type_concept_id		INTEGER			NOT NULL ,
   specimen_date						    TIMESTAMP ,
-  specimen_datetime					  TIMESTAMP ,
+  specimen_datetime					  DATETIME2		NOT NULL ,
   quantity							      FLOAT ,
   unit_concept_id					    INTEGER			NULL ,
   anatomic_site_concept_id		INTEGER			NULL ,
@@ -283,9 +298,9 @@ CREATE TABLE specimen
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE death
 (
-  person_id							  INTEGER			NOT NULL ,
+  person_id							  BIGINT ,
   death_date							TIMESTAMP ,
-  death_datetime					TIMESTAMP ,
+  death_datetime					DATETIME2		NOT NULL ,
   death_type_concept_id   INTEGER			NOT NULL ,
   cause_concept_id			  INTEGER			NULL ,
   cause_source_value			VARCHAR(50),
@@ -297,22 +312,22 @@ CREATE TABLE death
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE visit_occurrence
 (
-  visit_occurrence_id			      INTEGER			NOT NULL ,
-  person_id						          INTEGER			NOT NULL ,
+  visit_occurrence_id			      BIGINT ,
+  person_id						          BIGINT ,
   visit_concept_id				      INTEGER			NOT NULL ,
   visit_start_date				      TIMESTAMP ,
-  visit_start_datetime				  TIMESTAMP ,
+  visit_start_datetime				  DATETIME2		NOT NULL ,
   visit_end_date					      TIMESTAMP ,
-  visit_end_datetime					  TIMESTAMP ,
+  visit_end_datetime					  DATETIME2		NOT NULL ,
   visit_type_concept_id			    INTEGER			NOT NULL ,
   provider_id					          INTEGER			NULL,
   care_site_id					        INTEGER			NULL,
   visit_source_value				    VARCHAR(50),
   visit_source_concept_id		    INTEGER			NULL ,
-  admitting_source_concept_id	  INTEGER			NULL ,
-  admitting_source_value		    VARCHAR(50) ,
-  discharge_to_concept_id		    INTEGER   	NULL ,
+  admitted_from_concept_id      INTEGER     NULL ,   /*Changed from admitting_source_* */
+  admitted_from_source_value    VARCHAR(50) ,
   discharge_to_source_value		  VARCHAR(50) ,
+  discharge_to_concept_id		    INTEGER   	NULL ,
   preceding_visit_occurrence_id	INTEGER			NULL
 )
 ;
@@ -321,25 +336,25 @@ CREATE TABLE visit_occurrence
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE visit_detail
 (
-  visit_detail_id             INTEGER     NOT NULL ,
-  person_id                   INTEGER     NOT NULL ,
-  visit_detail_concept_id     INTEGER     NOT NULL ,
-  visit_start_date            TIMESTAMP ,
-  visit_start_datetime        TIMESTAMP ,
-  visit_end_date              TIMESTAMP ,
-  visit_end_datetime          TIMESTAMP ,
-  visit_type_concept_id       INTEGER     NOT NULL ,
-  provider_id                 INTEGER     NULL ,
-  care_site_id                INTEGER     NULL ,
-  admitting_source_concept_id INTEGER     NULL ,
-  discharge_to_concept_id     INTEGER     NULL ,
-  preceding_visit_detail_id   INTEGER     NULL ,
-  visit_source_value          VARCHAR(50) ,
-  visit_source_concept_id     INTEGER     NULL ,
-  admitting_source_value      VARCHAR(50) ,
-  discharge_to_source_value   VARCHAR(50) ,
-  visit_detail_parent_id      INTEGER     NULL ,
-  visit_occurrence_id         INTEGER     NOT NULL
+  visit_detail_id                    BIGINT ,
+  person_id                          BIGINT ,
+  visit_detail_concept_id            INTEGER     NOT NULL ,
+  visit_detail_start_date            TIMESTAMP ,
+  visit_detail_start_datetime        DATETIME2   NOT NULL ,
+  visit_detail_end_date              TIMESTAMP ,
+  visit_detail_end_datetime          DATETIME2   NOT NULL ,
+  visit_detail_type_concept_id       INTEGER     NOT NULL ,
+  provider_id                        INTEGER     NULL ,
+  care_site_id                       INTEGER     NULL ,
+  discharge_to_concept_id            INTEGER     NULL ,
+  admitted_from_concept_id           INTEGER     NULL , /*Changed from admitting_source_* */
+  admitted_from_source_value         VARCHAR(50) ,
+  visit_detail_source_value          VARCHAR(50) ,
+  visit_detail_source_concept_id     INTEGER     NULL ,
+  discharge_to_source_value          VARCHAR(50) ,
+  preceding_visit_detail_id          BIGINT ,
+  visit_detail_parent_id             BIGINT ,
+  visit_occurrence_id                BIGINT
 )
 ;
 
@@ -347,11 +362,11 @@ CREATE TABLE visit_detail
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE procedure_occurrence
 (
-  procedure_occurrence_id		  INTEGER			NOT NULL ,
-  person_id						        INTEGER			NOT NULL ,
+  procedure_occurrence_id		  BIGINT ,
+  person_id						        BIGINT ,
   procedure_concept_id			  INTEGER			NOT NULL ,
   procedure_date				      TIMESTAMP ,
-  procedure_datetime			    TIMESTAMP ,
+  procedure_datetime			    DATETIME2		NOT NULL ,
   procedure_type_concept_id		INTEGER			NOT NULL ,
   modifier_concept_id			    INTEGER			NULL ,
   quantity						        INTEGER			NULL ,
@@ -360,7 +375,7 @@ CREATE TABLE procedure_occurrence
   visit_detail_id             INTEGER     NULL ,
   procedure_source_value		  VARCHAR(50) ,
   procedure_source_concept_id	INTEGER			NULL ,
-  modifier_source_value		   VARCHAR(50)
+  modifier_source_value		    VARCHAR(50) ,
 )
 ;
 
@@ -368,13 +383,13 @@ CREATE TABLE procedure_occurrence
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE drug_exposure
 (
-  drug_exposure_id				      INTEGER			  NOT NULL ,
-  person_id						          INTEGER			  NOT NULL ,
+  drug_exposure_id				      BIGINT ,
+  person_id						          BIGINT ,
   drug_concept_id				        INTEGER			  NOT NULL ,
   drug_exposure_start_date		  TIMESTAMP ,
-  drug_exposure_start_datetime  TIMESTAMP ,
+  drug_exposure_start_datetime  DATETIME2		  NOT NULL ,
   drug_exposure_end_date		    TIMESTAMP ,
-  drug_exposure_end_datetime	  TIMESTAMP ,
+  drug_exposure_end_datetime	  DATETIME2		  NOT NULL ,
   verbatim_end_date				      TIMESTAMP ,
   drug_type_concept_id			    INTEGER			  NOT NULL ,
   stop_reason					          VARCHAR(20) ,
@@ -398,13 +413,13 @@ CREATE TABLE drug_exposure
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE device_exposure
 (
-  device_exposure_id			        INTEGER		  	NOT NULL ,
-  person_id						            INTEGER			  NOT NULL ,
+  device_exposure_id			        BIGINT ,
+  person_id						            BIGINT ,
   device_concept_id			        	INTEGER			  NOT NULL ,
   device_exposure_start_date	    TIMESTAMP ,
-  device_exposure_start_datetime  TIMESTAMP ,
+  device_exposure_start_datetime  DATETIME2		  NOT NULL ,
   device_exposure_end_date		    TIMESTAMP ,
-  device_exposure_end_datetime    TIMESTAMP ,
+  device_exposure_end_datetime    DATETIME2		  NULL ,
   device_type_concept_id		      INTEGER			  NOT NULL ,
   unique_device_id			        	VARCHAR(50) ,
   quantity						            INTEGER			  NULL ,
@@ -420,22 +435,22 @@ CREATE TABLE device_exposure
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE condition_occurrence
 (
-  condition_occurrence_id		    INTEGER			NOT NULL ,
-  person_id						          INTEGER			NOT NULL ,
+  condition_occurrence_id		    BIGINT ,
+  person_id						          BIGINT ,
   condition_concept_id			    INTEGER			NOT NULL ,
   condition_start_date			    TIMESTAMP ,
-  condition_start_datetime		  TIMESTAMP ,
+  condition_start_datetime		  DATETIME2		NOT NULL ,
   condition_end_date			      TIMESTAMP ,
-  condition_end_datetime		    TIMESTAMP ,
+  condition_end_datetime		    DATETIME2		NULL ,
   condition_type_concept_id		  INTEGER			NOT NULL ,
+  condition_status_concept_id	  INTEGER			NULL ,
   stop_reason					          VARCHAR(20) ,
   provider_id					          INTEGER			NULL ,
   visit_occurrence_id			      INTEGER			NULL ,
   visit_detail_id               INTEGER     NULL ,
   condition_source_value		    VARCHAR(50) ,
   condition_source_concept_id	  INTEGER			NULL ,
-  condition_status_source_value	VARCHAR(50) ,
-  condition_status_concept_id	  INTEGER			NULL
+  condition_status_source_value	VARCHAR(50)
 )
 ;
 
@@ -443,11 +458,12 @@ CREATE TABLE condition_occurrence
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE measurement
 (
-  measurement_id				        INTEGER			NOT NULL ,
-  person_id						          INTEGER			NOT NULL ,
+  measurement_id				        BIGINT ,
+  person_id						          BIGINT ,
   measurement_concept_id		    INTEGER			NOT NULL ,
   measurement_date				      TIMESTAMP ,
-  measurement_time			        VARCHAR(10) ,
+  measurement_datetime			    DATETIME2		NOT NULL ,
+  measurement_time              VARCHAR(10),
   measurement_type_concept_id	  INTEGER			NOT NULL ,
   operator_concept_id			      INTEGER			NULL ,
   value_as_number				        FLOAT ,
@@ -469,10 +485,13 @@ CREATE TABLE measurement
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE note
 (
-  note_id						    INTEGER			  NOT NULL ,
-  person_id						  INTEGER			  NOT NULL ,
+  note_id						    BIGINT ,
+  person_id						  BIGINT ,
+  note_event_id         BIGINT , --This and the field below added
+  note_domain_id        VARCHAR(20) , --This field may be removed in favor of the one below
+--note_event_table_concept_id INTEGER NULL , --This may be added based on 9/4 meeting
   note_date						  TIMESTAMP ,
-  note_datetime					TIMESTAMP ,
+  note_datetime					DATETIME2		  NOT NULL ,
   note_type_concept_id	INTEGER			  NOT NULL ,
   note_class_concept_id INTEGER			  NOT NULL ,
   note_title					  VARCHAR(250) ,
@@ -487,23 +506,23 @@ CREATE TABLE note
 ;
 
 
-
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE note_nlp
 (
-  note_nlp_id					        INTEGER			  NOT NULL ,
-  note_id						          INTEGER			  NOT NULL ,
+  note_nlp_id					        BIGINT ,
+  note_id						          BIGINT ,
   section_concept_id			    INTEGER			  NULL ,
   snippet						          VARCHAR(250) ,
   "offset"					          VARCHAR(250) ,
   lexical_variant				      VARCHAR(250) ,
   note_nlp_concept_id			    INTEGER			  NULL ,
-  note_nlp_source_concept_id  INTEGER			  NULL ,
   nlp_system					        VARCHAR(250) ,
   nlp_date						        TIMESTAMP ,
-  nlp_datetime					      TIMESTAMP ,
+  nlp_datetime					      DATETIME2		  NULL ,
   term_exists					        VARCHAR(1) ,
   term_temporal					      VARCHAR(50) ,
-  term_modifiers				      VARCHAR(2000)
+  term_modifiers				      VARCHAR(2000) ,
+  note_nlp_source_concept_id  INTEGER			  NULL
 )
 ;
 
@@ -511,34 +530,71 @@ CREATE TABLE note_nlp
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE observation
 (
-  observation_id					      INTEGER			NOT NULL ,
-  person_id						          INTEGER			NOT NULL ,
-  observation_concept_id			  INTEGER			NOT NULL ,
-  observation_date				      TIMESTAMP ,
-  observation_datetime				  TIMESTAMP ,
-  observation_type_concept_id	  INTEGER			NOT NULL ,
-  value_as_number				        FLOAT ,
-  value_as_string				        VARCHAR(60) ,
-  value_as_concept_id			      INTEGER			NULL ,
-  qualifier_concept_id			    INTEGER			NULL ,
-  unit_concept_id				        INTEGER			NULL ,
-  provider_id					          INTEGER			NULL ,
-  visit_occurrence_id			      INTEGER			NULL ,
-  visit_detail_id               INTEGER     NULL ,
-  observation_source_value		  VARCHAR(50) ,
-  observation_source_concept_id	INTEGER			NULL ,
-  unit_source_value				      VARCHAR(50) ,
-  qualifier_source_value			  VARCHAR(50)
+  observation_id					        BIGINT ,
+  person_id						            BIGINT ,
+  observation_concept_id			    INTEGER			NOT NULL ,
+  observation_date				        TIMESTAMP ,
+  observation_datetime				    DATETIME2		NOT NULL ,
+  observation_type_concept_id	    INTEGER			NOT NULL ,
+  value_as_number				          FLOAT ,
+  value_as_string				          VARCHAR(60) ,
+  value_as_concept_id			        INTEGER			NULL ,
+  qualifier_concept_id			      INTEGER			NULL ,
+  unit_concept_id				          INTEGER			NULL ,
+  provider_id					            INTEGER			NULL ,
+  visit_occurrence_id			        BIGINT ,
+  visit_detail_id               	BIGINT ,
+  observation_source_value		  	VARCHAR(50) ,
+  observation_source_concept_id		INTEGER			NULL ,
+  unit_source_value				        VARCHAR(50) ,
+  qualifier_source_value			    VARCHAR(50) ,
+  observation_event_id				    BIGINT , /* This will link back to the event table (SURVEY) on SURVEY_OCCURRENCE_ID, changed name to comply with COST and NOTE*/
+  observation_event_domain_id			VARCHAR(20) ,
+--obs_event_table_concept_id			INTEGER	NULL , /* Changed name to comply with COST and NOTE. Had to use 'obs' for oracle restriction, may be added on 9/4*/
+  value_as_datetime					      DATETIME2		NULL
 )
 ;
 
 
+--HINT DISTRIBUTE ON KEY(person_id)
+CREATE TABLE survey_conduct --Table added
+(
+  survey_conduct_id					  BIGINT ,
+  person_id						            BIGINT ,
+  survey_concept_id			  			  INTEGER			  NOT NULL ,
+  survey_start_date				     	  TIMESTAMP ,
+  survey_start_datetime				  	DATETIME2			NULL ,
+  survey_end_date						      TIMESTAMP ,
+  survey_end_datetime					    DATETIME2			NOT NULL ,
+  provider_id							        BIGINT ,
+  assisted_concept_id	  				  INTEGER			  NULL ,
+  respondent_type_concept_id			INTEGER			  NULL ,
+  timing_concept_id						    INTEGER			  NULL ,
+  collection_method_concept_id		INTEGER			  NULL ,
+  assisted_source_value		  			VARCHAR(50) ,
+  respondent_type_source_value		VARCHAR(100) ,
+  timing_source_value					    VARCHAR(100) ,
+  collection_method_source_value	VARCHAR(100) ,
+  survey_source_value					    VARCHAR(100) ,
+  survey_source_concept_id				INTEGER			  NULL ,
+  survey_source_identifier				VARCHAR(100) ,
+  validated_survey_concept_id			INTEGER			  NULL ,
+  validated_survey_source_value		VARCHAR(100) ,
+  survey_version_number					  VARCHAR(20) ,
+  visit_occurrence_id					    BIGINT ,
+  visit_detail_id					BIGINT ,
+  response_to_visit_occurrence_id	BIGINT
+)
+;
+
+
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE fact_relationship
 (
   domain_concept_id_1			INTEGER			NOT NULL ,
-  fact_id_1						    INTEGER			NOT NULL ,
+  fact_id_1						    BIGINT ,
   domain_concept_id_2			INTEGER			NOT NULL ,
-  fact_id_2						    INTEGER			NOT NULL ,
+  fact_id_2						    BIGINT ,
   relationship_concept_id	INTEGER			NOT NULL
 )
 ;
@@ -552,40 +608,60 @@ Standardized health system data
 ************************/
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE location
 (
-  location_id					  INTEGER			  NOT NULL ,
+  location_id					  BIGINT ,
   address_1						  VARCHAR(50) ,
   address_2						  VARCHAR(50) ,
   city							    VARCHAR(50) ,
   state							    VARCHAR(2) ,
   zip							      VARCHAR(9) ,
-  county							  VARCHAR(20) ,
-  location_source_value VARCHAR(50)
+  county						    VARCHAR(20) ,
+  country						    VARCHAR(100) ,
+  location_source_value VARCHAR(50) ,
+  latitude						  FLOAT ,
+  longitude						  FLOAT
 )
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
+CREATE TABLE location_history --Table added
+(
+  location_history_id           BIGINT ,
+  location_id			              BIGINT ,
+  relationship_type_concept_id	INTEGER		  NULL ,  --Recent addition based on github discussion
+  domain_id				              VARCHAR(50) ,
+  entity_id				              BIGINT ,
+  start_date			              TIMESTAMP ,
+  end_date				              TIMESTAMP
+)
+;
+
+
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE care_site
 (
-  care_site_id						      INTEGER			  NOT NULL ,
+  care_site_id						      BIGINT ,
   care_site_name						    VARCHAR(255) ,
   place_of_service_concept_id	  INTEGER			  NULL ,
-  location_id						        INTEGER			  NULL ,
+  location_id						        BIGINT ,
   care_site_source_value			  VARCHAR(50) ,
   place_of_service_source_value VARCHAR(50)
 )
 ;
 
 
+--HINT DISTRIBUTE ON RANDOM
 CREATE TABLE provider
 (
-  provider_id					        INTEGER			  NOT NULL ,
+  provider_id					        BIGINT ,
   provider_name					      VARCHAR(255) ,
   NPI							            VARCHAR(20) ,
   DEA							            VARCHAR(20) ,
   specialty_concept_id			  INTEGER			  NULL ,
-  care_site_id					      INTEGER			  NULL ,
+  care_site_id					      BIGINT ,
   year_of_birth					      INTEGER			  NULL ,
   gender_concept_id				    INTEGER			  NULL ,
   provider_source_value			  VARCHAR(50) ,
@@ -607,51 +683,53 @@ Standardized health economics
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE payer_plan_period
 (
-  payer_plan_period_id			    INTEGER			  NOT NULL ,
-  person_id						          INTEGER			  NOT NULL ,
+  payer_plan_period_id			    BIGINT ,
+  person_id						          BIGINT ,
+  contract_person_id            BIGINT ,
   payer_plan_period_start_date  TIMESTAMP ,
   payer_plan_period_end_date		TIMESTAMP ,
   payer_concept_id              INTEGER       NULL ,
+  plan_concept_id               INTEGER       NULL ,
+  contract_concept_id           INTEGER       NULL ,
+  sponsor_concept_id            INTEGER       NULL ,
+  stop_reason_concept_id        INTEGER       NULL ,
   payer_source_value				    VARCHAR(50) ,
   payer_source_concept_id       INTEGER       NULL ,
-  plan_concept_id               INTEGER       NULL ,
   plan_source_value				      VARCHAR(50) ,
   plan_source_concept_id        INTEGER       NULL ,
-  sponsor_concept_id            INTEGER       NULL ,
+  contract_source_value         VARCHAR(50) ,
+  contract_source_concept_id    INTEGER       NULL ,
   sponsor_source_value          VARCHAR(50) ,
   sponsor_source_concept_id     INTEGER       NULL ,
   family_source_value			      VARCHAR(50) ,
-  stop_reason_concept_id        INTEGER       NULL ,
   stop_reason_source_value      VARCHAR(50) ,
   stop_reason_source_concept_id INTEGER       NULL
 )
 ;
 
 
+--HINT DISTRIBUTE ON KEY(person_id)
 CREATE TABLE cost
 (
-  cost_id					          INTEGER	    NOT NULL ,
-  cost_event_id             INTEGER     NOT NULL ,
-  cost_domain_id            VARCHAR(20) ,
-  cost_type_concept_id      INTEGER     NOT NULL ,
-  currency_concept_id			  INTEGER			NULL ,
-  total_charge						  FLOAT ,
-  total_cost						    FLOAT ,
-  total_paid						    FLOAT ,
-  paid_by_payer					    FLOAT ,
-  paid_by_patient						FLOAT ,
-  paid_patient_copay				FLOAT ,
-  paid_patient_coinsurance  FLOAT ,
-  paid_patient_deductible		FLOAT ,
-  paid_by_primary						FLOAT ,
-  paid_ingredient_cost			FLOAT ,
-  paid_dispensing_fee				FLOAT ,
-  payer_plan_period_id			INTEGER			NULL ,
-  amount_allowed		        FLOAT ,
-  revenue_code_concept_id		INTEGER			NULL ,
-  reveue_code_source_value  VARCHAR(50),
-  drg_concept_id			      INTEGER		  NULL,
-  drg_source_value			    VARCHAR(3)
+  cost_id						        BIGINT ,
+  person_id						      BIGINT,
+  cost_event_id					    BIGINT ,
+  cost_domain_id				    VARCHAR(20) ,
+--cost_event_table_concept_id	INTEGER		NOT NULL , /*This is still in discussion and most likely will replace cost_domain_id at 9/4 meeting*/
+  cost_concept_id				    INTEGER		  NOT NULL ,
+  cost_type_concept_id		  INTEGER     NOT NULL ,
+  currency_concept_id			  INTEGER		  NULL ,
+  cost							        FLOAT ,
+  incurred_date					    TIMESTAMP ,
+  billed_date					      TIMESTAMP ,
+  paid_date						      TIMESTAMP ,
+  revenue_code_concept_id		INTEGER		  NULL ,
+  drg_concept_id			      INTEGER		  NULL ,
+  cost_source_value				  VARCHAR(50) ,
+  cost_source_concept_id	  INTEGER		  NULL ,
+  revenue_code_source_value VARCHAR(50) ,
+  drg_source_value			    VARCHAR(3) ,
+  payer_plan_period_id			BIGINT
 )
 ;
 
@@ -666,8 +744,8 @@ Standardized derived elements
 --HINT DISTRIBUTE_ON_KEY(subject_id)
 CREATE TABLE cohort
 (
-  cohort_definition_id	INTEGER		NOT NULL ,
-  subject_id						INTEGER		NOT NULL ,
+  cohort_definition_id	BIGINT ,
+  subject_id						BIGINT ,
   cohort_start_date			TIMESTAMP ,
   cohort_end_date				TIMESTAMP
 )
@@ -677,11 +755,11 @@ CREATE TABLE cohort
 --HINT DISTRIBUTE_ON_KEY(subject_id)
 CREATE TABLE cohort_attribute
 (
-  cohort_definition_id		INTEGER		NOT NULL ,
-  subject_id						  INTEGER		NOT NULL ,
+  cohort_definition_id		BIGINT ,
+  subject_id						  BIGINT ,
   cohort_start_date				TIMESTAMP ,
   cohort_end_date				  TIMESTAMP ,
-  attribute_definition_id INTEGER		NOT NULL ,
+  attribute_definition_id BIGINT ,
   value_as_number				  FLOAT ,
   value_as_concept_id			INTEGER		NULL
 )
@@ -691,8 +769,8 @@ CREATE TABLE cohort_attribute
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE drug_era
 (
-  drug_era_id					INTEGER			NOT NULL ,
-  person_id						INTEGER			NOT NULL ,
+  drug_era_id					BIGINT ,
+  person_id						BIGINT ,
   drug_concept_id			INTEGER			NOT NULL ,
   drug_era_start_date	TIMESTAMP ,
   drug_era_end_date		TIMESTAMP ,
@@ -705,8 +783,8 @@ CREATE TABLE drug_era
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE dose_era
 (
-  dose_era_id					  INTEGER			NOT NULL ,
-  person_id						  INTEGER			NOT NULL ,
+  dose_era_id					  BIGINT ,
+  person_id						  BIGINT ,
   drug_concept_id				INTEGER			NOT NULL ,
   unit_concept_id				INTEGER			NOT NULL ,
   dose_value						FLOAT ,
@@ -719,8 +797,8 @@ CREATE TABLE dose_era
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE condition_era
 (
-  condition_era_id				    INTEGER			NOT NULL ,
-  person_id						        INTEGER			NOT NULL ,
+  condition_era_id				    BIGINT ,
+  person_id						        BIGINT ,
   condition_concept_id			  INTEGER			NOT NULL ,
   condition_era_start_date		TIMESTAMP ,
   condition_era_end_date			TIMESTAMP ,
