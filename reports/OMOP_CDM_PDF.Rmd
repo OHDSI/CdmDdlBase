@@ -1,15 +1,20 @@
 ---
 title: "OMOP Common Data Model Specifications"
-author: "Christian Reich, Patrick Ryan, Rimma Belenkaya, Karthik Natarajan and Clair Blacketer"
+author: Christian Reich, Patrick Ryan, Rimma Belenkaya, Karthik Natarajan and Clair
+  Blacketer
 date: "`r Sys.Date()`"
-params:
-  mdFilesLocation: "S:/Git/GitHub/CommonDataModel_v6/Documentation/CommonDataModel_Wiki_Files"
 output:
+  html_document:
+    df_print: paged
+    toc: yes
   pdf_document:
+    latex_engine: xelatex
     number_sections: yes
     toc: yes
 linkcolor: blue
-keep-tex: yes 
+params:
+  mdFilesLocation: S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files
+keep-tex: yes
 ---
 
 ```{r, echo=FALSE}

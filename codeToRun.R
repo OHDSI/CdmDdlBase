@@ -7,7 +7,7 @@
   cdmVersion <- "v6_0"
 
   # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
-  mdFilesLocation <- "S:/Git/GitHub/CommonDataModel_v6/Documentation/CommonDataModel_Wiki_Files"
+  mdFilesLocation <- "S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files"
 
 # Step 1.9: Generate the CSV file:
 parseWiki(mdFilesLocation = mdFilesLocation,
