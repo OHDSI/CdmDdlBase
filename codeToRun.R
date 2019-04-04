@@ -7,7 +7,7 @@
   cdmVersion <- "v6_0"
 
   # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
-  mdFilesLocation <- "S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files"
+  mdFilesLocation <- "S:/Git/GitHub/CommonDataModel.wiki"
 
 # Step 1.9: Generate the CSV file:
 parseWiki(mdFilesLocation = mdFilesLocation,
@@ -46,5 +46,9 @@ writeConstraints("sql server")
 
 rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
                   output_format = "pdf_document",
-                  output_file = paste0("OMOP_CDM_",cdmVersion,".pdf"),
+                  output_file = paste0("OMOP_CDM_",cdmVersion,"test.pdf"),
+                  params = list(mdFilesLocation = mdFilesLocation))
+rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
+                  output_format = "html_document",
+                  output_file = paste0("OMOP_CDM_",cdmVersion,"test.html"),
                   params = list(mdFilesLocation = mdFilesLocation))

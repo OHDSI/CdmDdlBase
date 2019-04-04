@@ -13,7 +13,7 @@ output:
     toc: yes
 linkcolor: blue
 params:
-  mdFilesLocation: S:/Git/GitHub/CommonDataModel/Documentation/CommonDataModel_Wiki_Files
+  mdFilesLocation: S:/Git/GitHub/CommonDataModel.wiki
 keep-tex: yes
 ---
 
@@ -109,122 +109,122 @@ mdFilesLocation <- params$mdFilesLocation
 ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/PERSON.md')}
 ```
 
-## OBSERVATION_PERIOD
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/OBSERVATION_PERIOD.md')}
-```
+<!-- ## OBSERVATION_PERIOD -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/OBSERVATION_PERIOD.md')} -->
+<!-- ``` -->
 
-## VISIT_OCCURRENCE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/VISIT_OCCURRENCE.md')}
-```
+<!-- ## VISIT_OCCURRENCE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/VISIT_OCCURRENCE.md')} -->
+<!-- ``` -->
 
-## VISIT_DETAIL
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/VISIT_DETAIL.md')}
-```
+<!-- ## VISIT_DETAIL -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/VISIT_DETAIL.md')} -->
+<!-- ``` -->
 
-## CONDITION_OCCURRENCE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/CONDITION_OCCURRENCE.md')}
-```
+<!-- ## CONDITION_OCCURRENCE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/CONDITION_OCCURRENCE.md')} -->
+<!-- ``` -->
 
-## DEATH
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DEATH.md')}
-```
+<!-- ## DEATH -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DEATH.md')} -->
+<!-- ``` -->
 
-## DRUG_EXPOSURE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DRUG_EXPOSURE.md')}
-```
+<!-- ## DRUG_EXPOSURE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DRUG_EXPOSURE.md')} -->
+<!-- ``` -->
 
-## PROCEDURE_OCCURRENCE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/PROCEDURE_OCCURRENCE.md')}
-```
+<!-- ## PROCEDURE_OCCURRENCE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/PROCEDURE_OCCURRENCE.md')} -->
+<!-- ``` -->
 
-## DEVICE_EXPOSURE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DEVICE_EXPOSURE.md')}
-```
+<!-- ## DEVICE_EXPOSURE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/DEVICE_EXPOSURE.md')} -->
+<!-- ``` -->
 
-## MEASUREMENT
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/MEASUREMENT.md')}
-```
+<!-- ## MEASUREMENT -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/MEASUREMENT.md')} -->
+<!-- ``` -->
 
-## NOTE
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/NOTE.md')}
-```
+<!-- ## NOTE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/NOTE.md')} -->
+<!-- ``` -->
 
-## NOTE_NLP
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/NOTE_NLP.md')}
-```
+<!-- ## NOTE_NLP -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/NOTE_NLP.md')} -->
+<!-- ``` -->
 
-## SURVEY_CONDUCT
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/SURVEY_CONDUCT.md')}
-```
+<!-- ## SURVEY_CONDUCT -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/SURVEY_CONDUCT.md')} -->
+<!-- ``` -->
 
-## OBSERVATION
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/OBSERVATION.md')}
-```
+<!-- ## OBSERVATION -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/OBSERVATION.md')} -->
+<!-- ``` -->
 
-## SPECIMEN
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/SPECIMEN.md')}
-```
+<!-- ## SPECIMEN -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/SPECIMEN.md')} -->
+<!-- ``` -->
 
-## FACT_RELATIONSHIP
-```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/FACT_RELATIONSHIP.md')}
-```
+<!-- ## FACT_RELATIONSHIP -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedclinicalDataTables/FACT_RELATIONSHIP.md')} -->
+<!-- ``` -->
 
-# Standardized Health System Data Tables
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/Standardized-Health-System-Data-Tables.md')}
-```
+<!-- # Standardized Health System Data Tables -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/Standardized-Health-System-Data-Tables.md')} -->
+<!-- ``` -->
 
-## LOCATION
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/LOCATION.md')}
-```
+<!-- ## LOCATION -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/LOCATION.md')} -->
+<!-- ``` -->
 
-## LOCATION_HISTORY
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/LOCATION_HISTORY.md')}
-```
+<!-- ## LOCATION_HISTORY -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/LOCATION_HISTORY.md')} -->
+<!-- ``` -->
 
-## CARE_SITE
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/CARE_SITE.md')}
-```
+<!-- ## CARE_SITE -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/CARE_SITE.md')} -->
+<!-- ``` -->
 
-## PROVIDER
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/PROVIDER.md')}
-```
+<!-- ## PROVIDER -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthSystemDataTables/PROVIDER.md')} -->
+<!-- ``` -->
 
-# Standardized Health Economics Data Tables
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/Standardized-Health-Economics-Data-Tables.md')}
-```
+<!-- # Standardized Health Economics Data Tables -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/Standardized-Health-Economics-Data-Tables.md')} -->
+<!-- ``` -->
 
-## PAYER_PLAN_PERIOD
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/PAYER_PLAN_PERIOD.md')}
-```
+<!-- ## PAYER_PLAN_PERIOD -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/PAYER_PLAN_PERIOD.md')} -->
+<!-- ``` -->
 
-## COST
-```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/COST.md')}
-```
+<!-- ## COST -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedHealthEconomicsDataTables/COST.md')} -->
+<!-- ``` -->
 
-# Standardized Derived Elements
-```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/Standardized-Derived-Elements.md')}
-```
+<!-- # Standardized Derived Elements -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/Standardized-Derived-Elements.md')} -->
+<!-- ``` -->
 
-## DRUG_ERA
-```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/DRUG_ERA.md')}
-```
+<!-- ## DRUG_ERA -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/DRUG_ERA.md')} -->
+<!-- ``` -->
 
-## DOSE_ERA
-```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/DOSE_ERA.md')}
-```
+<!-- ## DOSE_ERA -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/DOSE_ERA.md')} -->
+<!-- ``` -->
 
-## CONDITION_ERA
-```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/CONDITION_ERA.md')}
-```
+<!-- ## CONDITION_ERA -->
+<!-- ```{r child = paste0(mdFilesLocation,'/StandardizedDerivedElements/CONDITION_ERA.md')} -->
+<!-- ``` -->
 
-# Results Schema
-```{r child = paste0(mdFilesLocation,'/ResultsSchema/Results-Schema.md')}
-```
+<!-- # Results Schema -->
+<!-- ```{r child = paste0(mdFilesLocation,'/ResultsSchema/Results-Schema.md')} -->
+<!-- ``` -->
 
-## COHORT
-```{r child = paste0(mdFilesLocation,'/ResultsSchema/COHORT.md')}
-```
+<!-- ## COHORT -->
+<!-- ```{r child = paste0(mdFilesLocation,'/ResultsSchema/COHORT.md')} -->
+<!-- ``` -->
 
-## COHORT_DEFINITION
-```{r child = paste0(mdFilesLocation,'/ResultsSchema/COHORT_DEFINITION.md')}
-```
+<!-- ## COHORT_DEFINITION -->
+<!-- ```{r child = paste0(mdFilesLocation,'/ResultsSchema/COHORT_DEFINITION.md')} -->
+<!-- ``` -->
