@@ -17,9 +17,10 @@
 #' Write Index script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
+#' @param cdmVersion The version of the CDM that you are creating the index for
 #'
 #' @export
-writeIndex <- function(targetdialect) {
+writeIndex <- function(targetdialect, cdmVersion) {
 if(!dir.exists("output")){
   dir.create("output")
 }
@@ -34,6 +35,6 @@ sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM pk indexes requ
                                          targetdialect = targetdialect)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," pk indexes.txt"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " pk indexes.txt"))
 
 }

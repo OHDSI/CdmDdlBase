@@ -17,9 +17,10 @@
 #' Write DDL script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
+#' @param cdmVersion The version of the CDM that you are creating the DDL for
 #'
 #' @export
-writeDDL <- function(targetdialect) {
+writeDDL <- function(targetdialect,cdmVersion) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -34,6 +35,6 @@ writeDDL <- function(targetdialect) {
                                            targetdialect = targetdialect)
 
   SqlRender::writeSql(sql = sql,
-                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ddl.txt"))
+                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion," ddl.txt"))
 
 }

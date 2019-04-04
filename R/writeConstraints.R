@@ -17,9 +17,10 @@
 #' Write constraint script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
+#' @param cdmVersion The version of the CDM that you are creating the constraints for
 #'
 #' @export
-writeConstraints <- function(targetdialect) {
+writeConstraints <- function(targetdialect, cdmVersion) {
 if(!dir.exists("output")){
   dir.create("output")
 }
@@ -34,6 +35,6 @@ sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM constraints.sql
                                          targetdialect = targetdialect)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," constraints.txt"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " constraints.txt"))
 
 }
