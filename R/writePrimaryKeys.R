@@ -21,7 +21,7 @@
 #'
 #' @export
 
-writePrimaryKeys <- function(targetdialect, cdmVersion) {
+writePrimaryKeys <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -33,7 +33,8 @@ writePrimaryKeys <- function(targetdialect, cdmVersion) {
   sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM Primary Keys.sql",
                                            packageName = "DDLGeneratr",
                                            dbms = targetdialect,
-                                           targetdialect = targetdialect)
+                                           targetdialect = targetdialect,
+                                           cdmDatabaseSchema = cdmDatabaseSchema)
 
   SqlRender::writeSql(sql = sql,
                       targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " primary keys.txt"))

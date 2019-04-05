@@ -17,10 +17,14 @@
 #' Write DDL script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
-#' @param cdmVersion The version of the CDM that you are creating the DDL for
+#' @param cdmVersion The version of the CDM for which you are creating the DDL.
+#' @param cdmDatabaseSchema The schema of the CDM instance where the DDL will be run. For example, this would be "ohdsi.dbo" when testing on sql server. After testing
+#'                          this can be changed to "@cdmDatabaseSchema"
+#' @param cleanUpScript Set to T if the clean up script should be created. This is for testing purposes and will create a sql script that drops all CDM tables.
+#'                      By default set to F. Set to F for Oracle as well as the sql render translation does not work well.
 #'
 #' @export
-writeDDL <- function(targetdialect,cdmVersion) {
+writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, cleanUpScript = F) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -32,9 +36,22 @@ writeDDL <- function(targetdialect,cdmVersion) {
   sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM ddl.sql",
                                            packageName = "DDLGeneratr",
                                            dbms = targetdialect,
-                                           targetdialect = targetdialect)
+                                           targetdialect = targetdialect,
+                                           cdmDatabaseSchema = cdmDatabaseSchema)
 
   SqlRender::writeSql(sql = sql,
-                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion," ddl.txt"))
+                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ", cdmVersion," ddl.sql"))
+
+
+  if(cleanUpScript){
+
+      sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "testCleanUp.sql",
+                                               packageName = "DDLGeneratr",
+                                               dbms = targetdialect,
+                                               cdmDatabaseSchema = cdmDatabaseSchema)
+
+      SqlRender::writeSql(sql = sql,
+                          targetFile = paste0("output/",targetdialect,"/", targetdialect," testCleanUp ", cdmVersion,".sql"))
+  }
 
 }

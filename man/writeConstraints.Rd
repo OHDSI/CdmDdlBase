@@ -4,10 +4,12 @@
 \alias{writeConstraints}
 \title{Write constraint script}
 \usage{
-writeConstraints(targetdialect)
+writeConstraints(targetdialect, cdmVersion, cdmDatabaseSchema)
 }
 \arguments{
 \item{targetdialect}{The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"}
+
+\item{cdmVersion}{The version of the CDM that you are creating the constraints for}
 }
 \description{
 Write constraint script

@@ -1,0 +1,28 @@
+DBMS:
+oracle
+
+Error:
+java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist
+
+
+SQL:
+DROP TABLE OHDSI.survey_conduct  CASCADE CONSTRAINTS PURGE
+
+R version:
+R version 3.4.2 (2017-09-28)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:
+- DatabaseConnector (2.3.0)
+- DDLGeneratr (0.1.0)

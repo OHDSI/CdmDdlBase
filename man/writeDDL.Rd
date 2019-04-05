@@ -4,10 +4,15 @@
 \alias{writeDDL}
 \title{Write DDL script}
 \usage{
-writeDDL(targetdialect)
+writeDDL(targetdialect, cdmVersion, cdmDatabaseSchema)
 }
 \arguments{
 \item{targetdialect}{The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"}
+
+\item{cdmVersion}{The version of the CDM for which you are creating the DDL.}
+
+\item{cdmDatabaseSchema}{The schema of the CDM instance where the DDL will be run. For example, this would be "ohdsi.dbo" when testing on sql server. After testing
+this can be changed to "@cdmDatabaseSchema"}
 }
 \description{
 Write DDL script

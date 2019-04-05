@@ -20,7 +20,7 @@
 #' @param cdmVersion The version of the CDM that you are creating the index for
 #'
 #' @export
-writeIndex <- function(targetdialect, cdmVersion) {
+writeIndex <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
 if(!dir.exists("output")){
   dir.create("output")
 }
@@ -32,7 +32,8 @@ if(!dir.exists(paste0("output/",targetdialect))){
 sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM pk indexes required.sql",
                                          packageName = "DDLGeneratr",
                                          dbms = targetdialect,
-                                         targetdialect = targetdialect)
+                                         targetdialect = targetdialect,
+                                         cdmDatabaseSchema = cdmDatabaseSchema)
 
 SqlRender::writeSql(sql = sql,
                     targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " pk indexes.txt"))

@@ -18,11 +18,18 @@ parseWiki(mdFilesLocation = mdFilesLocation,
 #writeDDL("bigquery")
 #writeDDL("impala")
 #writeDDL("netezza")
-writeDDL("oracle")
+
+writeDDL("oracle",
+         cdmVersion,
+         "OHDSI")
+
 #writeDDL("pdw")
 writeDDL("postgresql")
 #writeDDL("redshift")
-writeDDL("sql server")
+
+writeDDL("sql server",
+         cdmVersion,
+         "ohdsi.dbo")
 
 # Step 3: Run the following code to create the primary key constraints and index files for Oracle, Postgres, PDW and Sql Server
 
