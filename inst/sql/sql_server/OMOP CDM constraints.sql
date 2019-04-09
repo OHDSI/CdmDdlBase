@@ -86,7 +86,7 @@ ALTER TABLE @cdmDatabaseSchema.relationship ADD CONSTRAINT fpk_relationship_reve
 
 ALTER TABLE @cdmDatabaseSchema.concept_synonym ADD CONSTRAINT fpk_concept_synonym_concept FOREIGN KEY (concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.concept_synonym ADD CONSTRAINT fpk_concept_synonym_concept FOREIGN KEY (language_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.concept_synonym ADD CONSTRAINT fpk_concept_synonym_lang FOREIGN KEY (language_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
 ALTER TABLE @cdmDatabaseSchema.concept_ancestor ADD CONSTRAINT fpk_concept_ancestor_concept_1 FOREIGN KEY (ancestor_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
@@ -112,14 +112,6 @@ ALTER TABLE @cdmDatabaseSchema.drug_strength ADD CONSTRAINT fpk_drug_strength_un
 ALTER TABLE @cdmDatabaseSchema.drug_strength ADD CONSTRAINT fpk_drug_strength_unit_3 FOREIGN KEY (denominator_unit_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
-ALTER TABLE @cdmDatabaseSchema.cohort_definition ADD CONSTRAINT fpk_cohort_definition_concept FOREIGN KEY (definition_type_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-ALTER TABLE @cdmDatabaseSchema.cohort_definition ADD CONSTRAINT fpk_subject_concept FOREIGN KEY (subject_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-
-ALTER TABLE @cdmDatabaseSchema.attribute_definition ADD CONSTRAINT fpk_attribute_type_concept FOREIGN KEY (attribute_type_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-
 /**************************
 
 Standardized meta-data
@@ -127,9 +119,9 @@ Standardized meta-data
 ***************************/
 
 
-ALTER TABLE @cdmDatabaseSchema.metadata ADD CONSTRAINT fpk_metadata_concept FOREIGN KEY (metadata_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+--ALTER TABLE @cdmDatabaseSchema.metadata ADD CONSTRAINT fpk_metadata_concept FOREIGN KEY (metadata_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.metadata ADD CONSTRAINT fpk_metadata_type_concept FOREIGN KEY (metadata_type_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+--ALTER TABLE @cdmDatabaseSchema.metadata ADD CONSTRAINT fpk_metadata_type_concept FOREIGN KEY (metadata_type_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
 /************************
@@ -175,15 +167,6 @@ ALTER TABLE @cdmDatabaseSchema.specimen ADD CONSTRAINT fpk_specimen_site_concept
 ALTER TABLE @cdmDatabaseSchema.specimen ADD CONSTRAINT fpk_specimen_status_concept FOREIGN KEY (disease_status_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
-ALTER TABLE @cdmDatabaseSchema.death ADD CONSTRAINT fpk_death_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);
-
-ALTER TABLE @cdmDatabaseSchema.death ADD CONSTRAINT fpk_death_type_concept FOREIGN KEY (death_type_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-ALTER TABLE @cdmDatabaseSchema.death ADD CONSTRAINT fpk_death_cause_concept FOREIGN KEY (cause_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-ALTER TABLE @cdmDatabaseSchema.death ADD CONSTRAINT fpk_death_cause_concept_s FOREIGN KEY (cause_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
-
-
 ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);
 
 ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_concept FOREIGN KEY (visit_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
@@ -194,9 +177,9 @@ ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_provide
 
 ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_care_site FOREIGN KEY (care_site_id)  REFERENCES @cdmDatabaseSchema.care_site (care_site_id);
 
-ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_ visit_concept_s FOREIGN KEY (visit_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_concept_s FOREIGN KEY (visit_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_admitting_s FOREIGN KEY (admitting_source_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_admitting_s FOREIGN KEY (admitted_from_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 ALTER TABLE @cdmDatabaseSchema.visit_occurrence ADD CONSTRAINT fpk_visit_discharge FOREIGN KEY (discharge_to_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
@@ -215,7 +198,7 @@ ALTER TABLE @cdmDatabaseSchema.visit_detail ADD CONSTRAINT fpk_v_detail_care_sit
 
 ALTER TABLE @cdmDatabaseSchema.visit_detail ADD CONSTRAINT fpk_v_detail_discharge FOREIGN KEY (discharge_to_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.visit_detail ADD CONSTRAINT fpk_v_detail_admitting_s FOREIGN KEY (admitting_source_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.visit_detail ADD CONSTRAINT fpk_v_detail_admitting_s FOREIGN KEY (admitted_from_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 ALTER TABLE @cdmDatabaseSchema.visit_detail ADD CONSTRAINT fpk_v_detail_concept_s FOREIGN KEY (visit_detail_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
@@ -360,29 +343,29 @@ ALTER TABLE @cdmDatabaseSchema.observation ADD CONSTRAint fpk_observation_v_deta
 ALTER TABLE @cdmDatabaseSchema.observation ADD CONSTRAINT fpk_observation_concept_s FOREIGN KEY (observation_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_concept FOREIGN KEY (survey_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_concept FOREIGN KEY (survey_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_provider FOREIGN KEY (provider_id) REFERENCES @cdmDatabaseSchema.provider (provider_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_provider FOREIGN KEY (provider_id) REFERENCES @cdmDatabaseSchema.provider (provider_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_assist FOREIGN KEY (assisted_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_assist FOREIGN KEY (assisted_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_respondent_type FOREIGN KEY (respondent_type_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_respondent_type FOREIGN KEY (respondent_type_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_timing FOREIGN KEY (timing_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_timing FOREIGN KEY (timing_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_collection_method FOREIGN KEY (collection_method_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_collection_method FOREIGN KEY (collection_method_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_source FOREIGN KEY (survey_source_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_source FOREIGN KEY (survey_source_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_validation FOREIGN KEY (validated_survey_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_validation FOREIGN KEY (validated_survey_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_visit FOREIGN KEY (visit_occurrence_id) REFERENCES @cdmDatabaseSchema.visit (visit_occurrence_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_visit FOREIGN KEY (visit_occurrence_id) REFERENCES @cdmDatabaseSchema.visit_occurrence (visit_occurrence_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_survey_v_detail FOREIGN KEY (visit_detail_id) REFERENCES @cdmDatabaseSchema.visit_detail (visit_detail_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_survey_v_detail FOREIGN KEY (visit_detail_id) REFERENCES @cdmDatabaseSchema.visit_detail (visit_detail_id);
 
-ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT fpk_response_visit FOREIGN KEY (response_to_visit_occurrence_id) REFERENCES @cdmDatabaseSchema.visit (visit_occurrence_id);
+ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT fpk_response_visit FOREIGN KEY (response_visit_occurrence_id) REFERENCES @cdmDatabaseSchema.visit_occurrence (visit_occurrence_id);
 
 
 ALTER TABLE @cdmDatabaseSchema.fact_relationship ADD CONSTRAINT fpk_fact_domain_1 FOREIGN KEY (domain_concept_id_1)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
@@ -474,16 +457,6 @@ ALTER TABLE @cdmDatabaseSchema.cost ADD CONSTRAINT fpk_cost_period FOREIGN KEY (
 Standardized derived elements
 
 ************************/
-
-
-ALTER TABLE @cdmDatabaseSchema.cohort ADD CONSTRAINT fpk_cohort_definition FOREIGN KEY (cohort_definition_id)  REFERENCES @cdmDatabaseSchema.cohort_definition (cohort_definition_id);
-
-
-ALTER TABLE @cdmDatabaseSchema.cohort_attribute ADD CONSTRAINT fpk_ca_cohort_definition FOREIGN KEY (cohort_definition_id)  REFERENCES @cdmDatabaseSchema.cohort_definition (cohort_definition_id);
-
-ALTER TABLE @cdmDatabaseSchema.cohort_attribute ADD CONSTRAINT fpk_ca_attribute_definition FOREIGN KEY (attribute_definition_id)  REFERENCES @cdmDatabaseSchema.attribute_definition (attribute_definition_id);
-
-ALTER TABLE @cdmDatabaseSchema.cohort_attribute ADD CONSTRAINT fpk_ca_value FOREIGN KEY (value_as_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
 ALTER TABLE @cdmDatabaseSchema.drug_era ADD CONSTRAINT fpk_drug_era_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);

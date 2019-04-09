@@ -25,7 +25,7 @@
  #     # #     # #     # #          #     # #     # #     #     #  #  #     # ###  #   #
  ####### #     # ####### #           #####  ######  #     #      ##    #####  ###   ###
 
-@targetdialect script to create OMOP common data model version 6.0
+sql server script to create OMOP common data model version 6.0
 
 last revised: 27-Aug-2018
 
@@ -43,7 +43,7 @@ Standardized vocabulary
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept (
+CREATE TABLE ohdsi.dbo.concept (
   concept_id			      INTEGER			NOT NULL ,
   concept_name			  	VARCHAR(255)	NOT NULL ,
   domain_id				      VARCHAR(20)		NOT NULL ,
@@ -59,7 +59,7 @@ CREATE TABLE @cdmDatabaseSchema.concept (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.vocabulary (
+CREATE TABLE ohdsi.dbo.vocabulary (
   vocabulary_id			      VARCHAR(20)		NOT NULL,
   vocabulary_name		      VARCHAR(255)	NOT NULL,
   vocabulary_reference		VARCHAR(255)	NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE @cdmDatabaseSchema.vocabulary (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.domain (
+CREATE TABLE ohdsi.dbo.domain (
   domain_id			      VARCHAR(20)		NOT NULL,
   domain_name		      VARCHAR(255)	NOT NULL,
   domain_concept_id		INTEGER			NOT NULL
@@ -79,7 +79,7 @@ CREATE TABLE @cdmDatabaseSchema.domain (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_class (
+CREATE TABLE ohdsi.dbo.concept_class (
   concept_class_id			      VARCHAR(20)		NOT NULL,
   concept_class_name		      VARCHAR(255)	NOT NULL,
   concept_class_concept_id		INTEGER			NOT NULL
@@ -88,7 +88,7 @@ CREATE TABLE @cdmDatabaseSchema.concept_class (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_relationship (
+CREATE TABLE ohdsi.dbo.concept_relationship (
   concept_id_1			  INTEGER			NOT NULL,
   concept_id_2			  INTEGER			NOT NULL,
   relationship_id		  VARCHAR(20)		NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE @cdmDatabaseSchema.concept_relationship (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.relationship (
+CREATE TABLE ohdsi.dbo.relationship (
   relationship_id			  VARCHAR(20)		NOT NULL,
   relationship_name			  VARCHAR(255)	NOT NULL,
   is_hierarchical			    VARCHAR(1)		NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE @cdmDatabaseSchema.relationship (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_synonym (
+CREATE TABLE ohdsi.dbo.concept_synonym (
   concept_id			        INTEGER		    NOT NULL,
   concept_synonym_name	  VARCHAR(1000)	NOT NULL,
   language_concept_id	    INTEGER		    NOT NULL
@@ -121,7 +121,7 @@ CREATE TABLE @cdmDatabaseSchema.concept_synonym (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_ancestor (
+CREATE TABLE ohdsi.dbo.concept_ancestor (
   ancestor_concept_id		      INTEGER		NOT NULL,
   descendant_concept_id		  	INTEGER		NOT NULL,
   min_levels_of_separation		INTEGER		NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE @cdmDatabaseSchema.concept_ancestor (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.source_to_concept_map (
+CREATE TABLE ohdsi.dbo.source_to_concept_map (
   source_code				  	    VARCHAR(50)		NOT NULL,
   source_concept_id			  	INTEGER			  NOT NULL,
   source_vocabulary_id			VARCHAR(20)		NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE @cdmDatabaseSchema.source_to_concept_map (
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.drug_strength (
+CREATE TABLE ohdsi.dbo.drug_strength (
   drug_concept_id				      INTEGER		  NOT NULL,
   ingredient_concept_id			  INTEGER		  NOT NULL,
   amount_value					      FLOAT		    NULL,
@@ -171,7 +171,7 @@ Standardized meta-data
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.cdm_source
+CREATE TABLE ohdsi.dbo.cdm_source
 (
   cdm_source_name					        VARCHAR(255)	NOT NULL ,
   cdm_source_abbreviation			    VARCHAR(25)		NULL ,
@@ -188,7 +188,7 @@ CREATE TABLE @cdmDatabaseSchema.cdm_source
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.metadata
+CREATE TABLE ohdsi.dbo.metadata
 (
   metadata_concept_id       INTEGER       NOT NULL ,
   metadata_type_concept_id  INTEGER       NOT NULL ,
@@ -200,7 +200,7 @@ CREATE TABLE @cdmDatabaseSchema.metadata
 )
 ;
 
-INSERT INTO @cdmDatabaseSchema.metadata (metadata_concept_id, metadata_type_concept_id, name, value_as_string, value_as_concept_id, metadata_date, metadata_datetime) --Added cdm version record
+INSERT INTO ohdsi.dbo.metadata (metadata_concept_id, metadata_type_concept_id, name, value_as_string, value_as_concept_id, metadata_date, metadata_datetime) --Added cdm version record
 VALUES (0,0,'CDM Version', '6.0',0,NULL,NULL)
 ;
 
@@ -213,7 +213,7 @@ Standardized clinical data
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.person
+CREATE TABLE ohdsi.dbo.person
 (
   person_id						        BIGINT	  	  NOT NULL ,
   gender_concept_id				    INTEGER	  	  NOT NULL ,
@@ -239,7 +239,7 @@ CREATE TABLE @cdmDatabaseSchema.person
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.observation_period
+CREATE TABLE ohdsi.dbo.observation_period
 (
   observation_period_id				  BIGINT		NOT NULL ,
   person_id							        BIGINT		NOT NULL ,
@@ -251,7 +251,7 @@ CREATE TABLE @cdmDatabaseSchema.observation_period
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.specimen
+CREATE TABLE ohdsi.dbo.specimen
 (
   specimen_id					        BIGINT		  	NOT NULL ,
   person_id						        BIGINT		  	NOT NULL ,
@@ -273,7 +273,7 @@ CREATE TABLE @cdmDatabaseSchema.specimen
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.visit_occurrence
+CREATE TABLE ohdsi.dbo.visit_occurrence
 (
   visit_occurrence_id			      BIGINT			  NOT NULL ,
   person_id						          BIGINT			  NOT NULL ,
@@ -297,7 +297,7 @@ CREATE TABLE @cdmDatabaseSchema.visit_occurrence
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.visit_detail
+CREATE TABLE ohdsi.dbo.visit_detail
 (
   visit_detail_id                    BIGINT      NOT NULL ,
   person_id                          BIGINT      NOT NULL ,
@@ -323,7 +323,7 @@ CREATE TABLE @cdmDatabaseSchema.visit_detail
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.procedure_occurrence
+CREATE TABLE ohdsi.dbo.procedure_occurrence
 (
   procedure_occurrence_id		  BIGINT			NOT NULL ,
   person_id						        BIGINT			NOT NULL ,
@@ -343,7 +343,7 @@ CREATE TABLE @cdmDatabaseSchema.procedure_occurrence
 ;
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.drug_exposure
+CREATE TABLE ohdsi.dbo.drug_exposure
 (
   drug_exposure_id				      BIGINT			  NOT NULL ,
   person_id						          BIGINT			  NOT NULL ,
@@ -373,7 +373,7 @@ CREATE TABLE @cdmDatabaseSchema.drug_exposure
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.device_exposure
+CREATE TABLE ohdsi.dbo.device_exposure
 (
   device_exposure_id			        BIGINT		    NOT NULL ,
   person_id						            BIGINT		    NOT NULL ,
@@ -395,7 +395,7 @@ CREATE TABLE @cdmDatabaseSchema.device_exposure
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.condition_occurrence
+CREATE TABLE ohdsi.dbo.condition_occurrence
 (
   condition_occurrence_id		    BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
@@ -418,7 +418,7 @@ CREATE TABLE @cdmDatabaseSchema.condition_occurrence
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.measurement
+CREATE TABLE ohdsi.dbo.measurement
 (
   measurement_id				        BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
@@ -445,7 +445,7 @@ CREATE TABLE @cdmDatabaseSchema.measurement
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.note
+CREATE TABLE ohdsi.dbo.note
 (
   note_id						          BIGINT			  NOT NULL ,
   person_id						        BIGINT			  NOT NULL ,
@@ -468,7 +468,7 @@ CREATE TABLE @cdmDatabaseSchema.note
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.note_nlp
+CREATE TABLE ohdsi.dbo.note_nlp
 (
   note_nlp_id					        BIGINT			  NOT NULL ,
   note_id						          BIGINT			  NOT NULL ,
@@ -489,7 +489,7 @@ CREATE TABLE @cdmDatabaseSchema.note_nlp
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.observation
+CREATE TABLE ohdsi.dbo.observation
 (
   observation_id					      BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
@@ -517,7 +517,7 @@ CREATE TABLE @cdmDatabaseSchema.observation
 
 
 --HINT DISTRIBUTE ON KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.survey_conduct
+CREATE TABLE ohdsi.dbo.survey_conduct
 (
   survey_conduct_id					      BIGINT			  NOT NULL ,
   person_id						            BIGINT			  NOT NULL ,
@@ -549,7 +549,7 @@ CREATE TABLE @cdmDatabaseSchema.survey_conduct
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.fact_relationship
+CREATE TABLE ohdsi.dbo.fact_relationship
 (
   domain_concept_id_1			INTEGER			NOT NULL ,
   fact_id_1						    BIGINT			NOT NULL ,
@@ -569,7 +569,7 @@ Standardized health system data
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.location
+CREATE TABLE ohdsi.dbo.location
 (
   location_id					  BIGINT			  NOT NULL ,
   address_1						  VARCHAR(50)		NULL ,
@@ -587,7 +587,7 @@ CREATE TABLE @cdmDatabaseSchema.location
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.location_history --Table added
+CREATE TABLE ohdsi.dbo.location_history --Table added
 (
   location_history_id           BIGINT      NOT NULL ,
   location_id			              BIGINT		  NOT NULL ,
@@ -601,7 +601,7 @@ CREATE TABLE @cdmDatabaseSchema.location_history --Table added
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.care_site
+CREATE TABLE ohdsi.dbo.care_site
 (
   care_site_id						      BIGINT			  NOT NULL ,
   care_site_name						    VARCHAR(255)  NULL ,
@@ -614,7 +614,7 @@ CREATE TABLE @cdmDatabaseSchema.care_site
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.provider
+CREATE TABLE ohdsi.dbo.provider
 (
   provider_id					        BIGINT			  NOT NULL ,
   provider_name					      VARCHAR(255)	NULL ,
@@ -641,7 +641,7 @@ Standardized health economics
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.payer_plan_period
+CREATE TABLE ohdsi.dbo.payer_plan_period
 (
   payer_plan_period_id			    BIGINT			    NOT NULL ,
   person_id						          BIGINT			    NOT NULL ,
@@ -669,7 +669,7 @@ CREATE TABLE @cdmDatabaseSchema.payer_plan_period
 
 
 --HINT DISTRIBUTE ON KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.cost
+CREATE TABLE ohdsi.dbo.cost
 (
   cost_id						          BIGINT	    	NOT NULL ,
   person_id						        BIGINT		  	NOT NULL,
@@ -701,7 +701,7 @@ Standardized derived elements
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.drug_era
+CREATE TABLE ohdsi.dbo.drug_era
 (
   drug_era_id					BIGINT			NOT NULL ,
   person_id						BIGINT			NOT NULL ,
@@ -715,7 +715,7 @@ CREATE TABLE @cdmDatabaseSchema.drug_era
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.dose_era
+CREATE TABLE ohdsi.dbo.dose_era
 (
   dose_era_id					  BIGINT			NOT NULL ,
   person_id						  BIGINT			NOT NULL ,
@@ -729,7 +729,7 @@ CREATE TABLE @cdmDatabaseSchema.dose_era
 
 
 --HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.condition_era
+CREATE TABLE ohdsi.dbo.condition_era
 (
   condition_era_id				    BIGINT			NOT NULL ,
   person_id						        BIGINT			NOT NULL ,

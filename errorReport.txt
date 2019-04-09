@@ -1,12 +1,113 @@
 DBMS:
-oracle
+postgresql
 
 Error:
-java.sql.SQLSyntaxErrorException: ORA-00942: table or view does not exist
-
+org.postgresql.util.PSQLException: ERROR: cannot drop table concept because other objects depend on it
+  Detail: constraint fpk_vocabulary_concept on table vocabulary depends on table concept
+constraint fpk_domain_concept on table domain depends on table concept
+constraint fpk_concept_class_concept on table concept_class depends on table concept
+constraint fpk_concept_relationship_c_1 on table concept_relationship depends on table concept
+constraint fpk_concept_relationship_c_2 on table concept_relationship depends on table concept
+constraint fpk_relationship_concept on table relationship depends on table concept
+constraint fpk_concept_synonym_concept on table concept_synonym depends on table concept
+constraint fpk_concept_synonym_lang on table concept_synonym depends on table concept
+constraint fpk_concept_ancestor_concept_1 on table concept_ancestor depends on table concept
+constraint fpk_concept_ancestor_concept_2 on table concept_ancestor depends on table concept
+constraint fpk_source_to_concept_map_c_1 on table source_to_concept_map depends on table concept
+constraint fpk_drug_strength_concept_1 on table drug_strength depends on table concept
+constraint fpk_drug_strength_concept_2 on table drug_strength depends on table concept
+constraint fpk_drug_strength_unit_1 on table drug_strength depends on table concept
+constraint fpk_drug_strength_unit_2 on table drug_strength depends on table concept
+constraint fpk_drug_strength_unit_3 on table drug_strength depends on table concept
+constraint fpk_person_gender_concept on table person depends on table concept
+constraint fpk_person_race_concept on table person depends on table concept
+constraint fpk_person_ethnicity_concept on table person depends on table concept
+constraint fpk_person_gender_concept_s on table person depends on table concept
+constraint fpk_person_race_concept_s on table person depends on table concept
+constraint fpk_person_ethnicity_concept_s on table person depends on table concept
+constraint fpk_observation_period_concept on table observation_period depends on table concept
+constraint fpk_specimen_concept on table specimen depends on table concept
+constraint fpk_specimen_type_concept on table specimen depends on table concept
+constraint fpk_specimen_unit_concept on table specimen depends on table concept
+constraint fpk_specimen_site_concept on table specimen depends on table concept
+constraint fpk_specimen_status_concept on table specimen depends on table concept
+constraint fpk_visit_concept on table visit_occurrence depends on table concept
+constraint fpk_visit_type_concept on table visit_occurrence depends on table concept
+constraint fpk_visit_concept_s on table visit_occurrence depends on table concept
+constraint fpk_visit_admitting_s on table visit_occurrence depends on table concept
+constraint fpk_visit_discharge on table visit_occurrence depends on table concept
+constraint fpk_v_detail_concept on table visit_detail depends on table concept
+constraint fpk_v_detail_type_concept on table visit_detail depends on table concept
+constraint fpk_v_detail_discharge on table visit_detail depends on table concept
+constraint fpk_v_detail_admitting_s on table visit_detail depends on table concept
+constraint fpk_v_detail_concept_s on table visit_detail depends on table concept
+constraint fpk_procedure_concept on table procedure_occurrence depends on table concept
+constraint fpk_procedure_type_concept on table procedure_occurrence depends on table concept
+constraint fpk_procedure_modifier on table procedure_occurrence depends on table concept
+constraint fpk_procedure_concept_s on table procedure_occurrence depends on table concept
+constraint fpk_drug_concept on table drug_exposure depends on table concept
+constraint fpk_drug_type_concept on table drug_exposure depends on table concept
+constraint fpk_drug_route_concept on table drug_exposure depends on table concept
+constraint fpk_drug_concept_s on table drug_exposure depends on table concept
+constraint fpk_device_concept on table device_exposure depends on table concept
+constraint fpk_device_type_concept on table device_exposure depends on table concept
+constraint fpk_device_concept_s on table device_exposure depends on table concept
+constraint fpk_condition_concept on table condition_occurrence depends on table concept
+constraint fpk_condition_type_concept on table condition_occurrence depends on table concept
+constraint fpk_condition_status_concept on table condition_occurrence depends on table concept
+constraint fpk_condition_concept_s on table condition_occurrence depends on table concept
+constraint fpk_measurement_concept on table measurement depends on table concept
+constraint fpk_measurement_type_concept on table measurement depends on table concept
+constraint fpk_measurement_operator on table measurement depends on table concept
+constraint fpk_measurement_value on table measurement depends on table concept
+constraint fpk_measurement_unit on table measurement depends on table concept
+constraint fpk_measurement_concept_s on table measurement depends on table concept
+constraint fpk_note_type_concept on table note depends on table concept
+constraint fpk_note_class_concept on table note depends on table concept
+constraint fpk_note_encoding_concept on table note depends on table concept
+constraint fpk_language_concept on table note depends on table concept
+constraint fpk_note_nlp_section_concept on table note_nlp depends on table concept
+constraint fpk_note_nlp_concept on table note_nlp depends on table concept
+constraint fpk_note_nlp_concept_s on table note_nlp depends on table concept
+constraint fpk_observation_concept on table observation depends on table concept
+constraint fpk_observation_type_concept on table observation depends on table concept
+constraint fpk_observation_value on table observation depends on table concept
+constraint fpk_observation_qualifier on table observation depends on table concept
+constraint fpk_observation_unit on table observation depends on table concept
+constraint fpk_observation_concept_s on table observation depends on table concept
+constraint fpk_survey_concept on table survey_conduct depends on table concept
+constraint fpk_survey_assist on table survey_conduct depends on table concept
+constraint fpk_respondent_type on table survey_conduct depends on table concept
+constraint fpk_survey_timing on table survey_conduct depends on table concept
+constraint fpk_collection_method on table survey_conduct depends on table concept
+constraint fpk_survey_source on table survey_conduct depends on table concept
+constraint fpk_validation on table survey_conduct depends on table concept
+constraint fpk_fact_domain_1 on table fact_relationship depends on table concept
+constraint fpk_fact_domain_2 on table fact_relationship depends on table concept
+constraint fpk_fact_relationship on table fact_relationship depends on table concept
+constraint fpk_relationship_type on table location_history depends on table concept
+constraint fpk_care_site_place on table care_site depends on table concept
+constraint fpk_provider_specialty on table provider depends on table concept
+constraint fpk_provider_gender on table provider depends on table concept
+constraint fpk_provider_specialty_s on table provider depends on table concept
+constraint fpk_provider_gender_s on table provider depends on table concept
+constraint fpk_payer_concept on table payer_plan_period depends on table concept
+constraint fpk_plan_concept_id on table payer_plan_period depends on table concept
+constraint fpk_contract_concept on table payer_plan_period depends on table concept
+constraint fpk_sponsor_concept on table payer_plan_period depends on table concept
+constraint fpk_stop_reason_concept on table payer_plan_period depends on table concept
+constraint fpk_payer_s on table payer_plan_period depends on table concept
+constraint fpk_plan_s on table payer_plan_period depends on table concept
+constraint fpk_contract_s on table payer_plan_period depends on table concept
+constraint fpk_sponsor_s on table payer_plan_period depends on table concept
+constraint fpk_stop_reason_s on table payer_plan_period depends on table concept
+constraint fpk_cost_concept on table cost depends on table concept
+constraint fpk_cost_type on table cost depends on table concept
+and 8 other objects (see server log for list)
+  Hint: Use DROP ... CASCADE to drop the dependent objects too.
 
 SQL:
-DROP TABLE OHDSI.survey_conduct  CASCADE CONSTRAINTS PURGE
+DROP TABLE IF EXISTS ohdsi.concept
 
 R version:
 R version 3.4.2 (2017-09-28)

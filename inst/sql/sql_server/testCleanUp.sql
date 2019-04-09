@@ -9,15 +9,12 @@ DROP TABLE IF EXISTS @cdmDatabaseSchema.concept_synonym;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.concept_ancestor;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.source_to_concept_map;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.drug_strength;
-DROP TABLE IF EXISTS @cdmDatabaseSchema.cohort_definition;
-DROP TABLE IF EXISTS @cdmDatabaseSchema.attribute_definition;
 
 DROP TABLE IF EXISTS @cdmDatabaseSchema.cdm_source;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.metadata;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.person;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.observation_period;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.specimen;
-DROP TABLE IF EXISTS @cdmDatabaseSchema.death;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.visit_occurrence;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.visit_detail;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.procedure_occurrence;
@@ -39,8 +36,6 @@ DROP TABLE IF EXISTS @cdmDatabaseSchema.provider;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.payer_plan_period;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.cost;
 
-DROP TABLE IF EXISTS @cdmDatabaseSchema.cohort;
-DROP TABLE IF EXISTS @cdmDatabaseSchema.cohort_attribute;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.drug_era;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.dose_era;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.condition_era;

@@ -36,6 +36,6 @@ sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM pk indexes requ
                                          cdmDatabaseSchema = cdmDatabaseSchema)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " pk indexes.txt"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ", cdmVersion, " pk indexes.sql"))
 
 }

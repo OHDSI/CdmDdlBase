@@ -36,6 +36,6 @@ sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM constraints.sql
                                          cdmDatabaseSchema = cdmDatabaseSchema)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " constraints.txt"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ", cdmVersion, " constraints.sql"))
 
 }
