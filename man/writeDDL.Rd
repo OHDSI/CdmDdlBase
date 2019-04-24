@@ -4,7 +4,8 @@
 \alias{writeDDL}
 \title{Write DDL script}
 \usage{
-writeDDL(targetdialect, cdmVersion, cdmDatabaseSchema)
+writeDDL(targetdialect, cdmVersion, cdmDatabaseSchema,
+  sqlFilename = "OMOP CDM ddl.sql", cleanUpScript = F)
 }
 \arguments{
 \item{targetdialect}{The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"}
@@ -13,6 +14,9 @@ writeDDL(targetdialect, cdmVersion, cdmDatabaseSchema)
 
 \item{cdmDatabaseSchema}{The schema of the CDM instance where the DDL will be run. For example, this would be "ohdsi.dbo" when testing on sql server. After testing
 this can be changed to "@cdmDatabaseSchema"}
+
+\item{cleanUpScript}{Set to T if the clean up script should be created. This is for testing purposes and will create a sql script that drops all CDM tables.
+By default set to F. Set to F for Oracle as well as the sql render translation does not work well.}
 }
 \description{
 Write DDL script

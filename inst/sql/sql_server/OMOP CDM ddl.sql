@@ -703,13 +703,13 @@ Standardized derived elements
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE @cdmDatabaseSchema.drug_era
 (
-  drug_era_id					BIGINT			NOT NULL ,
-  person_id						BIGINT			NOT NULL ,
-  drug_concept_id			INTEGER			NOT NULL ,
-  drug_era_start_date	DATE			  NOT NULL ,
-  drug_era_end_date		DATE			  NOT NULL ,
-  drug_exposure_count	INTEGER			NULL ,
-  gap_days						INTEGER			NULL
+  drug_era_id					    BIGINT			NOT NULL ,
+  person_id						    BIGINT			NOT NULL ,
+  drug_concept_id			    INTEGER			NOT NULL ,
+  drug_era_start_datetime	DATETIME2			  NOT NULL ,
+  drug_era_end_datetime		DATETIME2			  NOT NULL ,
+  drug_exposure_count	    INTEGER			NULL ,
+  gap_days						    INTEGER			NULL
 )
 ;
 
@@ -717,13 +717,13 @@ CREATE TABLE @cdmDatabaseSchema.drug_era
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE @cdmDatabaseSchema.dose_era
 (
-  dose_era_id					  BIGINT			NOT NULL ,
-  person_id						  BIGINT			NOT NULL ,
-  drug_concept_id				INTEGER			NOT NULL ,
-  unit_concept_id				INTEGER			NOT NULL ,
-  dose_value						FLOAT			  NOT NULL ,
-  dose_era_start_date		DATE			  NOT NULL ,
-  dose_era_end_date	    DATE			  NOT NULL
+  dose_era_id					      BIGINT			NOT NULL ,
+  person_id						      BIGINT			NOT NULL ,
+  drug_concept_id				    INTEGER			NOT NULL ,
+  unit_concept_id				    INTEGER			NOT NULL ,
+  dose_value						    FLOAT			  NOT NULL ,
+  dose_era_start_datetime		DATETIME2			  NOT NULL ,
+  dose_era_end_datetime	    DATETIME2			  NOT NULL
 )
 ;
 
@@ -731,11 +731,11 @@ CREATE TABLE @cdmDatabaseSchema.dose_era
 --HINT DISTRIBUTE_ON_KEY(person_id)
 CREATE TABLE @cdmDatabaseSchema.condition_era
 (
-  condition_era_id				    BIGINT			NOT NULL ,
-  person_id						        BIGINT			NOT NULL ,
-  condition_concept_id			  INTEGER			NOT NULL ,
-  condition_era_start_date		DATE			  NOT NULL ,
-  condition_era_end_date			DATE			  NOT NULL ,
-  condition_occurrence_count	INTEGER			NULL
+  condition_era_id				        BIGINT			NOT NULL ,
+  person_id						            BIGINT			NOT NULL ,
+  condition_concept_id			      INTEGER			NOT NULL ,
+  condition_era_start_datetime		DATETIME2			  NOT NULL ,
+  condition_era_end_datetime			DATETIME2			  NOT NULL ,
+  condition_occurrence_count	    INTEGER			NULL
 )
 ;

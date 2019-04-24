@@ -1,5 +1,8 @@
 #This script is meant to create the OMOP Common Data Model DDLs for each dialect as well as the pdf of the documentation.
 
+# Step 0: Download the current CDM DDL file from the Sql Server folder on github
+
+    downloadCurrentDdl()
 
 # Step 1: Update the file inst/sql/sql_server/OMOP CDM ddl.sql with the changes for the new version and set the below variables
 
@@ -15,12 +18,6 @@ parseWiki(mdFilesLocation = mdFilesLocation,
 
 # Step 2: Run the following code to create the DDLs for each dialect:
 
-#writeDDL("bigquery")
-#writeDDL("impala")
-#writeDDL("netezza")
-#writeDDL("pdw")
-#writeDDL("redshift")
-
 writeDDL("oracle",
          cdmVersion,
          "OHDSI")
@@ -33,9 +30,8 @@ writeDDL("sql server",
          cdmVersion,
          "ohdsi.dbo")
 
-# Step 3: Run the following code to create the primary key constraints and index files for Oracle, Postgres, PDW and Sql Server
+# Step 3: Run the following code to create the primary key constraints and index files for Oracle, Postgres, and Sql Server
 
-#writeIndex("pdw")
 writeIndex("oracle",
            cdmVersion,
            "OHDSI")
@@ -48,13 +44,9 @@ writeIndex("sql server",
            cdmVersion,
            "ohdsi.dbo")
 
-# Step 4: Run the following code to create primary key constraints for Netezza
+# Step 4: Run the following code to create foreign key constraints for Oracle, Postgres, and Sql Server
 
-#writePrimaryKeys("netezza")
 
-# Step 5: Run the following code to create foreign key constraints for Oracle, Postgres, PDW and Sql Server
-
-#writeConstraints("pdw")
 writeConstraints("oracle",
                  cdmVersion,
                  "OHDSI")
@@ -66,6 +58,22 @@ writeConstraints("postgresql",
 writeConstraints("sql server",
                  cdmVersion,
                  "ohdsi.dbo")
+
+# Step 5: After testing the files for Oracle, Postgres, and Sql Server run the following to create the files for the other dialects:
+
+
+writeDDL("bigquery")
+writeDDL("impala")
+writeDDL("netezza")
+writeDDL("pdw")
+writeDDL("redshift")
+
+writeIndex("pdw")
+
+writePrimaryKeys("netezza")
+
+writeConstraints("pdw")
+
 
 # step 6: Run the following code to create the pdf documentation. It will be written to the reports folder.
 
