@@ -61,18 +61,33 @@ writeConstraints("sql server",
 
 # Step 5: After testing the files for Oracle, Postgres, and Sql Server run the following to create the files for the other dialects:
 
+writeDDL("bigquery",
+         cdmVersion,
+         "ohdsi")
+writeDDL("impala",
+         cdmVersion,
+         "ohdsi")
+writeDDL("netezza",
+         cdmVersion,
+         "ohdsi")
+writeDDL("pdw",
+         cdmVersion,
+         "ohdsi")
+writeDDL("redshift",
+         cdmVersion,
+         "ohdsi")
 
-writeDDL("bigquery")
-writeDDL("impala")
-writeDDL("netezza")
-writeDDL("pdw")
-writeDDL("redshift")
+writeIndex("pdw",
+           cdmVersion,
+           "ohdsi")
 
-writeIndex("pdw")
+writePrimaryKeys("netezza",
+                 cdmVersion,
+                 "ohdsi")
 
-writePrimaryKeys("netezza")
-
-writeConstraints("pdw")
+writeConstraints("pdw",
+                 cdmVersion,
+                 "ohdsi")
 
 
 # step 6: Run the following code to create the pdf documentation. It will be written to the reports folder.

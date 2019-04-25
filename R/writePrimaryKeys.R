@@ -37,6 +37,6 @@ writePrimaryKeys <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
                                            cdmDatabaseSchema = cdmDatabaseSchema)
 
   SqlRender::writeSql(sql = sql,
-                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " primary keys.txt"))
+                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " primary keys.sql"))
 
 }
