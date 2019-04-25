@@ -13,6 +13,8 @@ downloadCurrentDdl(githubPath = "OHDSI/CommonDataModel",
 \item{githubPath}{The path for the GitHub repo containing the package (e.g. 'OHDSI/StudyProtocols/AlendronateVsRaloxifene').}
 
 \item{pathToCsv}{The path for the snapshot inside the package.}
+
+\item{outputFile}{The path where the file should be saved.}
 }
 \description{
 Get current DDL sitting on the master branch

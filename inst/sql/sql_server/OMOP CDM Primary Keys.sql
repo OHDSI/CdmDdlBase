@@ -129,6 +129,8 @@ ALTER TABLE @cdmDatabaseSchema.observation  ADD CONSTRAINT xpk_observation PRIMA
 
 ALTER TABLE @cdmDatabaseSchema.survey ADD CONSTRAINT xpk_survey PRIMARY KEY NONCLUSTERED ( survey_occurrence_id ) ;
 
+ALTER TABLE @cdmDatabaseSchema.episode_event ADD CONSTRAINT episode_event_pk PRIMARY KEY NONCLUSTERED ( episode_id, event_id, event_field_concept_id );
+
 
 /************************
 

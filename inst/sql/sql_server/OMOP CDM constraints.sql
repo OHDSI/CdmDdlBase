@@ -295,6 +295,8 @@ ALTER TABLE @cdmDatabaseSchema.measurement ADD CONSTRAINT fpk_measurement_v_deta
 
 ALTER TABLE @cdmDatabaseSchema.measurement ADD CONSTRAINT fpk_measurement_concept_s FOREIGN KEY (measurement_source_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
+ALTER TABLE @cdmDatabaseSchema.measurement ADD CONSTRAINT fpk_modifier_of_fld_concept FOREIGN KEY (modifier_of_field_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+
 
 ALTER TABLE @cdmDatabaseSchema.note ADD CONSTRAINT fpk_note_person FOREIGN KEY (person_id)  REFERENCES @cdmDatabaseSchema.person (person_id);
 
@@ -374,6 +376,21 @@ ALTER TABLE @cdmDatabaseSchema.fact_relationship ADD CONSTRAINT fpk_fact_domain_
 
 ALTER TABLE @cdmDatabaseSchema.fact_relationship ADD CONSTRAINT fpk_fact_relationship FOREIGN KEY (relationship_concept_id)  REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT person_id_fk FOREIGN KEY (person_id) REFERENCES @cdmDatabaseSchema.person (person_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_concept_id_fk FOREIGN KEY (episode_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_object_concept_id_fk FOREIGN KEY (episode_object_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_parent_id_fk FOREIGN KEY (episode_parent_id) REFERENCES @cdmDatabaseSchema.episode (episode_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_source_concept_id_fk FOREIGN KEY (episode_source_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_type_concept_id_fk FOREIGN KEY (episode_type_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
+
+
+ALTER TABLE @cdmDatabaseSchema.episode_event ADD CONSTRAINT event_field_concept_id_fk FOREIGN KEY (event_field_concept_id) REFERENCES @cdmDatabaseSchema.concept (concept_id);
 
 
 /************************

@@ -34,7 +34,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Remove oracle tables
-sql <- SqlRender::readSql(paste0("output/oracle/oracle testCleanUp ", cdmVersion,".sql"))
+sql <- SqlRender::readSql(paste0("output/oracle/oracle testCleanUp ", "v6_0",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -79,7 +79,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Remove postgres tables
-sql <- SqlRender::readSql(paste0("output/postgresql/postgresql testCleanUp ", cdmVersion,".sql"))
+sql <- SqlRender::readSql(paste0("output/postgresql/postgresql testCleanUp ", "v6_0",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -123,7 +123,7 @@ DatabaseConnector::executeSql(connection = conn,
 # )
 
 ## Remove sql server tables
-sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", cdmVersion,".sql"))
+sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", "v6_0",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,

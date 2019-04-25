@@ -30,6 +30,8 @@ DROP TABLE IF EXISTS ohdsi.note_nlp CASCADE;
 DROP TABLE IF EXISTS ohdsi.observation CASCADE;
 DROP TABLE IF EXISTS ohdsi.survey_conduct CASCADE;
 DROP TABLE IF EXISTS ohdsi.fact_relationship CASCADE;
+DROP TABLE IF EXISTS ohdsi.episode CASCADE;
+DROP TABLE IF EXISTS ohdsi.episode_event CASCADE;
 
 DROP TABLE IF EXISTS ohdsi.location CASCADE;
 DROP TABLE IF EXISTS ohdsi.location_history CASCADE;
