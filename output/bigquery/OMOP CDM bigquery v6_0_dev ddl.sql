@@ -606,7 +606,8 @@ create table ohdsi.location
   country						    STRING ,
   location_source_value STRING ,
   latitude						  FLOAT64				  null ,
-  longitude						  FLOAT64				  null
+  longitude						  FLOAT64				  null ,
+  region_concept_id     INT64
 )
 ;
 

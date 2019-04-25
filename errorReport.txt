@@ -1,11 +1,12 @@
 DBMS:
-sql server
+oracle
 
 Error:
-com.microsoft.sqlserver.jdbc.SQLServerException: Table 'concept' already has a primary key defined on it.
+java.sql.SQLSyntaxErrorException: ORA-00904: "CONCEPT_ID": invalid identifier
+
 
 SQL:
-ALTER TABLE ohdsi.dbo.concept ADD CONSTRAINT xpk_concept PRIMARY KEY NONCLUSTERED (concept_id)
+ALTER TABLE OHDSI.location ADD CONSTRAINT fpk_region_concept FOREIGN KEY ( concept_id ) REFERENCES OHDSI.concept ( concept_id ) 
 
 R version:
 R version 3.4.2 (2017-09-28)
