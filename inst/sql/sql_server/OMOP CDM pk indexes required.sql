@@ -122,6 +122,10 @@ ALTER TABLE @cdmDatabaseSchema.observation  ADD CONSTRAINT xpk_observation PRIMA
 
 ALTER TABLE @cdmDatabaseSchema.survey_conduct ADD CONSTRAINT xpk_survey PRIMARY KEY NONCLUSTERED ( survey_conduct_id ) ;
 
+ALTER TABLE @cdmDatabaseSchema.episode ADD CONSTRAINT episode_pk PRIMARY KEY NONCLUSTERED ( episode_id);
+
+ALTER TABLE @cdmDatabaseSchema.episode_event ADD CONSTRAINT episode_event_pk PRIMARY KEY NONCLUSTERED ( episode_id, event_id, event_field_concept_id );
+
 
 /************************
 
@@ -279,7 +283,11 @@ CREATE INDEX idx_fact_relationship_id1 ON @cdmDatabaseSchema.fact_relationship (
 CREATE INDEX idx_fact_relationship_id2 ON @cdmDatabaseSchema.fact_relationship (domain_concept_id_2 ASC);
 CREATE INDEX idx_fact_relationship_id3 ON @cdmDatabaseSchema.fact_relationship (relationship_concept_id ASC);
 
+CREATE CLUSTERED INDEX idx_episode_person_id_1 ON @cdmDatabaseSchema.episode (person_id ASC);
+CREATE INDEX idx_episode_concept_id_1 ON @cdmDatabaseSchema.episode (episode_concept_id ASC);
 
+CREATE CLUSTERED INDEX idx_episode_event_id_1 ON @cdmDatabaseSchema.episode_event (episode_id ASC);
+CREATE INDEX idx_ee_field_concept_id_1 ON @cdmDatabaseSchema.episode_event (event_field_concept_id ASC);
 
 /************************
 

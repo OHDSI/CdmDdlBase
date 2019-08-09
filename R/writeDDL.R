@@ -24,7 +24,7 @@
 #'                      By default set to F. Set to F for Oracle as well as the sql render translation does not work well.
 #'
 #' @export
-writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, cleanUpScript = F) {
+writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename = "OMOP CDM ddl.sql",cleanUpScript = F) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -33,7 +33,7 @@ writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, cleanUpScript
     dir.create(paste0("output/",targetdialect))
   }
 
-  sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM ddl.sql",
+  sql <- SqlRender::loadRenderTranslateSql(sqlFilename = sqlFilename,
                                            packageName = "DDLGeneratr",
                                            dbms = targetdialect,
                                            targetdialect = targetdialect,

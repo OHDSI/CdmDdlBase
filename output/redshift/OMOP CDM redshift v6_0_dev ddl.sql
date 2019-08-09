@@ -25,7 +25,7 @@
  #     # #     # #     # #          #     # #     # #     #     #  #  #     # ###  #   #
  ####### #     # ####### #           #####  ######  #     #      ##    #####  ###   ###
 
-@targetdialect script to create OMOP common data model version 6.0
+redshift script to create OMOP common data model version 6.0
 
 last revised: 27-Aug-2018
 
@@ -43,8 +43,7 @@ Standardized vocabulary
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept (
-  concept_id			      INTEGER			NOT NULL ,
+CREATE TABLE ohdsi.concept  (concept_id			      INTEGER			NOT NULL ,
   concept_name			  	VARCHAR(255)	NOT NULL ,
   domain_id				      VARCHAR(20)		NOT NULL ,
   vocabulary_id			  	VARCHAR(20)		NOT NULL ,
@@ -55,84 +54,76 @@ CREATE TABLE @cdmDatabaseSchema.concept (
   valid_end_date		  	DATE			NOT NULL ,
   invalid_reason		  	VARCHAR(1)		NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.vocabulary (
-  vocabulary_id			      VARCHAR(20)		NOT NULL,
+CREATE TABLE ohdsi.vocabulary  (vocabulary_id			      VARCHAR(20)		NOT NULL,
   vocabulary_name		      VARCHAR(255)	NOT NULL,
   vocabulary_reference		VARCHAR(255)	NOT NULL,
   vocabulary_version	  	VARCHAR(255)	NULL,
   vocabulary_concept_id		INTEGER			NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.domain (
-  domain_id			      VARCHAR(20)		NOT NULL,
+CREATE TABLE ohdsi.domain  (domain_id			      VARCHAR(20)		NOT NULL,
   domain_name		      VARCHAR(255)	NOT NULL,
   domain_concept_id		INTEGER			NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_class (
-  concept_class_id			      VARCHAR(20)		NOT NULL,
+CREATE TABLE ohdsi.concept_class  (concept_class_id			      VARCHAR(20)		NOT NULL,
   concept_class_name		      VARCHAR(255)	NOT NULL,
   concept_class_concept_id		INTEGER			NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_relationship (
-  concept_id_1			  INTEGER			NOT NULL,
+CREATE TABLE ohdsi.concept_relationship  (concept_id_1			  INTEGER			NOT NULL,
   concept_id_2			  INTEGER			NOT NULL,
   relationship_id		  VARCHAR(20)		NOT NULL,
   valid_start_date		DATE			NOT NULL,
   valid_end_date		  DATE			NOT NULL,
   invalid_reason		  VARCHAR(1)		NULL
   )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.relationship (
-  relationship_id			  VARCHAR(20)		NOT NULL,
+CREATE TABLE ohdsi.relationship  (relationship_id			  VARCHAR(20)		NOT NULL,
   relationship_name			  VARCHAR(255)	NOT NULL,
   is_hierarchical			    VARCHAR(1)		NOT NULL,
   defines_ancestry			  VARCHAR(1)		NOT NULL,
   reverse_relationship_id	VARCHAR(20)		NOT NULL,
   relationship_concept_id	INTEGER			  NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_synonym (
-  concept_id			        INTEGER		    NOT NULL,
+CREATE TABLE ohdsi.concept_synonym  (concept_id			        INTEGER		    NOT NULL,
   concept_synonym_name	  VARCHAR(1000)	NOT NULL,
   language_concept_id	    INTEGER		    NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.concept_ancestor (
-  ancestor_concept_id		      INTEGER		NOT NULL,
+CREATE TABLE ohdsi.concept_ancestor  (ancestor_concept_id		      INTEGER		NOT NULL,
   descendant_concept_id		  	INTEGER		NOT NULL,
   min_levels_of_separation		INTEGER		NOT NULL,
   max_levels_of_separation		INTEGER		NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.source_to_concept_map (
-  source_code				  	    VARCHAR(50)		NOT NULL,
+CREATE TABLE ohdsi.source_to_concept_map  (source_code				  	    VARCHAR(50)		NOT NULL,
   source_concept_id			  	INTEGER			  NOT NULL,
   source_vocabulary_id			VARCHAR(20)		NOT NULL,
   source_code_description		VARCHAR(255)	NULL,
@@ -142,12 +133,11 @@ CREATE TABLE @cdmDatabaseSchema.source_to_concept_map (
   valid_end_date			      DATE			    NOT NULL,
   invalid_reason			      VARCHAR(1)		NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.drug_strength (
-  drug_concept_id				      INTEGER		  NOT NULL,
+CREATE TABLE ohdsi.drug_strength  (drug_concept_id				      INTEGER		  NOT NULL,
   ingredient_concept_id			  INTEGER		  NOT NULL,
   amount_value					      FLOAT		    NULL,
   amount_unit_concept_id		  INTEGER		  NULL,
@@ -160,7 +150,7 @@ CREATE TABLE @cdmDatabaseSchema.drug_strength (
   valid_end_date				      DATE		    NOT NULL,
   invalid_reason				      VARCHAR(1) 	NULL
 )
-;
+DISTSTYLE ALL;
 
 
 /**************************
@@ -171,9 +161,8 @@ Standardized meta-data
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.cdm_source
-(
-  cdm_source_name					        VARCHAR(255)	NOT NULL ,
+CREATE TABLE ohdsi.cdm_source
+ (cdm_source_name					        VARCHAR(255)	NOT NULL ,
   cdm_source_abbreviation			    VARCHAR(25)		NULL ,
   cdm_holder						          VARCHAR(255)	NULL ,
   source_description				      VARCHAR(MAX)	NULL ,
@@ -184,23 +173,22 @@ CREATE TABLE @cdmDatabaseSchema.cdm_source
   cdm_version						          VARCHAR(10)		NULL ,
   vocabulary_version				      VARCHAR(20)		NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.metadata
-(
-  metadata_concept_id       INTEGER       NOT NULL ,
+CREATE TABLE ohdsi.metadata
+ (metadata_concept_id       INTEGER       NOT NULL ,
   metadata_type_concept_id  INTEGER       NOT NULL ,
   name                      VARCHAR(250)  NOT NULL ,
   value_as_string           VARCHAR(MAX)  NULL ,
   value_as_concept_id       INTEGER       NULL ,
   metadata_date             DATE          NULL ,
-  metadata_datetime         DATETIME2     NULL
+  metadata_datetime         TIMESTAMP     NULL
 )
-;
+DISTSTYLE ALL;
 
-INSERT INTO @cdmDatabaseSchema.metadata (metadata_concept_id, metadata_type_concept_id, name, value_as_string, value_as_concept_id, metadata_date, metadata_datetime) --Added cdm version record
+INSERT INTO ohdsi.metadata (metadata_concept_id, metadata_type_concept_id, name, value_as_string, value_as_concept_id, metadata_date, metadata_datetime) --Added cdm version record
 VALUES (0,0,'CDM Version', '6.0',0,NULL,NULL)
 ;
 
@@ -212,16 +200,15 @@ Standardized clinical data
 ************************/
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.person
-(
-  person_id						        BIGINT	  	  NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.person
+ (person_id						        BIGINT	  	  NOT NULL ,
   gender_concept_id				    INTEGER	  	  NOT NULL ,
   year_of_birth					      INTEGER	  	  NOT NULL ,
   month_of_birth				      INTEGER	  	  NULL,
   day_of_birth					      INTEGER	  	  NULL,
-  birth_datetime				      DATETIME2	  	NULL,
-  death_datetime					    DATETIME2		  NULL,
+  birth_datetime				      TIMESTAMP	  	NULL,
+  death_datetime					    TIMESTAMP		  NULL,
   race_concept_id				      INTEGER		    NOT NULL,
   ethnicity_concept_id			  INTEGER	  	  NOT NULL,
   location_id					        BIGINT		    NULL,
@@ -235,30 +222,28 @@ CREATE TABLE @cdmDatabaseSchema.person
   ethnicity_source_value		  VARCHAR(50)   NULL,
   ethnicity_source_concept_id INTEGER		    NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.observation_period
-(
-  observation_period_id				  BIGINT		NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.observation_period
+ (observation_period_id				  BIGINT		NOT NULL ,
   person_id							        BIGINT		NOT NULL ,
   observation_period_start_date	DATE		  NOT NULL ,
   observation_period_end_date   DATE		  NOT NULL ,
   period_type_concept_id			  INTEGER		NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.specimen
-(
-  specimen_id					        BIGINT		  	NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.specimen
+ (specimen_id					        BIGINT		  	NOT NULL ,
   person_id						        BIGINT		  	NOT NULL ,
   specimen_concept_id			    INTEGER			  NOT NULL ,
   specimen_type_concept_id		INTEGER			  NOT NULL ,
   specimen_date					      DATE			    NULL ,
-  specimen_datetime				    DATETIME2		  NOT NULL ,
+  specimen_datetime				    TIMESTAMP		  NOT NULL ,
   quantity						        FLOAT			    NULL ,
   unit_concept_id				      INTEGER			  NULL ,
   anatomic_site_concept_id		INTEGER			  NOT NULL ,
@@ -269,19 +254,18 @@ CREATE TABLE @cdmDatabaseSchema.specimen
   anatomic_site_source_value	VARCHAR(50)		NULL ,
   disease_status_source_value	VARCHAR(50)		NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.visit_occurrence
-(
-  visit_occurrence_id			      BIGINT			  NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.visit_occurrence
+ (visit_occurrence_id			      BIGINT			  NOT NULL ,
   person_id						          BIGINT			  NOT NULL ,
   visit_concept_id				      INTEGER			  NOT NULL ,
   visit_start_date				      DATE			    NULL ,
-  visit_start_datetime			    DATETIME2		  NOT NULL ,
+  visit_start_datetime			    TIMESTAMP		  NOT NULL ,
   visit_end_date				        DATE			    NULL ,
-  visit_end_datetime			      DATETIME2		  NOT NULL ,
+  visit_end_datetime			      TIMESTAMP		  NOT NULL ,
   visit_type_concept_id			    INTEGER			  NOT NULL ,
   provider_id					          BIGINT			  NULL,
   care_site_id					        BIGINT			  NULL,
@@ -293,19 +277,18 @@ CREATE TABLE @cdmDatabaseSchema.visit_occurrence
   discharge_to_concept_id		    INTEGER   		NOT NULL ,
   preceding_visit_occurrence_id	BIGINT			  NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.visit_detail
-(
-  visit_detail_id                    BIGINT      NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.visit_detail
+ (visit_detail_id                    BIGINT      NOT NULL ,
   person_id                          BIGINT      NOT NULL ,
   visit_detail_concept_id            INTEGER     NOT NULL ,
   visit_detail_start_date            DATE        NULL ,
-  visit_detail_start_datetime        DATETIME2   NOT NULL ,
+  visit_detail_start_datetime        TIMESTAMP   NOT NULL ,
   visit_detail_end_date              DATE        NULL ,
-  visit_detail_end_datetime          DATETIME2   NOT NULL ,
+  visit_detail_end_datetime          TIMESTAMP   NOT NULL ,
   visit_detail_type_concept_id       INTEGER     NOT NULL ,
   provider_id                        BIGINT      NULL ,
   care_site_id                       BIGINT      NULL ,
@@ -319,17 +302,16 @@ CREATE TABLE @cdmDatabaseSchema.visit_detail
   visit_detail_parent_id             BIGINT      NULL ,
   visit_occurrence_id                BIGINT      NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.procedure_occurrence
-(
-  procedure_occurrence_id		  BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.procedure_occurrence
+ (procedure_occurrence_id		  BIGINT			NOT NULL ,
   person_id						        BIGINT			NOT NULL ,
   procedure_concept_id			  INTEGER			NOT NULL ,
   procedure_date				      DATE			  NULL ,
-  procedure_datetime			    DATETIME2		NOT NULL ,
+  procedure_datetime			    TIMESTAMP		NOT NULL ,
   procedure_type_concept_id		INTEGER			NOT NULL ,
   modifier_concept_id			    INTEGER			NOT NULL ,
   quantity						        INTEGER			NULL ,
@@ -340,18 +322,17 @@ CREATE TABLE @cdmDatabaseSchema.procedure_occurrence
   procedure_source_concept_id	INTEGER			NOT NULL ,
   modifier_source_value		    VARCHAR(50)	NULL
 )
-;
+DISTKEY(person_id);
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.drug_exposure
-(
-  drug_exposure_id				      BIGINT			  NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.drug_exposure
+ (drug_exposure_id				      BIGINT			  NOT NULL ,
   person_id						          BIGINT			  NOT NULL ,
   drug_concept_id				        INTEGER			  NOT NULL ,
   drug_exposure_start_date		  DATE			    NULL ,
-  drug_exposure_start_datetime	DATETIME2		  NOT NULL ,
+  drug_exposure_start_datetime	TIMESTAMP		  NOT NULL ,
   drug_exposure_end_date		    DATE			    NULL ,
-  drug_exposure_end_datetime	  DATETIME2		  NOT NULL ,
+  drug_exposure_end_datetime	  TIMESTAMP		  NOT NULL ,
   verbatim_end_date				      DATE			    NULL ,
   drug_type_concept_id			    INTEGER			  NOT NULL ,
   stop_reason					          VARCHAR(20)		NULL ,
@@ -369,19 +350,18 @@ CREATE TABLE @cdmDatabaseSchema.drug_exposure
   route_source_value			      VARCHAR(50)		NULL ,
   dose_unit_source_value		    VARCHAR(50)	  NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.device_exposure
-(
-  device_exposure_id			        BIGINT		    NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.device_exposure
+ (device_exposure_id			        BIGINT		    NOT NULL ,
   person_id						            BIGINT		    NOT NULL ,
   device_concept_id			          INTEGER		    NOT NULL ,
   device_exposure_start_date	    DATE			    NULL ,
-  device_exposure_start_datetime  DATETIME2		  NOT NULL ,
+  device_exposure_start_datetime  TIMESTAMP		  NOT NULL ,
   device_exposure_end_date		    DATE			    NULL ,
-  device_exposure_end_datetime    DATETIME2		  NULL ,
+  device_exposure_end_datetime    TIMESTAMP		  NULL ,
   device_type_concept_id		      INTEGER		    NOT NULL ,
   unique_device_id			          VARCHAR(50)	  NULL ,
   quantity						            INTEGER		    NULL ,
@@ -391,19 +371,18 @@ CREATE TABLE @cdmDatabaseSchema.device_exposure
   device_source_value			        VARCHAR(100)	NULL ,
   device_source_concept_id		    INTEGER		    NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.condition_occurrence
-(
-  condition_occurrence_id		    BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.condition_occurrence
+ (condition_occurrence_id		    BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
   condition_concept_id			    INTEGER			NOT NULL ,
   condition_start_date			    DATE			  NULL ,
-  condition_start_datetime		  DATETIME2		NOT NULL ,
+  condition_start_datetime		  TIMESTAMP		NOT NULL ,
   condition_end_date			      DATE			  NULL ,
-  condition_end_datetime		    DATETIME2		NULL ,
+  condition_end_datetime		    TIMESTAMP		NULL ,
   condition_type_concept_id		  INTEGER			NOT NULL ,
   condition_status_concept_id	  INTEGER			NOT NULL ,
   stop_reason					          VARCHAR(20)	NULL ,
@@ -414,17 +393,16 @@ CREATE TABLE @cdmDatabaseSchema.condition_occurrence
   condition_source_concept_id	  INTEGER			NOT NULL ,
   condition_status_source_value	VARCHAR(50)	NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.measurement
-(
-  measurement_id				        BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.measurement
+ (measurement_id				        BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
   measurement_concept_id		    INTEGER			NOT NULL ,
   measurement_date				      DATE			NULL ,
-  measurement_datetime			    DATETIME2		NOT NULL ,
+  measurement_datetime			    TIMESTAMP		NOT NULL ,
   measurement_time              VARCHAR(10) 	NULL,
   measurement_type_concept_id	  INTEGER			NOT NULL ,
   operator_concept_id			      INTEGER			NULL ,
@@ -443,18 +421,17 @@ CREATE TABLE @cdmDatabaseSchema.measurement
   modifier_of_event_id 		BIGINT 		NULL,
   modifier_of_field_concept_id 	INTEGER 	NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.note
-(
-  note_id						          BIGINT			  NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.note
+ (note_id						          BIGINT			  NOT NULL ,
   person_id						        BIGINT			  NOT NULL ,
   note_event_id         		  BIGINT        NULL ,
   note_event_field_concept_id	INTEGER 		  NOT NULL ,
   note_date						        DATE			    NULL ,
-  note_datetime					      DATETIME2		  NOT NULL ,
+  note_datetime					      TIMESTAMP		  NOT NULL ,
   note_type_concept_id			  INTEGER			  NOT NULL ,
   note_class_concept_id 		  INTEGER			  NOT NULL ,
   note_title					        VARCHAR(250)	NULL ,
@@ -466,13 +443,12 @@ CREATE TABLE @cdmDatabaseSchema.note
   visit_detail_id       		  BIGINT       	NULL ,
   note_source_value				    VARCHAR(50)		NULL
 )
-;
+DISTKEY(person_id);
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.note_nlp
-(
-  note_nlp_id					        BIGINT			  NOT NULL ,
+CREATE TABLE ohdsi.note_nlp
+ (note_nlp_id					        BIGINT			  NOT NULL ,
   note_id						          BIGINT			  NOT NULL ,
   section_concept_id			    INTEGER			  NOT NULL ,
   snippet						          VARCHAR(250)	NULL ,
@@ -481,23 +457,22 @@ CREATE TABLE @cdmDatabaseSchema.note_nlp
   note_nlp_concept_id			    INTEGER			  NOT NULL ,
   nlp_system					        VARCHAR(250)	NULL ,
   nlp_date						        DATE			    NOT NULL ,
-  nlp_datetime					      DATETIME2		  NULL ,
+  nlp_datetime					      TIMESTAMP		  NULL ,
   term_exists					        VARCHAR(1)		NULL ,
   term_temporal					      VARCHAR(50)		NULL ,
   term_modifiers				      VARCHAR(2000)	NULL ,
   note_nlp_source_concept_id	INTEGER			  NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.observation
-(
-  observation_id					      BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.observation
+ (observation_id					      BIGINT			NOT NULL ,
   person_id						          BIGINT			NOT NULL ,
   observation_concept_id			  INTEGER			NOT NULL ,
   observation_date				      DATE			  NULL ,
-  observation_datetime				  DATETIME2		NOT NULL ,
+  observation_datetime				  TIMESTAMP		NOT NULL ,
   observation_type_concept_id   INTEGER			NOT NULL ,
   value_as_number				        FLOAT			  NULL ,
   value_as_string				        VARCHAR(60) NULL ,
@@ -513,21 +488,20 @@ CREATE TABLE @cdmDatabaseSchema.observation
   qualifier_source_value			  VARCHAR(50)	NULL ,
   observation_event_id				  BIGINT			NULL ,
   obs_event_field_concept_id		INTEGER			NOT NULL ,
-  value_as_datetime					    DATETIME2		NULL
+  value_as_datetime					    TIMESTAMP		NULL
 )
-;
+DISTKEY(person_id);
 
 
 --HINT DISTRIBUTE ON KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.survey_conduct
-(
-  survey_conduct_id					      BIGINT			  NOT NULL ,
-  person_id						            BIGINT			  NOT NULL ,
+CREATE TABLE ohdsi.survey_conduct
+ (survey_conduct_id					      BIGINT			  NOT NULL ,
+   person_id BIGINT			  NOT NULL ,
   survey_concept_id			  		    INTEGER			  NOT NULL ,
   survey_start_date				        DATE			    NULL ,
-  survey_start_datetime				    DATETIME2		  NULL ,
+  survey_start_datetime				    TIMESTAMP		  NULL ,
   survey_end_date					        DATE			    NULL ,
-  survey_end_datetime				      DATETIME2		  NOT NULL ,
+  survey_end_datetime				      TIMESTAMP		  NOT NULL ,
   provider_id						          BIGINT			  NULL ,
   assisted_concept_id	  			    INTEGER			  NOT NULL ,
   respondent_type_concept_id		  INTEGER			  NOT NULL ,
@@ -547,26 +521,24 @@ CREATE TABLE @cdmDatabaseSchema.survey_conduct
   visit_detail_id					        BIGINT			  NULL ,
   response_visit_occurrence_id		BIGINT			  NULL
 )
-;
+DISTKEY(person_id);
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.fact_relationship
-(
-  domain_concept_id_1			INTEGER			NOT NULL ,
+CREATE TABLE ohdsi.fact_relationship
+ (domain_concept_id_1			INTEGER			NOT NULL ,
   fact_id_1						    BIGINT			NOT NULL ,
   domain_concept_id_2			INTEGER			NOT NULL ,
   fact_id_2						    BIGINT			NOT NULL ,
   relationship_concept_id	INTEGER			NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
-CREATE TABLE @cdmDatabaseSchema.episode (
-	episode_id 			            BIGINT 		    NOT NULL,
-	person_id 			            BIGINT 		    NOT NULL,
-	episode_start_datetime 		  DATETIME2 	  NOT NULL,
-	episode_end_datetime 		    DATETIME2 	  NOT NULL,
+CREATE TABLE ohdsi.episode  (episode_id 			            BIGINT 		    NOT NULL,
+	 person_id BIGINT 		    NOT NULL,
+	episode_start_datetime 		  TIMESTAMP 	  NOT NULL,
+	episode_end_datetime 		    TIMESTAMP 	  NOT NULL,
 	episode_concept_id 		      INTEGER 	    NOT NULL,
 	episode_parent_id 		      INTEGER 	    NULL,
 	episode_number 			        INTEGER 	    NULL,
@@ -575,15 +547,14 @@ CREATE TABLE @cdmDatabaseSchema.episode (
 	episode_source_value 		    VARCHAR(50) 	NULL,
 	episode_source_concept_id 	INTEGER 	    NULL
 )
-;
+DISTKEY(person_id);
 
 -- Episode_Event
-CREATE TABLE @cdmDatabaseSchema.episode_event (
-	episode_id 		          BIGINT 	NOT NULL,
+CREATE TABLE ohdsi.episode_event  (episode_id 		          BIGINT 	NOT NULL,
 	event_id 		            BIGINT 	NOT NULL,
 	event_field_concept_id 	INTEGER NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 /************************
@@ -594,9 +565,8 @@ Standardized health system data
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.location
-(
-  location_id					  BIGINT			  NOT NULL ,
+CREATE TABLE ohdsi.location
+ (location_id					  BIGINT			  NOT NULL ,
   address_1						  VARCHAR(50)		NULL ,
   address_2						  VARCHAR(50)		NULL ,
   city							    VARCHAR(50)		NULL ,
@@ -609,13 +579,12 @@ CREATE TABLE @cdmDatabaseSchema.location
   longitude						  FLOAT				  NULL ,
   region_concept_id     INTEGER       NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.location_history --Table added
-(
-  location_history_id           BIGINT      NOT NULL ,
+CREATE TABLE ohdsi.location_history --Table added
+ (location_history_id           BIGINT      NOT NULL ,
   location_id			              BIGINT		  NOT NULL ,
   relationship_type_concept_id	INTEGER		  NOT NULL ,
   domain_id				              VARCHAR(50) NOT NULL ,
@@ -623,26 +592,24 @@ CREATE TABLE @cdmDatabaseSchema.location_history --Table added
   start_date			              DATE			  NOT NULL ,
   end_date				              DATE			  NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.care_site
-(
-  care_site_id						      BIGINT			  NOT NULL ,
+CREATE TABLE ohdsi.care_site
+ (care_site_id						      BIGINT			  NOT NULL ,
   care_site_name						    VARCHAR(255)  NULL ,
   place_of_service_concept_id	  INTEGER			  NOT NULL ,
   location_id						        BIGINT			  NULL ,
   care_site_source_value			  VARCHAR(50)		NULL ,
   place_of_service_source_value VARCHAR(50)		NULL
 )
-;
+DISTSTYLE ALL;
 
 
 --HINT DISTRIBUTE ON RANDOM
-CREATE TABLE @cdmDatabaseSchema.provider
-(
-  provider_id					        BIGINT			  NOT NULL ,
+CREATE TABLE ohdsi.provider
+ (provider_id					        BIGINT			  NOT NULL ,
   provider_name					      VARCHAR(255)	NULL ,
   NPI							            VARCHAR(20)		NULL ,
   DEA							            VARCHAR(20)		NULL ,
@@ -656,7 +623,7 @@ CREATE TABLE @cdmDatabaseSchema.provider
   gender_source_value			    VARCHAR(50)		NULL ,
   gender_source_concept_id		INTEGER			  NOT NULL
 )
-;
+DISTSTYLE ALL;
 
 
 /************************
@@ -666,10 +633,9 @@ Standardized health economics
 ************************/
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.payer_plan_period
-(
-  payer_plan_period_id			    BIGINT			    NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.payer_plan_period
+ (payer_plan_period_id			    BIGINT			    NOT NULL ,
   person_id						          BIGINT			    NOT NULL ,
   contract_person_id            BIGINT        	NULL ,
   payer_plan_period_start_date  DATE			      NOT NULL ,
@@ -691,14 +657,13 @@ CREATE TABLE @cdmDatabaseSchema.payer_plan_period
   stop_reason_source_value      VARCHAR(50)   	NULL ,
   stop_reason_source_concept_id INTEGER       	NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
 --HINT DISTRIBUTE ON KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.cost
-(
-  cost_id						          BIGINT	    	NOT NULL ,
-  person_id						        BIGINT		  	NOT NULL,
+CREATE TABLE ohdsi.cost
+ (cost_id						          BIGINT	    	NOT NULL ,
+   person_id BIGINT		  	NOT NULL,
   cost_event_id					      BIGINT      	NOT NULL ,
   cost_event_field_concept_id	INTEGER			  NOT NULL ,
   cost_concept_id				      INTEGER		  	NOT NULL ,
@@ -716,7 +681,7 @@ CREATE TABLE @cdmDatabaseSchema.cost
   drg_source_value			      VARCHAR(3)		NULL ,
   payer_plan_period_id			  BIGINT			  NULL
 )
-;
+DISTKEY(person_id);
 
 
 /************************
@@ -726,42 +691,39 @@ Standardized derived elements
 ************************/
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.drug_era
-(
-  drug_era_id					    BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.drug_era
+ (drug_era_id					    BIGINT			NOT NULL ,
   person_id						    BIGINT			NOT NULL ,
   drug_concept_id			    INTEGER			NOT NULL ,
-  drug_era_start_datetime	DATETIME2			  NOT NULL ,
-  drug_era_end_datetime		DATETIME2			  NOT NULL ,
+  drug_era_start_datetime	TIMESTAMP			  NOT NULL ,
+  drug_era_end_datetime		TIMESTAMP			  NOT NULL ,
   drug_exposure_count	    INTEGER			NULL ,
   gap_days						    INTEGER			NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.dose_era
-(
-  dose_era_id					      BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.dose_era
+ (dose_era_id					      BIGINT			NOT NULL ,
   person_id						      BIGINT			NOT NULL ,
   drug_concept_id				    INTEGER			NOT NULL ,
   unit_concept_id				    INTEGER			NOT NULL ,
   dose_value						    FLOAT			  NOT NULL ,
-  dose_era_start_datetime		DATETIME2			  NOT NULL ,
-  dose_era_end_datetime	    DATETIME2			  NOT NULL
+  dose_era_start_datetime		TIMESTAMP			  NOT NULL ,
+  dose_era_end_datetime	    TIMESTAMP			  NOT NULL
 )
-;
+DISTKEY(person_id);
 
 
---HINT DISTRIBUTE_ON_KEY(person_id)
-CREATE TABLE @cdmDatabaseSchema.condition_era
-(
-  condition_era_id				        BIGINT			NOT NULL ,
+--HINT DISTRIBUTE_ON_KEY(person_id) 
+CREATE TABLE ohdsi.condition_era
+ (condition_era_id				        BIGINT			NOT NULL ,
   person_id						            BIGINT			NOT NULL ,
   condition_concept_id			      INTEGER			NOT NULL ,
-  condition_era_start_datetime		DATETIME2			  NOT NULL ,
-  condition_era_end_datetime			DATETIME2			  NOT NULL ,
+  condition_era_start_datetime		TIMESTAMP			  NOT NULL ,
+  condition_era_end_datetime			TIMESTAMP			  NOT NULL ,
   condition_occurrence_count	    INTEGER			NULL
 )
-;
+DISTKEY(person_id);
