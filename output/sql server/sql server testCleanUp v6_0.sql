@@ -27,6 +27,8 @@ DROP TABLE ohdsi.dbo.note_nlp;
 DROP TABLE ohdsi.dbo.observation;
 DROP TABLE ohdsi.dbo.survey_conduct;
 DROP TABLE ohdsi.dbo.fact_relationship;
+DROP TABLE ohdsi.dbo.episode;
+DROP TABLE ohdsi.dbo.episode_event;
 
 DROP TABLE ohdsi.dbo.location;
 DROP TABLE ohdsi.dbo.location_history;
