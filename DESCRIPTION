@@ -12,6 +12,8 @@ VignetteBuilder: knitr
 Imports: 
   SqlRender, 
   rmarkdown,
-  stringr
+  stringr,
+  readxl,
+  dplyr
 NeedsCompilation: no
 RoxygenNote: 6.1.1
