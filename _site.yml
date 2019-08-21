@@ -5,29 +5,29 @@ output:
     theme: cosmo
     css: style.css
     includes:
-      in_header: "favicon.html" 
+      in_header: "favicon.html"
 exclude: ["extras"]
 navbar:
-  title: '<div><img src="ohdsi16x16.png"></img> OHDSI Methods Library</div>'  
+  title: '<div><img src="ohdsi16x16.png"></img> OMOP Common Data Model </div>'
   left:
     - icon: fa-home
       href: index.html
-    - text: "Packages"
-      icon: fa-cube
-      href: packages.html
+    - text: "Conventions"
+      icon: fa-list-alt
+      href: dataModelConventions.html
     - text: "Validation"
       icon: fa-clipboard-check
-      href: validation.html  
-    - text: "Publications"
-      icon: fa-pen-alt
-      href: publications.html
+      href: validation.html
+    - text: "FAQ"
+      icon: fa-question
+      href: faq.html
     - text: "Support"
       icon: fa-life-ring
-      menu: 
+      menu:
         - text: "Questions and Bug reports"
-          href: support.html   
+          href: support.html
         - text: "R setup"
-          href: rSetup.html  
+          href: rSetup.html
     - text: "Contribute"
       icon: fa-wrench
       href: contribute.html
