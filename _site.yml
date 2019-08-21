@@ -21,13 +21,13 @@ navbar:
     - text: "FAQ"
       icon: fa-question
       href: faq.html
-    - text: "Support"
-      icon: fa-life-ring
+    - text: "CDM Versions"
+      icon: fa-skull-crossbones
       menu:
-        - text: "Questions and Bug reports"
-          href: support.html
-        - text: "R setup"
-          href: rSetup.html
+        - text: "CDM v5.3.1"
+          href: cdm531.html
+        - text: "CDM v6.0"
+          href: cdm60.html
     - text: "Contribute"
       icon: fa-wrench
       href: contribute.html
