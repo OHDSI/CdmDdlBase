@@ -1,0 +1,25 @@
+---
+title: '<div><img src="ohdsi40x40.png"></img> OMOP Common Data Model</div>'
+output: 
+    html_document:
+        toc: TRUE
+        toc_float: TRUE
+---
+
+Some text about the common data model
+
+## Technology
+The Methods Library is a set of R packages that execute against data in a database server. The Library supports traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as 'Big Data' platforms (Hadoop through Impala, and Google BigQuery). 
+
+
+## Common Data Model
+The Methods Library requires access to observational health care data in the [Common Data Model](https://github.com/OHDSI/CommonDataModel/wiki). 
+
+
+## Cohorts
+One of the essential inputs for the Methods Library are *cohorts*.
+
+> A **cohort** is a set of persons who satisfy one or more inclusion criteria for a duration of time. 
+		
+The Methods Library operates on cohorts, such as exposure cohorts and outcome cohorts, but does not provide functionality for constructing cohorts. One can create cohorts using SQL, or use interactive tools such as [ATLAS](http://www.ohdsi.org/web/atlas).
+

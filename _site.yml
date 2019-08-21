@@ -1,0 +1,33 @@
+name: "OMOP Common Data Model"
+output_dir: "docs"
+output:
+  html_document:
+    theme: cosmo
+    css: style.css
+    includes:
+      in_header: "favicon.html" 
+exclude: ["extras"]
+navbar:
+  title: '<div><img src="ohdsi16x16.png"></img> OHDSI Methods Library</div>'  
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Packages"
+      icon: fa-cube
+      href: packages.html
+    - text: "Validation"
+      icon: fa-clipboard-check
+      href: validation.html  
+    - text: "Publications"
+      icon: fa-pen-alt
+      href: publications.html
+    - text: "Support"
+      icon: fa-life-ring
+      menu: 
+        - text: "Questions and Bug reports"
+          href: support.html   
+        - text: "R setup"
+          href: rSetup.html  
+    - text: "Contribute"
+      icon: fa-wrench
+      href: contribute.html
