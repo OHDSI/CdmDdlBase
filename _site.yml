@@ -12,6 +12,9 @@ navbar:
   left:
     - icon: fa-home
       href: index.html
+    - text: "Background"
+      icon: fa-book
+      href: background.html
     - text: "Conventions"
       icon: fa-list-alt
       href: dataModelConventions.html
