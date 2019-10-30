@@ -1,20 +1,23 @@
 #This script is meant to create the OMOP Common Data Model DDLs for each dialect as well as the pdf of the documentation.
 
-# Step 0: Download the current CDM DDL file from the Sql Server folder on github
+# Step 0: Download the current CDM DDL file from the Sql Server folder on github and create the sql server DDL from the file
 
     downloadCurrentDdl()
+    s <- createDdlFromFile()
+    # save using something like: save(s, file = paste0("inst/sql/sql_server/OMOP CDM ddl v5_3_1 ", Sys.Date(), ".sql"))
+
 
 # Step 1: Update the file inst/sql/sql_server/OMOP CDM ddl.sql with the changes for the new version and set the below variables
 
   # Step 1.1: The version of the CDM you are writing. This will be used for the name of the pdf so, for example, write v5.3 as v5_3
     cdmVersion <- "v6_0_dev"
 
-  # Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
-    mdFilesLocation <- "S:/Git/GitHub/CommonDataModel.wiki"
+  #RETIRE Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
+    # mdFilesLocation <- "S:/Git/GitHub/CommonDataModel.wiki"
 
-# Step 1.9: Generate the CSV file:
-parseWiki(mdFilesLocation = mdFilesLocation,
-          output_file = paste0("OMOP_CDM_",cdmVersion,".csv"))
+#RETIRE Step 1.9: Generate the CSV file:
+#parseWiki(mdFilesLocation = mdFilesLocation,
+ #         output_file = paste0("OMOP_CDM_",cdmVersion,".csv"))
 
 # Step 2: Run the following code to create the DDLs for each dialect:
 
@@ -90,13 +93,24 @@ writeConstraints("pdw",
                  "ohdsi")
 
 
-# step 6: Run the following code to create the pdf documentation. It will be written to the reports folder.
+# RETIRE step 6: Run the following code to create the pdf documentation. It will be written to the reports folder.
 
-rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
-                  output_format = "pdf_document",
-                  output_file = paste0("OMOP_CDM_",cdmVersion,"test.pdf"),
-                  params = list(mdFilesLocation = mdFilesLocation))
-rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
-                  output_format = "html_document",
-                  output_file = paste0("OMOP_CDM_",cdmVersion,"test.html"),
-                  params = list(mdFilesLocation = mdFilesLocation))
+# rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
+#                   output_format = "pdf_document",
+#                   output_file = paste0("OMOP_CDM_",cdmVersion,"test.pdf"),
+#                   params = list(mdFilesLocation = mdFilesLocation))
+# rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
+#                   output_format = "html_document",
+#                   output_file = paste0("OMOP_CDM_",cdmVersion,"test.html"),
+#                   params = list(mdFilesLocation = mdFilesLocation))
+
+# Step 6: After updating any of the .Rmd files, render the site following directions in SiteMaintenance.R, then move the files to the CommonDataModel directory
+
+newdir <- "C:/Git/Github/CommonDataModel/docs"
+currentdir <- paste0(getwd(),"/docs/")
+
+
+  file.copy(currentdir, newdir, recursive = TRUE, overwrite = TRUE)
+
+
+

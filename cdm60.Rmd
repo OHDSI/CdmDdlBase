@@ -32,13 +32,14 @@ cdmSpecsClean <- cdmSpecs %>%
                 `User Guide` = USER_GUIDANCE,
                 `ETL Conventions` = ETL_CONVENTIONS,
                 `Datatype` = CDM_DATATYPE,
-                `Is Required` = IS_REQUIRED,
-                `Is Primary Key` = IS_PRIMARY_KEY,
-                `Is Foreign Key (FK)` = IS_FOREIGN_KEY,
+                `Required` = IS_REQUIRED,
+                `Primary Key` = IS_PRIMARY_KEY,
+                `Foreign Key (FK)` = IS_FOREIGN_KEY,
                 `FK Table` = FK_TABLE,
                 `FK Domain` = FK_DOMAIN,
                 `FK Class` = FK_CLASS
                 )
+cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
 
 for(tb in tables) {
   cat("###", tb, "{.tabset .tabset-pills} \n\n")
