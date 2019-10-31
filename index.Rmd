@@ -9,23 +9,23 @@ In addition to documentation the formal remit of the CDM Working Group is to hea
 
 ### CDM WG Meeting Information
 
-**Every first Tuesday of the month at 1pm est**
-[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/V59RPVRY)
-Join by phone
-US toll-free: +1 (908) 316-2436
-Attendee access code: 215874708# 
-[Global Numbers](https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=215874708)
+**Every first Tuesday of the month at 1pm est**  
+[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/V59RPVRY)   
+Join by phone  
+US toll-free: +1 (908) 316-2436  
+Attendee access code: 215874708#  
+[Global Numbers](https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=215874708)   
 
-**Every third Tuesday of the month at 9am est**
-[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/GFMFNJYW)
-Join by phone
-US toll-free: +1 (908) 316-2436
-Attendee access code: 180836323#
-[Global Numbers](https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=180836323)
+**Every third Tuesday of the month at 9am est**  
+[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/GFMFNJYW)  
+Join by phone  
+US toll-free: +1 (908) 316-2436  
+Attendee access code: 180836323#  
+[Global Numbers](https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=180836323)  
 
 ### CDM WG Important Links
 
-[Google Drive Location](https://drive.google.com/open?id=1DaNKe6ivIAZPJeI31VJ-pzNB9wS9hDqu)
-[Running Agenda](https://docs.google.com/document/d/1WgKePjrI_cGdqn2XQCe1JdGaTzdMqU4p5ihkMt8fcAc/edit?usp=sharing)
-[CDM Github](https://github.com/OHDSI/CommonDataModel)
-[Process for adopting CDM and Vocabulary changes](https://www.ohdsi.org/web/wiki/doku.php?id=documentation:next_cdm:cdm_process)
+- [Google Drive Location](https://drive.google.com/open?id=1DaNKe6ivIAZPJeI31VJ-pzNB9wS9hDqu)
+- [Running Agenda](https://docs.google.com/document/d/1WgKePjrI_cGdqn2XQCe1JdGaTzdMqU4p5ihkMt8fcAc/edit?usp=sharing)
+- [CDM Github](https://github.com/OHDSI/CommonDataModel)
+- [Process for adopting CDM and Vocabulary changes](https://www.ohdsi.org/web/wiki/doku.php?id=documentation:next_cdm:cdm_process)

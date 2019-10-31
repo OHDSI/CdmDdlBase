@@ -31,6 +31,13 @@ navbar:
         - text: "Under Review"
           href: reviewProposals.html
         - text: "Accepted"
+          menu:
+            - text: "Oncology CDM Proposal"
+            - href: https://github.com/OHDSI/CommonDataModel/files/2642492/Oncology.CDM.Proposal.2018-12-02.pdf
+            - text: "Region_concept_id"
+            - href: https://github.com/OHDSI/CommonDataModel/issues/252
+            - text: "Units in Device Table"
+            - href: https://github.com/OHDSI/CommonDataModel/issues/264
     - text: "FAQ"
       icon: fa-question
       href: faq.html
