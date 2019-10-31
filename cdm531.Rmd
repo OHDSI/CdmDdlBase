@@ -22,6 +22,7 @@ library(stringr)
 ## OMOP Common Data Model Documentation
 
 ## CDM v5.3.1
+*Documentation still in development*
 
 ```{r docLoop53, echo=FALSE, results='asis'}
 tableSpecs <- read.csv("inst/csv/OMOP_CDMv5.3.1_Table_Level.csv", stringsAsFactors = FALSE)

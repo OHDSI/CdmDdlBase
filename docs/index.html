@@ -19,9 +19,6 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
-<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
-<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -271,101 +268,6 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = true;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
-
-<style type="text/css">
-
-#TOC {
-  margin: 25px 0px 20px 0px;
-}
-@media (max-width: 768px) {
-#TOC {
-  position: relative;
-  width: 100%;
-}
-}
-
-
-.toc-content {
-  padding-left: 30px;
-  padding-right: 40px;
-}
-
-div.main-container {
-  max-width: 1200px;
-}
-
-div.tocify {
-  width: 20%;
-  max-width: 260px;
-  max-height: 85%;
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  div.tocify {
-    width: 25%;
-  }
-}
-
-@media (max-width: 767px) {
-  div.tocify {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-.tocify ul, .tocify li {
-  line-height: 20px;
-}
-
-.tocify-subheader .tocify-item {
-  font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
-}
-
-.tocify .list-group-item {
-  border-radius: 0px;
-}
-
-
-</style>
-
-<!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
-<div id="TOC" class="tocify">
-</div>
-</div>
-
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
-
-
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -388,7 +290,7 @@ div.tocify {
 </li>
 <li>
   <a href="background.html">
-    <span class="fa fa-book"></span>
+    <span class="fa fa-landmark"></span>
      
     Background
   </a>
@@ -417,6 +319,21 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-plus-square"></span>
+     
+    Proposals
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="reviewProposals.html">Under Review</a>
+    </li>
+    <li class="dropdown-header">Accepted</li>
+  </ul>
+</li>
 <li>
   <a href="faq.html">
     <span class="fa fa-question"></span>
@@ -433,7 +350,12 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/OHDSI/CommonDataModel">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -450,12 +372,20 @@ div.tocify {
 </div>
 
 
-<p>Updates for CDM working group</p>
-
-
-
+<p>The OMOP Common Data Model is managed by the <a href="https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:cdm-wg">OHDSI CDM Working Group</a>. Through the end of 2019 and into 2020 our goal is to fully update the documentation in an effort to facilitate greater understanding of the model. Almost every <a href="https://www.forums.ohdsi.org">forum post</a> relating to a question on how to map data into the CDM inevitably references the technical and difficult-to-understand explanations of the tables and fields currently on the <a href="https://www.github.com/ohdsi/CommonDataModel/wiki">wiki</a>. To remedy this each month we are focusing on one or two tables, diving fully into the user guidance and ETL specifications. We meet twice a month, on the first Tuesday at 1pm est and on the 3rd Tuesday at 9am est (meeting details below).</p>
+<p>In addition to documentation the formal remit of the CDM Working Group is to hear proposals for change, ratifying only those with valid use cases and data to support them. This process will be slower through 2020 though proposals related to existing CDM tables will be considered during the months those tables are being updated. For example November 2019 will be focused on the PERSON and OBSERVATION_PERIOD tables so any proposals related to those two tables will be evaluated during November 2019. Once proposals are accepted they are listed as such and will be integrated in an upcoming version of the OMOP CDM. Currently accepted proposals can be found under the “Proposals” drop down across the top.</p>
+<div id="cdm-wg-meeting-information" class="section level3">
+<h3>CDM WG Meeting Information</h3>
+<p><strong>Every first Tuesday of the month at 1pm est</strong> <a href="https://meet.lync.com/jnj-its/mblacke/V59RPVRY">Skype Meeting</a> Join by phone US toll-free: +1 (908) 316-2436 Attendee access code: 215874708# <a href="https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=215874708">Global Numbers</a></p>
+<p><strong>Every third Tuesday of the month at 9am est</strong> <a href="https://meet.lync.com/jnj-its/mblacke/GFMFNJYW">Skype Meeting</a> Join by phone US toll-free: +1 (908) 316-2436 Attendee access code: 180836323# <a href="https://dialin.lync.com/6071d915-71cb-44a6-ae05-d1830c6bbb14?id=180836323">Global Numbers</a></p>
 </div>
+<div id="cdm-wg-important-links" class="section level3">
+<h3>CDM WG Important Links</h3>
+<p><a href="https://drive.google.com/open?id=1DaNKe6ivIAZPJeI31VJ-pzNB9wS9hDqu">Google Drive Location</a> <a href="https://docs.google.com/document/d/1WgKePjrI_cGdqn2XQCe1JdGaTzdMqU4p5ihkMt8fcAc/edit?usp=sharing">Running Agenda</a> <a href="https://github.com/OHDSI/CommonDataModel">CDM Github</a> <a href="https://www.ohdsi.org/web/wiki/doku.php?id=documentation:next_cdm:cdm_process">Process for adopting CDM and Vocabulary changes</a></p>
 </div>
+
+
+
 
 </div>
 

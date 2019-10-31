@@ -20,6 +20,7 @@ library(stringr)
 ```
 
 ## CDM v6.0
+*Documentation still in development*
 
 ```{r docLoop60, echo=FALSE, results='asis'}
 cdmSpecs <- readxl::read_excel("extras/reports_old/OMOP CDMv6 DQ Checks v0.1.xlsx", sheet = "FIELD LEVEL")

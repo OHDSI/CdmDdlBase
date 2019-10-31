@@ -13,7 +13,7 @@ navbar:
     - icon: fa-home
       href: index.html
     - text: "Background"
-      icon: fa-book
+      icon: fa-landmark
       href: background.html
     - text: "Conventions"
       icon: fa-list-alt
@@ -25,9 +25,18 @@ navbar:
           href: cdm531.html
         - text: "CDM v6.0"
           href: cdm60.html
+    - text: "Proposals"
+      icon: fa-plus-square
+      menu:
+        - text: "Under Review"
+          href: reviewProposals.html
+        - text: "Accepted"
     - text: "FAQ"
       icon: fa-question
       href: faq.html
     - text: "Contribute"
       icon: fa-wrench
       href: contribute.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/OHDSI/CommonDataModel
