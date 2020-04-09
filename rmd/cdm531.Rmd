@@ -1,0 +1,68 @@
+---
+title: "CDM v5.3.1"
+output: 
+  html_document:
+      toc: true
+      toc_depth: 5
+      toc_float: true
+knit: pagedown::chrome_print
+---
+
+```{r setup, include=FALSE, eval=TRUE}
+
+#todo figure out how to get the document dynamically without specifying the name
+library(rmarkdown)
+library(knitr)
+library(kableExtra)
+library(magrittr)
+library(dplyr)
+library(stringr)
+
+```
+
+## OMOP Common Data Model Documentation
+
+## CDM v5.3.1
+*Documentation still in development*
+
+```{r docLoop53, echo=FALSE, results='asis'}
+tableSpecs <- read.csv("../inst/csv/OMOP_CDMv5.3.1_Table_Level.csv", stringsAsFactors = FALSE)
+cdmSpecs <- read.csv("../inst/csv/OMOP_CDMv5.3.1_Field_Level.csv", stringsAsFactors = FALSE)
+
+tables <- tableSpecs$cdmTableName
+
+cdmSpecsClean <- cdmSpecs %>%
+  dplyr::select(`CDM Table` = cdmTableName,
+                `CDM Field` = cdmFieldName,
+                `User Guide` = userGuidance,
+                `ETL Conventions` = etlConventions,
+                `Datatype` = cdmDatatype,
+                `Required` = isRequired,
+                `Primary Key` = isPrimaryKey,
+                `Foreign Key` = isForeignKey,
+                `FK Table` = fkTableName,
+                `FK Domain` = fkDomain,
+                `FK Class` = fkClass
+                )
+
+cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
+
+for(tb in tables) {
+  cat("###", tb, "{.tabset .tabset-pills} \n\n")
+  
+  loopTable <- subset(cdmSpecsClean, `CDM Table` == tb)
+  loopTable <- subset(loopTable, select = -c(1))
+ 
+  print(kable(x = loopTable, align = "l", row.names = FALSE, format = "html") %>% 
+           column_spec(1, bold = T) %>%
+           column_spec(2, width = "3in", include_thead = T) %>%
+           column_spec(3, width = "4in", include_thead = T) %>%
+           column_spec(4:10, width = "1in", include_thead = T) %>%
+           kable_styling(c("condensed","hover"), position = "center", full_width = T, font_size = 13)) 
+         
+  
+  }
+
+
+
+```

@@ -1,0 +1,16 @@
+---
+title: "How to update this website"
+output: 
+    html_document:
+        toc: TRUE
+        toc_float: TRUE
+---
+
+# File bug reports
+
+If you've found a bug you can help out by filing a bug report on the [issue page](https://github.com/ohdsi/commondatamodel/issues) of the Common Data Model github. Try and be as specific as possible. What error message occurs? Can you provide a simple example as to why you are requesting a change to the model? 
+
+# Join meetings
+
+Please come to meetings and contribute to the discussion! All details can be found on our [home page](https://ohdsi.github.io/CommonDataModel/).
+
