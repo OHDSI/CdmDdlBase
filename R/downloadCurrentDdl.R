@@ -5,7 +5,7 @@
 #' The default location is
 #' \code{inst/settings/currentOmopDdl.sql}.
 #'
-#' @param githubPath            The path for the GitHub repo containing the package (e.g. 'OHDSI/StudyProtocols/AlendronateVsRaloxifene').
+#' @param githubPath            The path for the GitHub repo containing the package (e.g. 'OHDSI/CommonDataModel').
 #' @param pathToCsv             The path for the snapshot inside the package.
 #' @param outputFile            The path where the file should be saved.
 #'

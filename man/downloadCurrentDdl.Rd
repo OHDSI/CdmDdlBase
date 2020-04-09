@@ -10,7 +10,7 @@ downloadCurrentDdl(githubPath = "OHDSI/CommonDataModel",
   ".sql"))
 }
 \arguments{
-\item{githubPath}{The path for the GitHub repo containing the package (e.g. 'OHDSI/StudyProtocols/AlendronateVsRaloxifene').}
+\item{githubPath}{The path for the GitHub repo containing the package (e.g. 'OHDSI/CommonDataModel').}
 
 \item{pathToCsv}{The path for the snapshot inside the package.}
 

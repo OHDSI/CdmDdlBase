@@ -1,7 +1,7 @@
 
 # Copyright 2019 Observational Health Data Sciences and Informatics
 #
-# This file is part of DDLGeneratr
+# This file is part of CdmDdlBase
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,8 @@
 #'                        If a new version of this file was committed to the CDM repository the package automatically will grab it and place it in "inst/csv/".
 #' @export
 
-createDdlFromFile <- function(cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv",
+createDdlFromFile <- function(cdmVersionNum = cdmVersion,
+                              cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv",
                               cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv"){
 
   tableSpecs <- read.csv(cdmTableCsvLoc, stringsAsFactors = FALSE)
@@ -33,17 +34,18 @@ createDdlFromFile <- function(cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Le
   tableList <- tableSpecs$cdmTableName
 
   s <- c()
+  s <- c(paste0("--CDM DDL Specification for OMOP Common Data Model ",cdmVersionNum))
   for (t in tableList){
     table <- subset(cdmSpecs, cdmTableName == t)
     fields <- table$cdmFieldName
 
     if ('person_id' %in% fields){
-      q <- "--HINT DISTRIBUTE ON KEY (person_id)"
+      q <- "\n\n--HINT DISTRIBUTE ON KEY (person_id)\n"
     } else {
-      q <- "--HINT DISTRIBUTE ON RANDOM"
+      q <- "\n\n--HINT DISTRIBUTE ON RANDOM\n"
     }
 
-    s <- c(s, q, paste0("CREATE TABLE ", t, " ("))
+    s <- c(s, q, paste0("CREATE TABLE ", t, " (\n"))
 
     end <- length(fields)
     a <- c()
@@ -62,7 +64,7 @@ createDdlFromFile <- function(cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Le
         e <- (",")
       }
 
-      a <- c(a, paste0(f," ",subset(table, cdmFieldName == f, cdmDatatype),r,e))
+      a <- c(a, paste0("\n\t\t\t",f," ",subset(table, cdmFieldName == f, cdmDatatype),r,e))
     }
     s <- c(s, a, "")
   }

@@ -1,25 +1,21 @@
 #This script is meant to create the OMOP Common Data Model DDLs for each dialect as well as the pdf of the documentation.
 
-# Step 0: Download the current CDM DDL file from the Sql Server folder on github and create the sql server DDL from the file
+# Step 1-2 from README: Create new csv files "..._Field_Level.csv" and "..._Table_Level.csv" in inst/csv for the new version and make changes to the files reflecting
+# the new CDM versions. Set the below variable to indicate the version of the cdm you are creating. This will be used for the name of the pdf so, for
+# example, write v5.3 as v5_3.
 
-    downloadCurrentDdl()
-    s <- createDdlFromFile()
-    # save using something like: save(s, file = paste0("inst/sql/sql_server/OMOP CDM ddl v5_3_1 ", Sys.Date(), ".sql"))
+  cdmVersion <- "v5_3_1"
 
+# Step 3: After creating the csv files for the new version, create the sql server DDL from the file
 
-# Step 1: Update the file inst/sql/sql_server/OMOP CDM ddl.sql with the changes for the new version and set the below variables
+    s <- CdmDdlBase::createDdlFromFile(cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv",
+                           cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv")
 
-  # Step 1.1: The version of the CDM you are writing. This will be used for the name of the pdf so, for example, write v5.3 as v5_3
-    cdmVersion <- "v6_0_dev"
+    # Use SqlRender to save the file
 
-  #RETIRE Step 1.2: The location of the wiki markdown files. The default is "../../Documentation/CommonDataModel_Wiki_Files"
-    # mdFilesLocation <- "S:/Git/GitHub/CommonDataModel.wiki"
+    SqlRender::writeSql(s, targetFile = paste0("inst/sql/sql_server/OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql"))
 
-#RETIRE Step 1.9: Generate the CSV file:
-#parseWiki(mdFilesLocation = mdFilesLocation,
- #         output_file = paste0("OMOP_CDM_",cdmVersion,".csv"))
-
-# Step 2: Run the following code to create the DDLs for each dialect:
+# Step 4: Run the following code to create the DDLs for each dialect:
 
 writeDDL("oracle",
          cdmVersion,
@@ -93,16 +89,9 @@ writeConstraints("pdw",
                  "ohdsi")
 
 
-# RETIRE step 6: Run the following code to create the pdf documentation. It will be written to the reports folder.
+# step 6: Run the following code to create the pdf documentation. It will be written to the reports folder. Use knit with pagedown
+pagedown::chrome_print("rmd/cdm531.Rmd") # create a comprehensive rmd with background, conventions, etc like https://stackoverflow.com/questions/25824795/how-to-combine-two-rmarkdown-rmd-files-into-a-single-output
 
-# rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
-#                   output_format = "pdf_document",
-#                   output_file = paste0("OMOP_CDM_",cdmVersion,"test.pdf"),
-#                   params = list(mdFilesLocation = mdFilesLocation))
-# rmarkdown::render("reports/OMOP_CDM_PDF.Rmd",
-#                   output_format = "html_document",
-#                   output_file = paste0("OMOP_CDM_",cdmVersion,"test.html"),
-#                   params = list(mdFilesLocation = mdFilesLocation))
 
 # Step 6: After updating any of the .Rmd files, render the site following directions in SiteMaintenance.R, then move the files to the CommonDataModel directory
 
