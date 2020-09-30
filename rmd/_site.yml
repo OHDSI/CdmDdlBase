@@ -33,7 +33,7 @@ navbar:
         - text: "Accepted"
           menu:
             - text: "Oncology CDM Proposal"
-              href: https://github.com/OHDSI/CommonDataModel/files/2642492/Oncology.CDM.Proposal.2018-12-02.pdf
+              href: oncology.html
             - text: "Region_concept_id"
               href: https://github.com/OHDSI/CommonDataModel/issues/252
             - text: "Units in Device Table"
@@ -48,8 +48,9 @@ navbar:
           href: contribute.html
         - text: "How to"
           menu:
-            - text: "Update this website"
-              href: websiteUpdates.html
+            - text: "Download the DDL"
+            - href: download.html
+
   right:
     - icon: fa-github fa-lg
       href: https://github.com/OHDSI/CommonDataModel

@@ -1,0 +1,27 @@
+---
+title: "Example_Queries"
+author: "Clair Blacketer"
+date: "September 29, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+discuss top-level visit query
+
+WITH top_level
+AS
+(SELECT concept_id, concept_name
+FROM concept
+LEFT JOIN concept_ancestor ON concept_id=descendant_concept_id
+AND ancestor_concept_id!=descendant_concept_id
+WHERE domain_id='Visit' AND standard_concept='S'
+AND ancestor_concept_id IS NULL
+)
+SELECT top_level.concept_id, top_level.concept_name, descendant.concept_id, descendant.concept_name
+FROM concept_ancestor
+JOIN top_level ON top_level.concept_id = ancestor_concept_id
+JOIN concept descendant ON descendant.concept_id = descendant_concept_id
+WHERE descendant.domain_id = 'Visit';

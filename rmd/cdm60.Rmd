@@ -20,35 +20,53 @@ library(stringr)
 ```
 
 ## CDM v6.0
-*Documentation still in development*
+*Documentation still in development* put same description of columns from v5.3.1 here. put changes from last version here
 
 ```{r docLoop60, echo=FALSE, results='asis'}
-cdmSpecs <- readxl::read_excel("../extras/reports_old/OMOP CDMv6 DQ Checks v0.1.xlsx", sheet = "FIELD LEVEL")
-tableSpecs <- readxl::read_excel("../extras/reports_old/OMOP CDMv6 DQ Checks v0.1.xlsx", sheet = "TABLE LEVEL")
-tables <- tableSpecs$CDM_TABLE
+tableSpecs <- read.csv("../inst/csv/OMOP_CDMv6.0_Table_Level.csv", stringsAsFactors = FALSE)
+cdmSpecs <- read.csv("../inst/csv/OMOP_CDMv6.0_Field_Level.csv", stringsAsFactors = FALSE)
+
+tables <- tableSpecs$cdmTableName
 
 cdmSpecsClean <- cdmSpecs %>%
-  dplyr::select(`CDM Table` = CDM_TABLE,
-                `CDM Field` = CDM_FIELD,
-                `User Guide` = USER_GUIDANCE,
-                `ETL Conventions` = ETL_CONVENTIONS,
-                `Datatype` = CDM_DATATYPE,
-                `Required` = IS_REQUIRED,
-                `Primary Key` = IS_PRIMARY_KEY,
-                `Foreign Key (FK)` = IS_FOREIGN_KEY,
-                `FK Table` = FK_TABLE,
-                `FK Domain` = FK_DOMAIN,
-                `FK Class` = FK_CLASS
+  dplyr::select(`CDM Table` = cdmTableName,
+                `CDM Field` = cdmFieldName,
+                `User Guide` = userGuidance,
+                `ETL Conventions` = etlConventions,
+                `Datatype` = cdmDatatype,
+                `Required` = isRequired,
+                `Primary Key` = isPrimaryKey,
+                `Foreign Key` = isForeignKey,
+                `FK Table` = fkTableName,
+                `FK Domain` = fkDomain
                 )
+
 cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
 
 for(tb in tables) {
   cat("###", tb, "{.tabset .tabset-pills} \n\n")
   
+  tableInfo <- subset(tableSpecs, cdmTableName == tb)
+  cat("**Table Description**\n\n",tableInfo[,"tableDescription"], "\n\n")
+  
+  if(!isTRUE(tableInfo[,"userGuidance"]=="")){
+    cat("**User Guide**\n\n",tableInfo[,"userGuidance"],"\n\n")
+  }
+  
+  if(!isTRUE(tableInfo[,"etlConventions"]=="")){
+    cat("**ETL Conventions**\n\n",tableInfo[,"etlConventions"],"\n\n")
+  }
+  
   loopTable <- subset(cdmSpecsClean, `CDM Table` == tb)
   loopTable <- subset(loopTable, select = -c(1))
  
-  print(kable(x = loopTable, align = "l", row.names = FALSE) %>% kable_styling(bootstrap_options = c("hover", "condensed", "responsive")))
+  print(kable(x = loopTable, align = "l", row.names = FALSE, format = "html") %>% 
+           column_spec(1, bold = T) %>%
+           column_spec(2, width = "3in", include_thead = T) %>%
+           column_spec(3, width = "4in", include_thead = T) %>%
+           column_spec(4:9, width = "1in", include_thead = T) %>%
+           kable_styling(c("condensed","hover"), position = "center", full_width = T, font_size = 13)) 
+         
   
   }
 

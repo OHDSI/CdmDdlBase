@@ -20,11 +20,12 @@
 #' @param cdmVersion The version of the CDM for which you are creating the DDL.
 #' @param cdmDatabaseSchema The schema of the CDM instance where the DDL will be run. For example, this would be "ohdsi.dbo" when testing on sql server. After testing
 #'                          this can be changed to "@cdmDatabaseSchema"
+#' @param sqlFilename The name of the sql file with the current ddl specifications to be translated and rendered
 #' @param cleanUpScript Set to T if the clean up script should be created. This is for testing purposes and will create a sql script that drops all CDM tables.
 #'                      By default set to F. Set to F for Oracle as well as the sql render translation does not work well.
 #'
 #' @export
-writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename = "OMOP CDM ddl.sql",cleanUpScript = F) {
+writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename, cleanUpScript = F) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -34,7 +35,7 @@ writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename =
   }
 
   sql <- SqlRender::loadRenderTranslateSql(sqlFilename = sqlFilename,
-                                           packageName = "DDLGeneratr",
+                                           packageName = "CdmDdlBase",
                                            dbms = targetdialect,
                                            targetdialect = targetdialect,
                                            cdmDatabaseSchema = cdmDatabaseSchema)
@@ -46,7 +47,7 @@ writeDDL <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename =
   if(cleanUpScript){
 
       sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "testCleanUp.sql",
-                                               packageName = "DDLGeneratr",
+                                               packageName = "CdmDdlBase",
                                                dbms = targetdialect,
                                                cdmDatabaseSchema = cdmDatabaseSchema)
 

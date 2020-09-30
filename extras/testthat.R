@@ -18,7 +18,7 @@ DatabaseConnector::executeSql(connection = conn,
                               )
 
 ## Run oracle primary keys and indices
-sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle ", cdmVersion," pk indexes.sql"))
+sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle", cdmVersion," primary keys.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -34,7 +34,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Remove oracle tables
-sql <- SqlRender::readSql(paste0("output/oracle/oracle testCleanUp ", "v6_0",".sql"))
+sql <- SqlRender::readSql(paste0("output/oracle/oracle testCleanUp ", "v5_3_1",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -62,8 +62,8 @@ DatabaseConnector::executeSql(connection = conn,
                               progressBar = TRUE
 )
 
-## Run postgres primary keys and indices
-sql <- SqlRender::readSql(paste0("output/postgresql/OMOP CDM postgresql ", cdmVersion," pk indexes.sql"))
+## Run postgres primary keys
+sql <- SqlRender::readSql(paste0("output/postgresql/OMOP CDM postgresql", cdmVersion," primary keys.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -79,7 +79,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Remove postgres tables
-sql <- SqlRender::readSql(paste0("output/postgresql/postgresql testCleanUp ", "v6_0",".sql"))
+sql <- SqlRender::readSql(paste0("output/postgresql/postgresql testCleanUp ", "v5_3_1",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -107,7 +107,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Run sql server primary keys and indices
-sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server ", cdmVersion," pk indexes.sql"))
+sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server", cdmVersion," primary keys.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -123,7 +123,7 @@ DatabaseConnector::executeSql(connection = conn,
 # )
 
 ## Remove sql server tables
-sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", "v6_0",".sql"))
+sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", "v5_3_1",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,

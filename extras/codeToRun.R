@@ -11,25 +11,64 @@
     s <- CdmDdlBase::createDdlFromFile(cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv",
                            cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv")
 
-    # Use SqlRender to save the file
+  # Step 3.1: Create the primary key constraints for the new version
 
-    SqlRender::writeSql(s, targetFile = paste0("inst/sql/sql_server/OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql"))
+    p <- CdmDdlBase::createPkFromFile(cdmVersionNum = cdmVersion,
+                                      cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv")
 
-# Step 4: Run the following code to create the DDLs for each dialect:
+  # Step 3.2: Create the foreign key constraints for the new version
 
-writeDDL("oracle",
-         cdmVersion,
-         "OHDSI")
+    f <- CdmDdlBase::createFkFromFile(cdmVersionNum = cdmVersion,
+                                      cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv")
+# At this point you should rebuild the package
 
-writeDDL("postgresql",
-         cdmVersion,
-         "ohdsi")
+# Step 4: Run the following code to render the DDLs for each dialect. These will be used for testing on the ohdsi servers which is why the cdmDatabaseSchema is specified.
 
-writeDDL("sql server",
-         cdmVersion,
-         "ohdsi.dbo")
+writeDDL(targetdialect = "oracle",
+         cdmVersion = cdmVersion,
+         sqlFilename = paste0("OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql"),
+         cdmDatabaseSchema = "OHDSI",
+         cleanUpScript = F) #oracle syntax for removing tables is weird, set this to F and make any changes to the raw file
 
-# Step 3: Run the following code to create the primary key constraints and index files for Oracle, Postgres, and Sql Server
+writeDDL(targetdialect = "postgresql",
+         cdmVersion = cdmVersion,
+         sqlFilename = paste0("OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql"),
+         cdmDatabaseSchema = "ohdsi",
+         cleanUpScript = F) #This needs to be updated manually right now
+
+writeDDL(targetdialect = "sql server",
+         cdmVersion = cdmVersion,
+         sqlFilename = paste0("OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql"),
+         cdmDatabaseSchema = "ohdsi.dbo",
+         cleanUpScript = F) #This needs to be updated manually right now
+
+# Step 3: Run the following code to render the primary key constraints for Oracle, Postgres, and Sql Server
+
+writePrimaryKeys(targetdialect = "oracle",
+                 cdmVersion = cdmVersion,
+                 sqlFilename = paste0("OMOP CDM pk ", cdmVersion, " ", Sys.Date(), ".sql"),
+                 cdmDatabaseSchema = "OHDSI")
+
+
+writePrimaryKeys(targetdialect = "postgresql",
+                 cdmVersion = cdmVersion,
+                 sqlFilename = paste0("OMOP CDM pk ", cdmVersion, " ", Sys.Date(), ".sql"),
+                 cdmDatabaseSchema = "ohdsi")
+
+
+writePrimaryKeys(targetdialect = "sql server",
+                 cdmVersion = cdmVersion,
+                 sqlFilename = paste0("OMOP CDM pk ", cdmVersion, " ", Sys.Date(), ".sql"),
+                 cdmDatabaseSchema = "ohdsi.dbo")
+
+
+###############STOPPED HERE
+# need to update the writeConstraints function
+# rename the index sql
+# check constraints as an issue to create data quality checks
+# foreign key names might be too long for oracle
+
+# Step 4: Run the following code to render the foreign key constraints
 
 writeIndex("oracle",
            cdmVersion,
@@ -43,7 +82,7 @@ writeIndex("sql server",
            cdmVersion,
            "ohdsi.dbo")
 
-# Step 4: Run the following code to create foreign key constraints for Oracle, Postgres, and Sql Server
+# Step 4: Run the following code to render foreign key constraints for Oracle, Postgres, and Sql Server
 
 
 writeConstraints("oracle",

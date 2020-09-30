@@ -5,7 +5,6 @@ output:
       toc: true
       toc_depth: 5
       toc_float: true
-knit: pagedown::chrome_print
 ---
 
 ```{r setup, include=FALSE, eval=TRUE}
@@ -23,7 +22,15 @@ library(stringr)
 ## OMOP Common Data Model Documentation
 
 ## CDM v5.3.1
-*Documentation still in development*
+*Documentation still in development* CB- describe the table below and what each column means.
+create an Rmd file with queries and examples
+add era queries 
+link to forum posts - race and ethnicity
+add cohort table, results schema? REMOVE
+make sure v6.0 has bigints for ids
+link to csv of cdm
+link to pdf of cdm documentation
+link to forum on doc page
 
 ```{r docLoop53, echo=FALSE, results='asis'}
 tableSpecs <- read.csv("../inst/csv/OMOP_CDMv5.3.1_Table_Level.csv", stringsAsFactors = FALSE)
@@ -41,14 +48,24 @@ cdmSpecsClean <- cdmSpecs %>%
                 `Primary Key` = isPrimaryKey,
                 `Foreign Key` = isForeignKey,
                 `FK Table` = fkTableName,
-                `FK Domain` = fkDomain,
-                `FK Class` = fkClass
+                `FK Domain` = fkDomain
                 )
 
 cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
 
 for(tb in tables) {
   cat("###", tb, "{.tabset .tabset-pills} \n\n")
+  
+  tableInfo <- subset(tableSpecs, cdmTableName == tb)
+  cat("**Table Description**\n\n",tableInfo[,"tableDescription"], "\n\n")
+  
+  if(!isTRUE(tableInfo[,"userGuidance"]=="")){
+    cat("**User Guide**\n\n",tableInfo[,"userGuidance"],"\n\n")
+  }
+  
+  if(!isTRUE(tableInfo[,"etlConventions"]=="")){
+    cat("**ETL Conventions**\n\n",tableInfo[,"etlConventions"],"\n\n")
+  }
   
   loopTable <- subset(cdmSpecsClean, `CDM Table` == tb)
   loopTable <- subset(loopTable, select = -c(1))
@@ -57,7 +74,7 @@ for(tb in tables) {
            column_spec(1, bold = T) %>%
            column_spec(2, width = "3in", include_thead = T) %>%
            column_spec(3, width = "4in", include_thead = T) %>%
-           column_spec(4:10, width = "1in", include_thead = T) %>%
+           column_spec(4:9, width = "1in", include_thead = T) %>%
            kable_styling(c("condensed","hover"), position = "center", full_width = T, font_size = 13)) 
          
   

@@ -39,3 +39,6 @@ DROP TABLE IF EXISTS @cdmDatabaseSchema.cost;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.drug_era;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.dose_era;
 DROP TABLE IF EXISTS @cdmDatabaseSchema.condition_era;
+
+DROP TABLE IF EXISTS @cdmDatabaseSchema.attribute_definition;
+DROP TABLE IF EXISTS @cdmDatabaseSchema.cohort_definition;

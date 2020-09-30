@@ -3,7 +3,7 @@ title: '<div><img src="ohdsi40x40.png"></img> OMOP Common Data Model</div>'
 output: html_document
 ---
 
-The OMOP Common Data Model is managed by the [OHDSI CDM Working Group](https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:cdm-wg). Through the end of 2019 and into 2020 our goal is to fully update the documentation in an effort to facilitate greater understanding of the model. Almost every [forum post](https://www.forums.ohdsi.org) relating to a question on how to map data into the CDM inevitably references the technical and difficult-to-understand explanations of the tables and fields currently on the [wiki](https://www.github.com/ohdsi/CommonDataModel/wiki). To remedy this each month we are focusing on one or two tables, diving fully into the user guidance and ETL specifications. We meet twice a month, on the first Tuesday at 1pm est and on the 3rd Tuesday at 9am est (meeting details below).
+The OMOP Common Data Model is managed by the [OHDSI CDM Working Group](https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:cdm-wg). Through the end of 2019 and into 2020 our goal is to fully update the documentation in an effort to facilitate greater understanding of the model. Almost every [forum post](https://www.forums.ohdsi.org) relating to a question on how to map data into the CDM inevitably references the technical and difficult-to-understand explanations of the tables and fields currently on the [wiki](https://www.github.com/ohdsi/CommonDataModel/wiki). To remedy this each month we are focusing on one or two tables, diving fully into the user guidance and ETL specifications. We meet once a month, on the first Tuesday at 1pm est.
 
 In addition to documentation the formal remit of the CDM Working Group is to hear proposals for change, ratifying only those with valid use cases and data to support them. This process will be slower through 2020 though proposals related to existing CDM tables will be considered during the months those tables are being updated. For example November 2019 will be focused on the PERSON and OBSERVATION_PERIOD tables so any proposals related to those two tables will be evaluated during November 2019. Once proposals are accepted they are listed as such and will be integrated in an upcoming version of the OMOP CDM. Currently accepted proposals can be found under the "Proposals" drop down across the top. 
 
@@ -12,8 +12,9 @@ In addition to documentation the formal remit of the CDM Working Group is to hea
 **Every first Tuesday of the month at 1pm est**  
 [Skype Meeting](https://meet.lync.com/jnj-its/mblacke/C8SP52P1)   
 
-**Every third Tuesday of the month at 9am est**  
-[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/GFMFNJYW)  
+**Every third Tuesday of the month at 1pm est**  
+[Skype Meeting](https://meet.lync.com/jnj-its/mblacke/TD5BF9BR) 
+
 
 ### CDM WG Important Links
 

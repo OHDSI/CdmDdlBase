@@ -18,15 +18,19 @@
 #' Create a DDL script from a two csv files that detail the OMOP CDM Specifications. These files also form the basis of the CDM documentation and the Data Quality
 #' Dashboard.
 #'
+#' @param cdmVersionNum The version of the CDM you are creating
+#'
 #' @param cdmTableCsvLoc  The location of the csv file with the high-level CDM table information. This is defaulted to "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv".
 #'                        If a new version of this file was committed to the CDM repository the package automatically will grab it and place it in "inst/csv/".
-#' @param cdmVersion The location of the csv file with the CDM field information. This is defaulted to "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv".
+#' @param cdmFieldCsvLoc The location of the csv file with the CDM field information. This is defaulted to "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv".
 #'                        If a new version of this file was committed to the CDM repository the package automatically will grab it and place it in "inst/csv/".
+#' @param outputFile  The name of the output ddl sql file. This is defaulted to a location in the inst/sql/sql server folder and named with today's date and the CDM version.
 #' @export
 
 createDdlFromFile <- function(cdmVersionNum = cdmVersion,
                               cdmTableCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Table_Level.csv",
-                              cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv"){
+                              cdmFieldCsvLoc = "inst/csv/OMOP_CDMv5.3.1_Field_Level.csv",
+                              outputFile = paste0("inst/sql/sql_server/OMOP CDM ddl ", cdmVersion, " ", Sys.Date(), ".sql")){
 
   tableSpecs <- read.csv(cdmTableCsvLoc, stringsAsFactors = FALSE)
   cdmSpecs <- read.csv(cdmFieldCsvLoc, stringsAsFactors = FALSE)
@@ -34,7 +38,7 @@ createDdlFromFile <- function(cdmVersionNum = cdmVersion,
   tableList <- tableSpecs$cdmTableName
 
   s <- c()
-  s <- c(paste0("--CDM DDL Specification for OMOP Common Data Model ",cdmVersionNum))
+  s <- c(paste0("--@targetdialect CDM DDL Specification for OMOP Common Data Model ",cdmVersionNum))
   for (t in tableList){
     table <- subset(cdmSpecs, cdmTableName == t)
     fields <- table$cdmFieldName
@@ -45,7 +49,7 @@ createDdlFromFile <- function(cdmVersionNum = cdmVersion,
       q <- "\n\n--HINT DISTRIBUTE ON RANDOM\n"
     }
 
-    s <- c(s, q, paste0("CREATE TABLE ", t, " (\n"))
+    s <- c(s, q, paste0("CREATE TABLE @cdmDatabaseSchema.", t, " (\n"))
 
     end <- length(fields)
     a <- c()
@@ -64,9 +68,16 @@ createDdlFromFile <- function(cdmVersionNum = cdmVersion,
         e <- (",")
       }
 
-      a <- c(a, paste0("\n\t\t\t",f," ",subset(table, cdmFieldName == f, cdmDatatype),r,e))
+      if (f=="offset") {
+        field <- paste0('"',f,'"')
+      } else {
+        field <- f
+      }
+
+      a <- c(a, paste0("\n\t\t\t",field," ",subset(table, cdmFieldName == f, cdmDatatype),r,e))
     }
     s <- c(s, a, "")
   }
+  SqlRender::writeSql(s, targetFile = outputFile)
   return(s)
 }

@@ -18,10 +18,12 @@
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
 #' @param cdmVersion The version of the CDM that you are creating the primary keys for
+#' @param cdmDatabaseSchema The name of the schema where the cdm sits.
+#' @param sqlFilename The name of the file that should be rendered and translated to a different dbms.
 #'
 #' @export
 
-writePrimaryKeys <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
+writePrimaryKeys <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename) {
   if(!dir.exists("output")){
     dir.create("output")
   }
@@ -30,13 +32,13 @@ writePrimaryKeys <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
     dir.create(paste0("output/",targetdialect))
   }
 
-  sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM Primary Keys.sql",
-                                           packageName = "DDLGeneratr",
+  sql <- SqlRender::loadRenderTranslateSql(sqlFilename = sqlFilename,
+                                           packageName = "CdmDdlBase",
                                            dbms = targetdialect,
                                            targetdialect = targetdialect,
                                            cdmDatabaseSchema = cdmDatabaseSchema)
 
   SqlRender::writeSql(sql = sql,
-                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, cdmVersion, " primary keys.sql"))
+                      targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect, " ", cdmVersion, " primary keys.sql" ))
 
 }
