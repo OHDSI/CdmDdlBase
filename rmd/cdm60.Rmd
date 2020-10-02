@@ -44,6 +44,30 @@ cdmSpecsClean <- cdmSpecs %>%
 cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
 
 for(tb in tables) {
+  
+  if(tb == 'PERSON'){
+    cat("## Clinical Data Tables\n\n")
+  }
+  
+  if(tb == 'LOCATION'){
+    cat("## Health System Data Tables\n\n")
+  }
+  
+  if(tb == 'PAYER_PLAN_PERIOD'){
+    cat("## Health Economics Data Tables\n\n")
+  }
+  
+  if(tb == 'DRUG_ERA'){
+    cat("## Standardized Derived Elements\n\n")
+  }
+  
+  if(tb == 'METADATA'){
+    cat("## Metadata Tables\n\n")
+  }
+  if(tb == 'CONCEPT'){
+    cat("## Vocabulary Tables\n\n")
+  }
+ 
   cat("###", tb, "{.tabset .tabset-pills} \n\n")
   
   tableInfo <- subset(tableSpecs, cdmTableName == tb)

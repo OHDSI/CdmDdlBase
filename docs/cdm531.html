@@ -474,6 +474,9 @@ div.tocify {
 <div id="cdm-v5.3.1" class="section level2">
 <h2>CDM v5.3.1</h2>
 <p><em>Documentation still in development</em> CB- describe the table below and what each column means. create an Rmd file with queries and examples add era queries link to forum posts - race and ethnicity add cohort table, results schema? REMOVE make sure v6.0 has bigints for ids link to csv of cdm link to pdf of cdm documentation link to forum on doc page</p>
+</div>
+<div id="clinical-data-tables" class="section level2">
+<h2>Clinical Data Tables</h2>
 <div id="person" class="section level3 tabset tabset-pills">
 <h3>PERSON</h3>
 <p><strong>Table Description</strong></p>
@@ -2768,11 +2771,11 @@ No
 <div id="drug_exposure" class="section level3 tabset tabset-pills">
 <h3>DRUG_EXPOSURE</h3>
 <p><strong>Table Description</strong></p>
-<p>This table captures records about the exposure to a Drug ingested or otherwise introduced into the body. A Drug is a biochemical substance formulated in such a way that when administered to a Person it will exert a certain biochemical effect on the metabolism.</p>
+<p>This table captures records about the exposure to a Drug ingested or otherwise introduced into the body. A Drug is a biochemical substance formulated in such a way that when administered to a Person it will exert a certain biochemical effect on the metabolism. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs.</p>
 <p><strong>User Guide</strong></p>
-<p>Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies.</p>
+<p>The purpose of records in this table is to indicate an exposure to a certain drug as best as possible. In this context a drug is defined as an active ingredient. Drug Exposures are defined by Concepts from the Drug domain, which form a complex hierarchy. As a result, one DRUG_SOURCE_CONCEPT_ID may map to multiple standard concept ids if it is a combination product. Records in this table represent prescriptions written, prescriptions dispensed, and drugs administered by a provider to name a few. The DRUG_TYPE_CONCEPT_ID can be used to find and filter on these types. This table includes additional information about the drug products, the quantity given, and route of administration.</p>
 <p><strong>ETL Conventions</strong></p>
-<p>When the Drug Source Value of the code cannot be translated into Standard Drug Concept IDs, a Drug exposure entry is stored with only the corresponding SOURCE_CONCEPT_ID and DRUG_SOURCE_VALUE and a DRUG_CONCEPT_ID of 0. The Drug Concept with the most detailed content of information is preferred during the mapping process. These are indicated in the CONCEPT_CLASS_ID field of the Concept and are recorded in the following order of precedence: ‘Branded Pack’, ‘Clinical Pack’, ‘Branded Drug’, ‘Clinical Drug’, ‘Branded Drug Component’, ‘Clinical Drug Component’, ‘Branded Drug Form’, ‘Clinical Drug Form’, and only if no other information is available ‘Ingredient’. Note: If only the drug class is known, the DRUG_CONCEPT_ID field should contain 0.</p>
+<p>Information about quantity and dose is provided in a variety of different ways and it is important for the ETL to provide as much information as possible from the data. Depending on the provenance of the data fields may be captured differently i.e. quantity for drugs adminstered may have a separate meaning from quantity for prescriptions dispensed. If a patient has multiple records on the same day for the same drug or procedures the ETL should not de-dupe them unless there is probable reason to believe the item is a true data duplicate. Take note on how to handle refills for prescriptions written.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2811,10 +2814,10 @@ FK Domain
 drug_exposure_id
 </td>
 <td style="text-align:left;width: 3in; ">
-Use this to identify unique dispensings or administrations of a drug product to a person
+The unique key given to records of drug dispensings or administrations for a person. Refer to the ETL for how duplicate drugs during the same visit were handled.
 </td>
 <td style="text-align:left;width: 4in; ">
-This should be populated by creating a unique identifier for each unique instance where a person receives a dispensing or administration of a drug.
+Each instance of a drug dispensing or administration present in the source data should be assigned this unique key. In some cases, a person can have multiple records of the same drug within the same visit. It is valid to keep these duplicates and assign them individual, unique, DRUG_EXPOSURE_IDs, though it is up to the ETL how they should be handled.
 </td>
 <td style="text-align:left;width: 1in; ">
 bigint
@@ -2838,6 +2841,7 @@ No
 person_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The PERSON_ID of the PERSON for whom the drug dispensing or administration is recorded. This may be a system generated code.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -2864,10 +2868,10 @@ PERSON
 drug_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
-The DRUG_CONCEPT_ID field is recommended for primary use in analyses, and must be used for network studies. This is the standard concept mapped from the source value which represents a drug product or molecule otherwise introduced to the body.
+The DRUG_CONCEPT_ID field is recommended for primary use in analyses, and must be used for network studies. This is the standard concept mapped from the source concept id which represents a drug product or molecule otherwise introduced to the body. The drug concepts can have a varying degree of information about drug strength and dose. This information is relevant in the context of quantity and administration information in the subsequent fields plus strength information from the DRUG_STRENGTH table, provided as part of the standard vocabulary download.
 </td>
 <td style="text-align:left;width: 4in; ">
-Map source values to standard concepts. All concepts in the DRUG_EXPOSURE table should be in the ‘Drug’ domain.
+The CONCEPT_ID that the DRUG_SOURCE_VALUE maps to. The concept id should be derived either from mapping from the source concept id or by picking the drug concept representing the most amount of detail you have. Records whose source values map to standard concepts with a domain of Drug should go in this table. When the Drug Source Value of the code cannot be translated into Standard Drug Concept IDs, a Drug exposure entry is stored with only the corresponding SOURCE_CONCEPT_ID and DRUG_SOURCE_VALUE and a DRUG_CONCEPT_ID of 0. The Drug Concept with the most detailed content of information is preferred during the mapping process. These are indicated in the CONCEPT_CLASS_ID field of the Concept and are recorded in the following order of precedence: ‘Branded Pack’, ‘Clinical Pack’, ‘Branded Drug’, ‘Clinical Drug’, ‘Branded Drug Component’, ‘Clinical Drug Component’, ‘Branded Drug Form’, ‘Clinical Drug Form’, and only if no other information is available ‘Ingredient’. Note: If only the drug class is known, the DRUG_CONCEPT_ID field should contain 0. <a href="https://athena.ohdsi.org/search-terms/terms?domain=Drug&amp;standardConcept=Standard&amp;page=1&amp;pageSize=15&amp;query=">Accepted Concepts</a>.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -2893,9 +2897,10 @@ Drug
 drug_exposure_start_date
 </td>
 <td style="text-align:left;width: 3in; ">
+Use this date to determine the start date of the drug record.
 </td>
 <td style="text-align:left;width: 4in; ">
-Valid entries include a start date of a prescription, the date a prescription was filled, or the date on which a Drug administration procedure was recorded.
+Valid entries include a start date of a prescription, the date a prescription was filled, or the date on which a Drug administration was recorded. It is a valid ETL choice to use the date the drug was ordered as the DRUG_EXPOSURE_START_DATE.
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -2921,7 +2926,7 @@ drug_exposure_start_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
-If time is unknown set it to midnight.
+This is not required, though it is in v6. If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -2945,9 +2950,10 @@ No
 drug_exposure_end_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended for the patient.
 </td>
 <td style="text-align:left;width: 4in; ">
-The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended for the patient. This could be that the duration of DAYS_SUPPLY was reached, or because the exposure was stopped (medication changed, medication discontinued, etc.). To populate this field, start first with DAYS_SUPPLY using the calculation DRUG_EXPOSURE_END_DATE = DRUG_EXPOSURE_START_DATE + DAYS_SUPPLY -1 day. If DAYS_SUPPLY is not available then use the VERBATIM_END_DATE as it is given in the source data. If there is no verbatim end date then set DRUG_EXPOSURE_END_DATE equal to DRUG_EXPOSURE_START_DATE. When the native data suggests a drug exposure has a days supply less than 0, drop the record as it is unknown if a person has received the drug or not (THEMIS issue #24). If a patient has multiple records on the same day for the same drug or procedures the ETL should not de-dupe them unless there is probable reason to believe the item is a true data duplicate (THEMIS issue #14). Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to Drug.
+If this information is not explicitly available in the data, infer the end date using the following methods: 1. Start first with duration or days supply using the calculation drug start date + days supply -1 day. 2. Use quantity divided by daily dose that you may obtain from the sig or a source field (or assumed daily dose of 1) for solid, indivisibile, drug products. If quantity represents ingredient amount, quantity divided by daily dose * concentration (from drug_strength) drug concept id tells you the dose form. 3. If it is an administration record, set drug end date equal to drug start date. If the record is a written prescription then set end date to start date + 29. If the record is a mail-order prescription set end date to start date + 89. The end date must be equal to or greater than the start date. Ibuprofen 20mg/mL oral solution concept tells us this is oral solution. Calculate duration as quantity (200 example) * daily dose (5mL) /concentation (20mg/mL) 200*5/20 = 50 days. SHOW EXAMPLES BY DOSE FORM
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -2973,7 +2979,7 @@ drug_exposure_end_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
-If time is unknown set it to midnight.
+This is not required, though it is in v6. If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -2997,10 +3003,10 @@ No
 verbatim_end_date
 </td>
 <td style="text-align:left;width: 3in; ">
-This is the end date as it appears in the source data, if it is given.
+This is the end date of the drug exposure as it appears in the source data, if it is given
 </td>
 <td style="text-align:left;width: 4in; ">
-Put the end date for the drug exposure as it appears in the source data. This may or may not be the same as DRUG_EXPOSURE_END_DATE given the logic for assigning DRUG_EXPOSURE_END_DATE.
+Put the end date or discontinuation date as it appears from the source data or leave blank if unavailable.
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -3024,10 +3030,10 @@ No
 drug_type_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
-You can use the TYPE_CONCEPT_ID to delineate between prescriptions written vs. prescriptions dispensed vs. medication history vs. patient-reported exposure
+You can use the TYPE_CONCEPT_ID to delineate between prescriptions written vs. prescriptions dispensed vs. medication history vs. patient-reported exposure, etc.
 </td>
 <td style="text-align:left;width: 4in; ">
-This field is meant to preserve the provenance of the record. Any standard concepts in the ‘Type Concept’ domain are valid here.
+Choose the drug_type_concept_id that best represents the provenance of the record, for example whether it came from a record of a prescription written or physician administered drug. <a href="https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&amp;standardConcept=Standard&amp;page=1&amp;pageSize=15&amp;query=">Accepted Concepts</a>.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -3053,9 +3059,10 @@ Type Concept
 stop_reason
 </td>
 <td style="text-align:left;width: 3in; ">
-Reason a person stopped a medication. Reasons include regimen completed, changed, removed, etc.
+The reason a person stopped a medication as it is represented in the source. Reasons include regimen completed, changed, removed, etc. This field will be retired in v6.0.
 </td>
 <td style="text-align:left;width: 4in; ">
+This information is often not populated in source data and it is a valid etl choice to leave it blank if the information does not exist.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(20)
@@ -3079,7 +3086,7 @@ No
 refills
 </td>
 <td style="text-align:left;width: 3in; ">
-The content of the refills field determines the current refill number, not the number of remaining refills. For example, for a drug prescription with 2 refills, the content of this field for the 3 Drug Exposure events are null, 1 and 2.
+This is only filled in when the record is coming from a prescription written this field is meant to represent intended refills at time of the prescription.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -3107,6 +3114,7 @@ quantity
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+If liquid, quantity stands for the total amount dispensed or ordered of ingredient in the units given by the drug_strength table. If the unit from the source data does not align with the unit in the drug_strength table the quantity should be converted to the correct unit given in drug_strength. Clinical drugs with fixed dose forms (tablets etc.): quantity number of units/tablets/capsulrs (can be partial, but then only 1/2 or 1/3, not 0.01) Clinical drugs with divisible dose forms (injections): amount of ingredient the patient got (2mg/mL but the patient got 80mL then quantity is 160) Quantified clinical drugs with divisible dose forms (prefilled syringes) amount of ingredient USE THESE TO CREATE EXAMPLE BY DOSE FORM
 </td>
 <td style="text-align:left;width: 1in; ">
 float
@@ -3132,6 +3140,7 @@ days_supply
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+Days supply of the drug. This should be the verbatim days_supply as given on the prescription. If the drug is physician administered use duration end date if given or set to 1 as default if duration is not available.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -3155,9 +3164,10 @@ No
 sig
 </td>
 <td style="text-align:left;width: 3in; ">
-(and printed on the container)
+This is the verbatim instruction for the drug as written by the provider.
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the written out instructions for the drug as it is verbatim in the source, if available.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(MAX)
@@ -3181,9 +3191,9 @@ No
 route_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
-Route information can also be inferred from the Drug product itself by determining the Drug Form of the Concept, creating some partial overlap of the same type of information. Therefore, route information should be stored in DRUG_CONCEPT_ID (as a drug with corresponding Dose Form). The ROUTE_CONCEPT_ID could be used for storing more granular forms e.g. ‘Intraventricular cardiac’.
 </td>
 <td style="text-align:left;width: 4in; ">
+The standard CONCEPT_ID that the ROUTE_SOURCE_VALUE maps to in the route domain.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -3234,11 +3244,13 @@ No
 provider_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Provider associated with drug record, e.g. the provider who wrote the prescription or the provider who administered the drug.
 </td>
 <td style="text-align:left;width: 4in; ">
+The ETL may need to make a choice as to which PROVIDER_ID to put here. Based on what is available this may or may not be different than the provider associated with the overall VISIT_OCCURRENCE record, for example the ordering vs administering physician on an EHR record.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -3260,11 +3272,13 @@ PROVIDER
 visit_occurrence_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Visit during which the drug was prescribed, administered or dispensed.
 </td>
 <td style="text-align:left;width: 4in; ">
+To populate this field drug exposures must be explicitly initiated in the visit.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -3286,11 +3300,13 @@ VISIT_OCCURRENCE
 visit_detail_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The VISIT_DETAIL record during which the drug exposure occurred. For example, if the person was in the ICU at the time of the drug administration the VISIT_OCCURRENCE record would reflect the overall hospital stay and the VISIT_DETAIL record would reflect the ICU stay during the hospital visit.
 </td>
 <td style="text-align:left;width: 4in; ">
+Same rules apply as for the VISIT_OCCURRENCE_ID.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -3312,9 +3328,10 @@ VISIT_DETAIL
 drug_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the drug exposure that occurred. For example, this could be an NDC or Gemscript code.
 </td>
 <td style="text-align:left;width: 4in; ">
-This code is mapped to a Standard Drug concept in the Standardized Vocabularies and the original code is, stored here for reference.
+This code is mapped to a Standard Drug Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -3338,8 +3355,10 @@ No
 drug_source_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the concept representing the drug source value and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Drug necessary for a given analytic use case. Consider using DRUG_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.
 </td>
 <td style="text-align:left;width: 4in; ">
+If the DRUG_SOURCE_VALUE is coded in the source data using an OMOP supported vocabulary put the concept id representing the source value here.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -3364,8 +3383,10 @@ CONCEPT
 route_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the drug route.
 </td>
 <td style="text-align:left;width: 4in; ">
+This information may be called something different in the source data but the field is meant to contain a value indicating when and how a drug was given to a patient. This source value is mapped to a standard concept which is stored in the ROUTE_CONCEPT_ID field.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -3389,8 +3410,10 @@ No
 dose_unit_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the dose unit of the drug given.
 </td>
 <td style="text-align:left;width: 4in; ">
+This information may be called something different in the source data but the field is meant to contain a value indicating the unit of dosage of drug given to the patient. This is an older column and will be deprecated in an upcoming version.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -3848,7 +3871,7 @@ No
 <p><strong>User Guide</strong></p>
 <p>The distinction between Devices or supplies and Procedures are sometimes blurry, but the former are physical objects while the latter are actions, often to apply a Device or supply.</p>
 <p><strong>ETL Conventions</strong></p>
-<p>When dealing with duplicate records, the ETL must determine whether to sum them up into one record or keep them separate. Things to consider are: - Same Device/Procedure - Same DEVICE_EXPOSURE_START_DATETIME - Same Visit Occurrence or Visit Detail - Same Provider - Same Modifier for Procedures - Same COST_ID</p>
+<p>Source codes and source text fields mapped to Standard Concepts of the Device Domain have to be recorded here.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -3887,8 +3910,10 @@ FK Domain
 device_exposure_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The unique key given to records a person’s exposure to a foreign physical object or instrument.
 </td>
 <td style="text-align:left;width: 4in; ">
+Each instance of an exposure to a foreign object or device present in the source data should be assigned this unique key.
 </td>
 <td style="text-align:left;width: 1in; ">
 bigint
@@ -3938,8 +3963,10 @@ PERSON
 device_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The DEVICE_CONCEPT_ID field is recommended for primary use in analyses, and must be used for network studies. This is the standard concept mapped from the source concept id which represents a foreign object or instrument the person was exposed to.
 </td>
 <td style="text-align:left;width: 4in; ">
+The CONCEPT_ID that the DEVICE_SOURCE_VALUE maps to.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -3965,8 +3992,10 @@ Device
 device_exposure_start_date
 </td>
 <td style="text-align:left;width: 3in; ">
+Use this date to determine the start date of the device record.
 </td>
 <td style="text-align:left;width: 4in; ">
+Valid entries include a start date of a procedure to implant a device, the date of a prescription for a device, or the date of device administration.
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -3992,6 +4021,7 @@ device_exposure_start_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+This is not required, though it is in v6. If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -4015,8 +4045,10 @@ No
 device_exposure_end_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The DEVICE_EXPOSURE_END_DATE denotes the day the device exposure ended for the patient, if given.
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the end date or discontinuation date as it appears from the source data or leave blank if unavailable.
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -4042,6 +4074,7 @@ device_exposure_end_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -4065,8 +4098,10 @@ No
 device_type_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+You can use the TYPE_CONCEPT_ID to denote the provenance of the record, as in whether the record is from administrative claims or EHR.
 </td>
 <td style="text-align:left;width: 4in; ">
+Choose the drug_type_concept_id that best represents the provenance of the record, for example whether it came from a record of a prescription written or physician administered drug. <a href="https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&amp;standardConcept=Standard&amp;page=1&amp;pageSize=15&amp;query=">Accepted Concepts</a>.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -4092,6 +4127,7 @@ Type Concept
 unique_device_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the Unique Device Identification number for devices regulated by the FDA, if given.
 </td>
 <td style="text-align:left;width: 4in; ">
 For medical devices that are regulated by the FDA, a Unique Device Identification (UDI) is provided if available in the data source and is recorded in the UNIQUE_DEVICE_ID field.
@@ -4143,11 +4179,13 @@ No
 provider_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Provider associated with device record, e.g. the provider who wrote the prescription or the provider who implanted the device.
 </td>
 <td style="text-align:left;width: 4in; ">
+The ETL may need to make a choice as to which PROVIDER_ID to put here. Based on what is available this may or may not be different than the provider associated with the overall VISIT_OCCURRENCE record.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -4169,11 +4207,13 @@ PROVIDER
 visit_occurrence_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Visit during which the device was prescribed or given.
 </td>
 <td style="text-align:left;width: 4in; ">
+To populate this field device exposures must be explicitly initiated in the visit.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -4195,11 +4235,13 @@ VISIT_OCCURRENCE
 visit_detail_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Visit Detail during which the device was prescribed or given.
 </td>
 <td style="text-align:left;width: 4in; ">
+To populate this field device exposures must be explicitly initiated in the visit detail record.
 </td>
 <td style="text-align:left;width: 1in; ">
-integer
+bigint
 </td>
 <td style="text-align:left;width: 1in; ">
 No
@@ -4221,8 +4263,10 @@ VISIT_DETAIL
 device_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the device exposure that occurred. For example, this could be an NDC or Gemscript code.
 </td>
 <td style="text-align:left;width: 4in; ">
+This code is mapped to a Standard Device Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -4246,8 +4290,10 @@ No
 device_source_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the concept representing the device source value and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Device necessary for a given analytic use case. Consider using DEVICE_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.
 </td>
 <td style="text-align:left;width: 4in; ">
+If the DEVICE_SOURCE_VALUE is coded in the source data using an OMOP supported vocabulary put the concept id representing the source value here.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -4343,7 +4389,7 @@ No
 person_id
 </td>
 <td style="text-align:left;width: 3in; ">
-The PERSON_ID of the PERSON for whom the measurement is recorded. This may be a system generated code.
+The PERSON_ID of the Person for whom the Measurement is recorded. This may be a system generated code.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -4729,7 +4775,7 @@ VISIT_OCCURRENCE
 visit_detail_id
 </td>
 <td style="text-align:left;width: 3in; ">
-The VISIT_DETAIL record during which the Measurement occurred. For example, if the Person was in the ICU at the time of the diagnosis the VISIT_OCCURRENCE record would reflect the overall hospital stay and the VISIT_DETAIL record would reflect the ICU stay during the hospital visit.
+The VISIT_DETAIL record during which the Measurement occurred. For example, if the Person was in the ICU at the time the VISIT_OCCURRENCE record would reflect the overall hospital stay and the VISIT_DETAIL record would reflect the ICU stay during the hospital visit.
 </td>
 <td style="text-align:left;width: 4in; ">
 Same rules apply as for the VISIT_OCCURRENCE_ID.
@@ -4760,7 +4806,7 @@ measurement_source_value
 This field houses the verbatim value from the source data representing the Measurement that occurred. For example, this could be an ICD10 or Read code.
 </td>
 <td style="text-align:left;width: 4in; ">
-This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.
+This code is mapped to a Standard Measurement Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -4868,8 +4914,10 @@ No
 <h3>OBSERVATION</h3>
 <p><strong>Table Description</strong></p>
 <p>The OBSERVATION table captures clinical facts about a Person obtained in the context of examination, questioning or a procedure. Any data that cannot be represented by any other domains, such as social and lifestyle facts, medical history, family history, etc. are recorded here.</p>
+<p><strong>User Guide</strong></p>
+<p>Observations differ from Measurements in that they do not require a standardized test or some other activity to generate clinical fact. Typical observations are medical history, family history, the stated need for certain treatment, social circumstances, lifestyle choices, healthcare utilization patterns, etc. If the generation clinical facts requires a standardized testing such as lab testing or imaging and leads to a standardized result, the data item is recorded in the MEASUREMENT table. If the clinical fact observed determines a sign, symptom, diagnosis of a disease or other medical condition, it is recorded in the CONDITION_OCCURRENCE table. Valid Observation Concepts are not enforced to be from any domain though they still should be Standard Concepts.</p>
 <p><strong>ETL Conventions</strong></p>
-<p>Observations differ from Measurements in that they do not require a standardized test or some other activity to generate clinical fact. Typical observations are medical history, family history, the stated need for certain treatment, social circumstances, lifestyle choices, healthcare utilization patterns, etc. If the generation clinical facts requires a standardized testing such as lab testing or imaging and leads to a standardized result, the data item is recorded in the MEASUREMENT table. If the clinical fact observed determines a sign, symptom, diagnosis of a disease or other medical condition, it is recorded in the CONDITION_OCCURRENCE table. Observations can be stored as attribute value pairs, with the attribute as the Observation Concept and the value representing the clinical fact. This fact can be a Concept (stored in VALUE_AS_CONCEPT), a numerical value (VALUE_AS_NUMBER), a verbatim string (VALUE_AS_STRING), or a datetime (VALUE_AS_DATETIME). Even though Observations do not have an explicit result, the clinical fact can be stated separately from the type of Observation in the VALUE_AS_* fields. It is recommended for Observations that are suggestive statements of positive assertion should have a value of ‘Yes’ (concept_id=4188539), recorded, even though the null value is the equivalent.</p>
+<p>Records whose Source Values map to any domain besides Condition, Procedure, Drug, Measurement or Device should be stored in the Observation table. Observations can be stored as attribute value pairs, with the attribute as the Observation Concept and the value representing the clinical fact. This fact can be a Concept (stored in VALUE_AS_CONCEPT), a numerical value (VALUE_AS_NUMBER), a verbatim string (VALUE_AS_STRING), or a datetime (VALUE_AS_DATETIME). Even though Observations do not have an explicit result, the clinical fact can be stated separately from the type of Observation in the VALUE_AS_* fields. It is recommended for Observations that are suggestive statements of positive assertion should have a value of ‘Yes’ (concept_id=4188539), recorded, even though the null value is the equivalent.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -4908,8 +4956,10 @@ FK Domain
 observation_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The unique key given to an Observation record for a Person. Refer to the ETL for how duplicate Observations during the same Visit were handled.
 </td>
 <td style="text-align:left;width: 4in; ">
+Each instance of an observation present in the source data should be assigned this unique key.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -4933,6 +4983,7 @@ No
 person_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The PERSON_ID of the Person for whom the Observation is recorded. This may be a system generated code.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -4959,8 +5010,10 @@ PERSON
 observation_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The OBSERVATION_CONCEPT_ID field is recommended for primary use in analyses, and must be used for network studies.
 </td>
 <td style="text-align:left;width: 4in; ">
+The CONCEPT_ID that the OBSERVATION_SOURCE_CONCEPT_ID maps to. There is no specified domain that the Concepts in this table must adhere to. The only rule is that records with Concepts in the Condition, Procedure, Drug, Measurement, or Device domans MUST go to the corresponding table.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -4985,8 +5038,10 @@ CONCEPT
 observation_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The date of the Observation. Depending on what the Observation represents this could be the date of a lab test, the date of a survey, or the date a patient’s family history was taken.
 </td>
 <td style="text-align:left;width: 4in; ">
+For some observations the ETL may need to make a choice as to which date to choose.
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -5012,6 +5067,7 @@ observation_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+If no time is given set to midnight (00:00:00).
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -5035,8 +5091,10 @@ No
 observation_type_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This field can be used to determine the provenance of the Observation record, as in whether the measurement was from an EHR system, insurance claim, registry, or other sources.
 </td>
 <td style="text-align:left;width: 4in; ">
+Choose the OBSERVATION_TYPE_CONCEPT_ID that best represents the provenance of the record, for example whether it came from an EHR record or billing claim. <a href="https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&amp;standardConcept=Standard&amp;page=1&amp;pageSize=15&amp;query=">Accepted Concepts</a>.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5062,6 +5120,7 @@ Type Concept
 value_as_number
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the numerical value of the Result of the Observation, if applicable and available. It is not expected that all Observations will have numeric results, rather, this field is here to house values should they exist.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5087,6 +5146,7 @@ No
 value_as_string
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the categorical value of the Result of the Observation, if applicable and available.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5112,9 +5172,10 @@ No
 value_as_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+It is possible that some records destined for the Observation table have two clinical ideas represented in one source code. This is common with ICD10 codes that describe a family history of some Condition, for example. In OMOP the Vocabulary breaks these two clinical ideas into two codes; one becomes the OBSERVATION_CONCEPT_ID and the other becomes the VALUE_AS_CONCEPT_ID. It is important when using the Observation table to keep this possibility in mind and to examine the VALUE_AS_CONCEPT_ID field for relevant information.
 </td>
 <td style="text-align:left;width: 4in; ">
-Note that the value of VALUE_AS_CONCEPT_ID may be provided through mapping from a source Concept which contains the content of the Observation. In those situations, the CONCEPT_RELATIONSHIP table in addition to the ‘Maps to’ record contains a second record with the relationship_id set to ‘Maps to value’. For example, ICD9CM V17.5 concept_id 44828510 ‘Family history of asthma’ has a ‘Maps to’ relationship to 4167217 ‘Family history of clinical finding’ as well as a ‘Maps to value’ record to 317009 ‘Asthma’.
+Note that the value of VALUE_AS_CONCEPT_ID may be provided through mapping from a source Concept which contains the content of the Observation. In those situations, the CONCEPT_RELATIONSHIP table in addition to the ‘Maps to’ record contains a second record with the relationship_id set to ‘Maps to value’. For example, ICD10 <a href="https://athena.ohdsi.org/search-terms/terms/45581076">Z82.4</a> ‘Family history of ischaemic heart disease and other diseases of the circulatory system’ has a ‘Maps to’ relationship to <a href="https://athena.ohdsi.org/search-terms/terms/4167217">4167217</a> ‘Family history of clinical finding’ as well as a ‘Maps to value’ record to <a href="https://athena.ohdsi.org/search-terms/terms/134057">134057</a> ‘Disorder of cardiovascular system’.
 </td>
 <td style="text-align:left;width: 1in; ">
 Integer
@@ -5139,8 +5200,10 @@ CONCEPT
 qualifier_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This field contains all attributes specifying the clinical fact further, such as as degrees, severities, drug-drug interaction alerts etc.
 </td>
 <td style="text-align:left;width: 4in; ">
+Use your best judgement as to what Concepts to use here and if they are necessary to accurately represent the clinical record. There is no restriction on the domain of these Concepts, they just need to be Standard.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5165,8 +5228,10 @@ CONCEPT
 unit_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+There is currently no vocabulary link between observation Concepts and unit Concepts, the UNIT_CONCEPT_ID is a representation of the units as provided by the source data after ETL clean up.
 </td>
 <td style="text-align:left;width: 4in; ">
+There is no standardization requirement for units associated with OBSERVATION_CONCEPT_IDs, however, it is the responsibility of the ETL to choose the most plausible unit.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5192,8 +5257,10 @@ Unit
 provider_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The provider associated with the observation record, e.g. the provider who ordered the test or the provider who recorded the result.
 </td>
 <td style="text-align:left;width: 4in; ">
+The ETL may need to make a choice as to which PROVIDER_ID to put here. Based on what is available this may or may not be different than the provider associated with the overall VISIT_OCCURRENCE record. For example the admitting vs attending physician on an EHR record.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5218,8 +5285,10 @@ PROVIDER
 visit_occurrence_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The visit during which the Observation occurred.
 </td>
 <td style="text-align:left;width: 4in; ">
+Depending on the structure of the source data, this may have to be determined based on dates. If an OBSERVATION_DATE occurs within the start and end date of a Visit it is a valid ETL choice to choose the VISIT_OCCURRENCE_ID from the visit that subsumes it, even if not explictly stated in the data. While not required, an attempt should be made to locate the VISIT_OCCURRENCE_ID of the observation record. If an observation is related to a visit explicitly in the source data, it is possible that the result date of the Observation falls outside of the bounds of the Visit dates.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5244,8 +5313,10 @@ VISIT_OCCURRENCE
 visit_detail_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The VISIT_DETAIL record during which the Observation occurred. For example, if the Person was in the ICU at the time the VISIT_OCCURRENCE record would reflect the overall hospital stay and the VISIT_DETAIL record would reflect the ICU stay during the hospital visit.
 </td>
 <td style="text-align:left;width: 4in; ">
+Same rules apply as for the VISIT_OCCURRENCE_ID.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5270,8 +5341,10 @@ VISIT_DETAIL
 observation_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the Observation that occurred. For example, this could be an ICD10 or Read code.
 </td>
 <td style="text-align:left;width: 4in; ">
+This code is mapped to a Standard Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -5295,8 +5368,10 @@ No
 observation_source_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the concept representing the OBSERVATION_SOURCE_VALUE and may not necessarily be standard. This field is discouraged from use in analysis because it is not required to contain Standard Concepts that are used across the OHDSI community, and should only be used when Standard Concepts do not adequately represent the source detail for the Observation necessary for a given analytic use case. Consider using OBSERVATION_CONCEPT_ID instead to enable standardized analytics that can be consistent across the network.
 </td>
 <td style="text-align:left;width: 4in; ">
+If the OBSERVATION_SOURCE_VALUE is coded in the source data using an OMOP supported vocabulary put the concept id representing the source value here.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5321,8 +5396,10 @@ CONCEPT
 unit_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the unit of the Observation that occurred.
 </td>
 <td style="text-align:left;width: 4in; ">
+This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -5346,8 +5423,10 @@ No
 qualifier_source_value
 </td>
 <td style="text-align:left;width: 3in; ">
+This field houses the verbatim value from the source data representing the qualifier of the Observation that occurred.
 </td>
 <td style="text-align:left;width: 4in; ">
+This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -5372,7 +5451,7 @@ No
 <div id="death" class="section level3 tabset tabset-pills">
 <h3>DEATH</h3>
 <p><strong>Table Description</strong></p>
-<p>The death domain contains the clinical event for how and when a Person dies. A person can have up to one record if the source system contains evidence about the Death, such as: Condition Code in the Header or Detail information of claims, Status of enrollment into a health plan, explicit record in EHR data.</p>
+<p>The death domain contains the clinical event for how and when a Person dies. A person can have up to one record if the source system contains evidence about the Death, such as: Condition in an administrative claim, status of enrollment into a health plan, or explicit record in EHR data.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -5595,7 +5674,7 @@ CONCEPT
 <p><strong>ETL Conventions</strong></p>
 <p>The NOTE table contains free text (in ASCII, or preferably in UTF8 format). The type of note_text is CLOB or varchar(MAX) depending on RDBMS. Mapping of clinical documents to Clinical Document Ontology (CDO) and standard terminology HL7/LOINC CDO is a standard for consistent naming of documents to support a range of use cases: retrieval, organization, display, and exchange. It guides the creation of LOINC codes for clinical notes. CDO annotates each document with 5 dimensions:</p>
 <p>Kind of Document: Characterizes the general structure of the document at a macro level (e.g. Anesthesia Consent) Type of Service: Characterizes the kind of service or activity (e.g. evaluations, consultations, and summaries). The notion of time sequence, e.g., at the beginning (admission) at the end (discharge) is subsumed in this axis. Example: Discharge Teaching. Setting: Setting is an extension of CMS’s definitions (e.g. Inpatient, Outpatient) Subject Matter Domain (SMD): Characterizes the subject matter domain of a note (e.g. Anesthesiology) Role: Characterizes the training or professional level of the author of the document, but does not break down to specialty or subspecialty (e.g. Physician) Each combination of these 5 dimensions rolls up to a unique LOINC code.</p>
-<p>According to CDO requirements, only 2 of the 5 dimensions are required to properly annotate a document: Kind of Document and any one of the other 4 dimensions. However, not all the permutations of the CDO dimensions will necessarily yield an existing LOINC code.2 HL7/LOINC workforce is committed to establish new LOINC codes for each new encountered combination of CDO dimensions. The full document ontology as it exists in the Vocabulary is too extensive to list here, but it is possible to explore through the ATHENA tool starting with the ‘LOINC Document Ontology - Type of Service and Kind of Document’ by walking through the ‘Is a’/‘Subsumes’ relationship hierarchies.</p>
+<p>According to CDO requirements, only 2 of the 5 dimensions are required to properly annotate a document: Kind of Document and any one of the other 4 dimensions. However, not all the permutations of the CDO dimensions will necessarily yield an existing LOINC code.2 HL7/LOINC workforce is committed to establish new LOINC codes for each new encountered combination of CDO dimensions. Each of these dimensions are contained in the OMOP Vocabulary under the domain of ‘Meas Value’ with each dimension represented as a Concept Class. The full document ontology as it exists in the Vocabulary is too extensive to list here, but it is possible to explore through the ATHENA tool starting with the ‘LOINC Document Ontology - Type of Service and Kind of Document’ by walking through the ‘Is a’/‘Subsumes’ relationship hierarchies.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -5994,7 +6073,7 @@ No
 <div id="note_nlp" class="section level3 tabset tabset-pills">
 <h3>NOTE_NLP</h3>
 <p><strong>Table Description</strong></p>
-<p>The NOTE_NLP table will encode all output of NLP on clinical notes. Each row represents a single extracted term from a note.</p>
+<p>The NOTE_NLP table encodes all output of NLP on clinical notes. Each row represents a single extracted term from a note.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -6981,12 +7060,13 @@ CONCEPT
 </tbody>
 </table>
 </div>
+</div>
+<div id="health-system-data-tables" class="section level2">
+<h2>Health System Data Tables</h2>
 <div id="location" class="section level3 tabset tabset-pills">
 <h3>LOCATION</h3>
 <p><strong>Table Description</strong></p>
 <p>The LOCATION table represents a generic way to capture physical location or address information of Persons and Care Sites.</p>
-<p><strong>User Guide</strong></p>
-<p>For standardized geospatial visualization and analysis, addresses need to be, at the minimum be geocoded into latitude and longitude.</p>
 <p><strong>ETL Conventions</strong></p>
 <p>Each address or Location is unique and is present only once in the table. Locations do not contain names, such as the name of a hospital. In order to construct a full address that can be used in the postal service, the address information from the Location needs to be combined with information from the Care Site.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
@@ -7027,8 +7107,10 @@ FK Domain
 location_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The unique key given to a unique Location.
 </td>
 <td style="text-align:left;width: 4in; ">
+Each instance of a Location in the source data should be assigned this unique key.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -7052,6 +7134,7 @@ No
 address_1
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the first line of the address.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -7077,6 +7160,7 @@ No
 address_2
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the second line of the address
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -7205,6 +7289,7 @@ location_source_value
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the verbatim value for the location here, as it shows up in the source.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -7821,6 +7906,9 @@ CONCEPT
 </tbody>
 </table>
 </div>
+</div>
+<div id="health-economics-data-tables" class="section level2">
+<h2>Health Economics Data Tables</h2>
 <div id="payer_plan_period" class="section level3 tabset tabset-pills">
 <h3>PAYER_PLAN_PERIOD</h3>
 <p><strong>Table Description</strong></p>
@@ -8924,6 +9012,9 @@ No
 </tbody>
 </table>
 </div>
+</div>
+<div id="standardized-derived-elements" class="section level2">
+<h2>Standardized Derived Elements</h2>
 <div id="drug_era" class="section level3 tabset tabset-pills">
 <h3>DRUG_ERA</h3>
 <p><strong>Table Description</strong></p>
@@ -9564,6 +9655,9 @@ No
 </tbody>
 </table>
 </div>
+</div>
+<div id="metadata-tables" class="section level2">
+<h2>Metadata Tables</h2>
 <div id="metadata" class="section level3 tabset tabset-pills">
 <h3>METADATA</h3>
 <p><strong>Table Description</strong></p>
@@ -9824,6 +9918,7 @@ FK Domain
 cdm_source_name
 </td>
 <td style="text-align:left;width: 3in; ">
+The name of the CDM instance.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -9849,6 +9944,7 @@ No
 cdm_source_abbreviation
 </td>
 <td style="text-align:left;width: 3in; ">
+The abbreviation of the CDM instance.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -9874,6 +9970,7 @@ No
 cdm_holder
 </td>
 <td style="text-align:left;width: 3in; ">
+The holder of the CDM instance.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -9899,6 +9996,7 @@ No
 source_description
 </td>
 <td style="text-align:left;width: 3in; ">
+The description of the CDM instance.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -9951,6 +10049,7 @@ cdm_etl_reference
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the link to the CDM version used.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(255)
@@ -9974,6 +10073,7 @@ No
 source_release_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The release date of the source data.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -9999,6 +10099,7 @@ No
 cdm_release_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The release data of the CDM instance.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10072,6 +10173,9 @@ No
 </tbody>
 </table>
 </div>
+</div>
+<div id="vocabulary-tables" class="section level2">
+<h2>Vocabulary Tables</h2>
 <div id="concept" class="section level3 tabset tabset-pills">
 <h3>CONCEPT</h3>
 <p><strong>Table Description</strong></p>
@@ -12064,6 +12168,7 @@ FK Domain
 cohort_definition_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the identifier given to the cohort, usually by the ATLAS application
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12089,6 +12194,7 @@ No
 cohort_definition_name
 </td>
 <td style="text-align:left;width: 3in; ">
+A short description of the cohort
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12114,6 +12220,7 @@ No
 cohort_definition_description
 </td>
 <td style="text-align:left;width: 3in; ">
+A complete description of the cohort.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12139,6 +12246,7 @@ No
 definition_type_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+Type defining what kind of Cohort Definition the record represents and how the syntax may be executed.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12165,6 +12273,7 @@ CONCEPT
 cohort_definition_syntax
 </td>
 <td style="text-align:left;width: 3in; ">
+Syntax or code to operationalize the Cohort Definition.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12190,6 +12299,7 @@ No
 subject_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This field contains a Concept that represents the domain of the subjects that are members of the cohort (e.g., Person, Provider, Visit).
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -12216,6 +12326,7 @@ CONCEPT
 cohort_initiation_date
 </td>
 <td style="text-align:left;width: 3in; ">
+A date to indicate when the Cohort was initiated in the COHORT table.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
