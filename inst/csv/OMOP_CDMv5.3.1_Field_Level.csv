@@ -354,67 +354,149 @@ CDM_SOURCE,source_release_date,No,date,The release date of the source data.,,No,
 CDM_SOURCE,cdm_release_date,No,date,The release data of the CDM instance.,,No,No,,,,,
 CDM_SOURCE,cdm_version,No,varchar(10),,,No,No,,,,,
 CDM_SOURCE,vocabulary_version,No,varchar(20),,,No,No,,,,,
-CONCEPT,concept_id,Yes,integer,,,Yes,No,,,,,
-CONCEPT,concept_name,Yes,varchar(255),,,No,No,,,,,
-CONCEPT,domain_id,Yes,varchar(20),,,No,Yes,DOMAIN,DOMAIN_ID,,,
-CONCEPT,vocabulary_id,Yes,varchar(20),,,No,Yes,VOCABULARY,VOCABULARY_ID,,,
-CONCEPT,concept_class_id,Yes,varchar(20),,,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
-CONCEPT,standard_concept,No,varchar(1),,,No,No,,,,,
-CONCEPT,concept_code,Yes,varchar(50),,,No,No,,,,,
-CONCEPT,valid_start_date,Yes,date,,,No,No,,,,,
-CONCEPT,valid_end_date,Yes,date,,,No,No,,,,,
-CONCEPT,invalid_reason,No,varchar(1),,,No,No,,,,,
-VOCABULARY,vocabulary_id,Yes,varchar(20),,,Yes,No,,,,,
-VOCABULARY,vocabulary_name,Yes,varchar(255),,,No,No,,,,,
-VOCABULARY,vocabulary_reference,Yes,varchar(255),,,No,No,,,,,
-VOCABULARY,vocabulary_version,No,varchar(255),,,No,No,,,,,
-VOCABULARY,vocabulary_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DOMAIN,domain_id,Yes,varchar(20),,,Yes,No,,,,,
-DOMAIN,domain_name,Yes,varchar(255),,,No,No,,,,,
-DOMAIN,domain_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-CONCEPT_CLASS,concept_class_id,Yes,varchar(20),,,Yes,No,,,,,
-CONCEPT_CLASS,concept_class_name,Yes,varchar(255),,,No,No,,,,,
-CONCEPT_CLASS,concept_class_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
+CONCEPT,concept_id,Yes,integer,A unique identifier for each Concept across all domains.,,Yes,No,,,,,
+CONCEPT,concept_name,Yes,varchar(255),"An unambiguous, meaningful and descriptive name for the Concept.",,No,No,,,,,
+CONCEPT,domain_id,Yes,varchar(20),A foreign key to the [DOMAIN](https://ohdsi.github.io/CommonDataModel/cdm531.html#domain) table the Concept belongs to.,,No,Yes,DOMAIN,DOMAIN_ID,,,
+CONCEPT,vocabulary_id,Yes,varchar(20),"A foreign key to the [VOCABULARY](https://ohdsi.github.io/CommonDataModel/cdm531.html#vocabulary)
+table indicating from which source the
+Concept has been adapted.",,No,Yes,VOCABULARY,VOCABULARY_ID,,,
+CONCEPT,concept_class_id,Yes,varchar(20),"The attribute or concept class of the
+Concept. Examples are ‘Clinical Drug’,
+‘Ingredient’, ‘Clinical Finding’ etc.",,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
+CONCEPT,standard_concept,No,varchar(1),"This flag determines where a Concept is
+a Standard Concept, i.e. is used in the
+data, a Classification Concept, or a
+non-standard Source Concept. The
+allowables values are ‘S’ (Standard
+Concept) and ‘C’ (Classification
+Concept), otherwise the content is NULL.",,No,No,,,,,
+CONCEPT,concept_code,Yes,varchar(50),"The concept code represents the identifier
+of the Concept in the source vocabulary,
+such as SNOMED-CT concept IDs,
+RxNorm RXCUIs etc. Note that concept
+codes are not unique across vocabularies.",,No,No,,,,,
+CONCEPT,valid_start_date,Yes,date,"The date when the Concept was first
+recorded. The default value is
+1-Jan-1970, meaning, the Concept has no
+(known) date of inception.",,No,No,,,,,
+CONCEPT,valid_end_date,Yes,date,"The date when the Concept became
+invalid because it was deleted or
+superseded (updated) by a new concept.
+The default value is 31-Dec-2099,
+meaning, the Concept is valid until it
+becomes deprecated.",,No,No,,,,,
+CONCEPT,invalid_reason,No,varchar(1),"Reason the Concept was invalidated.
+Possible values are D (deleted), U
+(replaced with an update) or NULL when
+valid_end_date has the default value.",,No,No,,,,,
+VOCABULARY,vocabulary_id,Yes,varchar(20),"A unique identifier for each Vocabulary, such
+as ICD9CM, SNOMED, Visit.",,Yes,No,,,,,
+VOCABULARY,vocabulary_name,Yes,varchar(255),"The name describing the vocabulary, for
+example “International Classification of
+Diseases, Ninth Revision, Clinical
+Modification, Volume 1 and 2 (NCHS)” etc.",,No,No,,,,,
+VOCABULARY,vocabulary_reference,Yes,varchar(255),"External reference to documentation or
+available download of the about the
+vocabulary.",,No,No,,,,,
+VOCABULARY,vocabulary_version,No,varchar(255),"Version of the Vocabulary as indicated in
+the source.",,No,No,,,,,
+VOCABULARY,vocabulary_concept_id,Yes,integer,A Concept that represents the Vocabulary the VOCABULARY record belongs to.,,No,Yes,CONCEPT,CONCEPT_ID,,,
+DOMAIN,domain_id,Yes,varchar(20),A unique key for each domain.,,Yes,No,,,,,
+DOMAIN,domain_name,Yes,varchar(255),"The name describing the Domain, e.g.
+Condition, Procedure, Measurement
+etc.",,No,No,,,,,
+DOMAIN,domain_concept_id,Yes,integer,A Concept representing the Domain Concept the DOMAIN record belongs to.,,No,Yes,CONCEPT,CONCEPT_ID,,,
+CONCEPT_CLASS,concept_class_id,Yes,varchar(20),A unique key for each class.,,Yes,No,,,,,
+CONCEPT_CLASS,concept_class_name,Yes,varchar(255),"The name describing the Concept Class, e.g.
+Clinical Finding, Ingredient, etc.",,No,No,,,,,
+CONCEPT_CLASS,concept_class_concept_id,Yes,integer,A Concept that represents the Concept Class.,,No,Yes,CONCEPT,CONCEPT_ID,,,
 CONCEPT_RELATIONSHIP,concept_id_1,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 CONCEPT_RELATIONSHIP,concept_id_2,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-CONCEPT_RELATIONSHIP,relationship_id,Yes,varchar(20),,,No,Yes,RELATIONSHIP,RELATIONSHIP_ID,,,
-CONCEPT_RELATIONSHIP,valid_start_date,Yes,date,,,No,No,,,,,
-CONCEPT_RELATIONSHIP,valid_end_date,Yes,date,,,No,No,,,,,
-CONCEPT_RELATIONSHIP,invalid_reason,No,varchar(1),,,No,No,,,,,
-RELATIONSHIP,relationship_id,Yes,varchar(20),,,Yes,No,,,,,
+CONCEPT_RELATIONSHIP,relationship_id,Yes,varchar(20),The relationship between CONCEPT_ID_1 and CONCEPT_ID_2. Please see the [Vocabulary Conventions](https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#concept_relationships). for more information. ,,No,Yes,RELATIONSHIP,RELATIONSHIP_ID,,,
+CONCEPT_RELATIONSHIP,valid_start_date,Yes,date,The date when the relationship is first recorded.,,No,No,,,,,
+CONCEPT_RELATIONSHIP,valid_end_date,Yes,date,The date when the relationship is invalidated.,,No,No,,,,,
+CONCEPT_RELATIONSHIP,invalid_reason,No,varchar(1),"Reason the relationship was invalidated. Possible values are 'D' (deleted), 'U' (updated) or NULL. ",,No,No,,,,,
+RELATIONSHIP,relationship_id,Yes,varchar(20),"The type of relationship captured by the
+relationship record.",,Yes,No,,,,,
 RELATIONSHIP,relationship_name,Yes,varchar(255),,,No,No,,,,,
-RELATIONSHIP,is_hierarchical,Yes,varchar(1),,,No,No,,,,,
-RELATIONSHIP,defines_ancestry,Yes,varchar(1),,,No,No,,,,,
-RELATIONSHIP,reverse_relationship_id,Yes,varchar(20),,,No,No,,,,,
-RELATIONSHIP,relationship_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
+RELATIONSHIP,is_hierarchical,Yes,varchar(1),"Defines whether a relationship defines
+concepts into classes or hierarchies. Values
+are 1 for hierarchical relationship or 0 if not.",,No,No,,,,,
+RELATIONSHIP,defines_ancestry,Yes,varchar(1),"Defines whether a hierarchical relationship
+contributes to the concept_ancestor table.
+These are subsets of the hierarchical
+relationships. Valid values are 1 or 0.",,No,No,,,,,
+RELATIONSHIP,reverse_relationship_id,Yes,varchar(20),"The identifier for the relationship used to
+define the reverse relationship between two
+concepts.",,No,No,,,,,
+RELATIONSHIP,relationship_concept_id,Yes,integer,"A foreign key that refers to an identifier in
+the [CONCEPT](https://ohdsi.github.io/CommonDataModel/cdm531.html#concept) table for the unique
+relationship concept.",,No,Yes,CONCEPT,CONCEPT_ID,,,
 CONCEPT_SYNONYM,concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 CONCEPT_SYNONYM,concept_synonym_name,Yes,varchar(1000),,,No,No,,,,,
 CONCEPT_SYNONYM,language_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-CONCEPT_ANCESTOR,ancestor_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-CONCEPT_ANCESTOR,descendant_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-CONCEPT_ANCESTOR,min_levels_of_separation,Yes,integer,,,No,No,,,,,
-CONCEPT_ANCESTOR,max_levels_of_separation,Yes,integer,,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,source_code,Yes,varchar(50),,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,source_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-SOURCE_TO_CONCEPT_MAP,source_vocabulary_id,Yes,varchar(20),,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,source_code_description,No,varchar(255),,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,target_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-SOURCE_TO_CONCEPT_MAP,target_vocabulary_id,Yes,varchar(20),,,No,Yes,VOCABULARY,VOCABULARY_ID,,,
-SOURCE_TO_CONCEPT_MAP,valid_start_date,Yes,date,,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,valid_end_date,Yes,date,,,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,invalid_reason,No,varchar(1),,,No,No,,,,,
-DRUG_STRENGTH,drug_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DRUG_STRENGTH,ingredient_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DRUG_STRENGTH,amount_value,No,float,,,No,No,,,,,
-DRUG_STRENGTH,amount_unit_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DRUG_STRENGTH,numerator_value,No,float,,,No,No,,,,,
-DRUG_STRENGTH,numerator_unit_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DRUG_STRENGTH,denominator_value,No,float,,,No,No,,,,,
-DRUG_STRENGTH,denominator_unit_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-DRUG_STRENGTH,box_size,No,integer,,,No,No,,,,,
-DRUG_STRENGTH,valid_start_date,Yes,date,,,No,No,,,,,
-DRUG_STRENGTH,valid_end_date,Yes,date,,,No,No,,,,,
-DRUG_STRENGTH,invalid_reason,No,varchar(1),,,No,No,,,,,
+CONCEPT_ANCESTOR,ancestor_concept_id,Yes,integer,"The Concept Id for the higher-level concept
+that forms the ancestor in the relationship.",,No,Yes,CONCEPT,CONCEPT_ID,,,
+CONCEPT_ANCESTOR,descendant_concept_id,Yes,integer,"The Concept Id for the lower-level concept
+that forms the descendant in the
+relationship.",,No,Yes,CONCEPT,CONCEPT_ID,,,
+CONCEPT_ANCESTOR,min_levels_of_separation,Yes,integer,"The minimum separation in number of
+levels of hierarchy between ancestor and
+descendant concepts. This is an attribute
+that is used to simplify hierarchic analysis.",,No,No,,,,,
+CONCEPT_ANCESTOR,max_levels_of_separation,Yes,integer,"The maximum separation in number of
+levels of hierarchy between ancestor and
+descendant concepts. This is an attribute
+that is used to simplify hierarchic analysis.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,source_code,Yes,varchar(50),"The source code being translated
+into a Standard Concept.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,source_concept_id,Yes,integer,"A foreign key to the Source
+Concept that is being translated
+into a Standard Concept.","This is either 0 or should be a number above 2 billion, which are the Concepts reserved for site-specific codes and mappings. ",No,Yes,CONCEPT,CONCEPT_ID,,,
+SOURCE_TO_CONCEPT_MAP,source_vocabulary_id,Yes,varchar(20),"A foreign key to the
+VOCABULARY table defining the
+vocabulary of the source code that
+is being translated to a Standard
+Concept.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,source_code_description,No,varchar(255),"An optional description for the
+source code. This is included as a
+convenience to compare the
+description of the source code to
+the name of the concept.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,target_concept_id,Yes,integer,"The target Concept
+to which the source code is being
+mapped.",,No,Yes,CONCEPT,CONCEPT_ID,,,
+SOURCE_TO_CONCEPT_MAP,target_vocabulary_id,Yes,varchar(20),The Vocabulary of the target Concept.,,No,Yes,VOCABULARY,VOCABULARY_ID,,,
+SOURCE_TO_CONCEPT_MAP,valid_start_date,Yes,date,"The date when the mapping
+instance was first recorded.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,valid_end_date,Yes,date,"The date when the mapping
+instance became invalid because it
+was deleted or superseded
+(updated) by a new relationship.
+Default value is 31-Dec-2099.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,invalid_reason,No,varchar(1),"Reason the mapping instance was
+invalidated. Possible values are D
+(deleted), U (replaced with an
+update) or NULL when
+valid_end_date has the default
+value.",,No,No,,,,,
+DRUG_STRENGTH,drug_concept_id,Yes,integer,The Concept representing the Branded Drug or Clinical Drug Product.,,No,Yes,CONCEPT,CONCEPT_ID,,,
+DRUG_STRENGTH,ingredient_concept_id,Yes,integer,The Concept representing the active ingredient contained within the drug product.,"Combination Drugs will have more than one record in this table, one for each active Ingredient.",No,Yes,CONCEPT,CONCEPT_ID,,,
+DRUG_STRENGTH,amount_value,No,float,The numeric value or the amount of active ingredient contained within the drug product.,,No,No,,,,,
+DRUG_STRENGTH,amount_unit_concept_id,No,integer,The Concept representing the Unit of measure for the amount of active ingredient contained within the drug product. ,,No,Yes,CONCEPT,CONCEPT_ID,,,
+DRUG_STRENGTH,numerator_value,No,float,The concentration of the active ingredient contained within the drug product.,,No,No,,,,,
+DRUG_STRENGTH,numerator_unit_concept_id,No,integer,The Concept representing the Unit of measure for the concentration of active ingredient.,,No,Yes,CONCEPT,CONCEPT_ID,,,
+DRUG_STRENGTH,denominator_value,No,float,"The amount of total liquid (or other divisible product, such as ointment, gel, spray, etc.).",,No,No,,,,,
+DRUG_STRENGTH,denominator_unit_concept_id,No,integer,The Concept representing the denominator unit for the concentration of active ingredient.,,No,Yes,CONCEPT,CONCEPT_ID,,,
+DRUG_STRENGTH,box_size,No,integer,The number of units of Clinical Branded Drug or Quanitified Clinical or Branded Drug contained in a box as dispensed to the patient.,,No,No,,,,,
+DRUG_STRENGTH,valid_start_date,Yes,date,"The date when the Concept was first
+recorded. The default value is
+1-Jan-1970.",,No,No,,,,,
+DRUG_STRENGTH,valid_end_date,Yes,date,The date when then Concept became invalid.,,No,No,,,,,
+DRUG_STRENGTH,invalid_reason,No,varchar(1),"Reason the concept was invalidated.
+Possible values are ‘D’ (deleted), ‘U’
+(replaced with an update) or NULL when
+valid_end_date has the default value.",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_id,Yes,integer,"This is the identifier given to the cohort, usually by the ATLAS application",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_name,Yes,varchar(255),A short description of the cohort,,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_description,No,varchar(MAX),A complete description of the cohort.,,No,No,,,,,

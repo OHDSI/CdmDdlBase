@@ -19,9 +19,6 @@ library(stringr)
 
 ```
 
-## OMOP Common Data Model Documentation
-
-## CDM v5.3.1
 *Documentation still in development* CB- describe the table below and what each column means.
 create an Rmd file with queries and examples
 add era queries 
