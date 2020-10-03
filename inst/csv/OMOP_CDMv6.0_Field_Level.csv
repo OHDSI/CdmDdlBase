@@ -394,22 +394,47 @@ CDM_SOURCE,source_release_date,No,date,The release date of the source data.,,No,
 CDM_SOURCE,cdm_release_date,No,date,The release data of the CDM instance.,,No,No,,,,,
 CDM_SOURCE,cdm_version,No,varchar(10),,,No,No,,,,,
 CDM_SOURCE,vocabulary_version,No,varchar(20),,,No,No,,,,,
-CONCEPT,concept_id,Yes,integer,,,Yes,No,,,,,
-CONCEPT,concept_name,Yes,varchar(255),,,No,No,,,,,
-CONCEPT,domain_id,Yes,varchar(20),,,No,Yes,DOMAIN,DOMAIN_ID,,,
-CONCEPT,vocabulary_id,Yes,varchar(20),,,No,Yes,VOCABULARY,VOCABULARY_ID,,,
-CONCEPT,concept_class_id,Yes,varchar(20),,,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
-CONCEPT,standard_concept,No,varchar(1),,,No,No,,,,,
-CONCEPT,concept_code,Yes,varchar(50),,,No,No,,,,,
-CONCEPT,valid_start_date,Yes,date,,,No,No,,,,,
-CONCEPT,valid_end_date,Yes,date,,,No,No,,,,,
-CONCEPT,invalid_reason,No,varchar(1),,,No,No,,,,,
+CONCEPT,concept_id,Yes,integer,A unique identifier for each Concept across all domains.,,Yes,No,,,,,
+CONCEPT,concept_name,Yes,varchar(255),"An unambiguous, meaningful and descriptive name for the Concept.",,No,No,,,,,
+CONCEPT,domain_id,Yes,varchar(20),A foreign key to the [DOMAIN](https://ohdsi.github.io/CommonDataModel/cdm531.html#domain) table the Concept belongs to.,,No,Yes,DOMAIN,DOMAIN_ID,,,
+CONCEPT,vocabulary_id,Yes,varchar(20),"A foreign key to the [VOCABULARY](https://ohdsi.github.io/CommonDataModel/cdm531.html#vocabulary)
+table indicating from which source the
+Concept has been adapted.",,No,Yes,VOCABULARY,VOCABULARY_ID,,,
+CONCEPT,concept_class_id,Yes,varchar(20),"The attribute or concept class of the
+Concept. Examples are 'Clinical Drug',
+'Ingredient', 'Clinical Finding' etc.",,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
+CONCEPT,standard_concept,No,varchar(1),"This flag determines where a Concept is
+a Standard Concept, i.e. is used in the
+data, a Classification Concept, or a
+non-standard Source Concept. The
+allowables values are 'S' (Standard
+Concept) and 'C' (Classification
+Concept), otherwise the content is NULL.",,No,No,,,,,
+CONCEPT,concept_code,Yes,varchar(50),"The concept code represents the identifier
+of the Concept in the source vocabulary,
+such as SNOMED-CT concept IDs,
+RxNorm RXCUIs etc. Note that concept
+codes are not unique across vocabularies.",,No,No,,,,,
+CONCEPT,valid_start_date,Yes,date,"The date when the Concept was first
+recorded. The default value is
+1-Jan-1970, meaning, the Concept has no
+(known) date of inception.",,No,No,,,,,
+CONCEPT,valid_end_date,Yes,date,"The date when the Concept became
+invalid because it was deleted or
+superseded (updated) by a new concept.
+The default value is 31-Dec-2099,
+meaning, the Concept is valid until it
+becomes deprecated.",,No,No,,,,,
+CONCEPT,invalid_reason,No,varchar(1),"Reason the Concept was invalidated.
+Possible values are D (deleted), U
+(replaced with an update) or NULL when
+valid_end_date has the default value.",,No,No,,,,,
 VOCABULARY,vocabulary_id,Yes,varchar(20),"A unique identifier for each Vocabulary, such
 as ICD9CM, SNOMED, Visit.",,Yes,No,,,,,
 VOCABULARY,vocabulary_name,Yes,varchar(255),"The name describing the vocabulary, for
 example International Classification of
 Diseases, Ninth Revision, Clinical
-Modification, Volume 1 and 2 (NCHS)” etc.",,No,No,,,,,
+Modification, Volume 1 and 2 (NCHS) etc.",,No,No,,,,,
 VOCABULARY,vocabulary_reference,Yes,varchar(255),"External reference to documentation or
 available download of the about the
 vocabulary.",,No,No,,,,,

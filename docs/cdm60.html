@@ -11148,6 +11148,7 @@ FK Domain
 concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+A unique identifier for each Concept across all domains.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11173,6 +11174,7 @@ No
 concept_name
 </td>
 <td style="text-align:left;width: 3in; ">
+An unambiguous, meaningful and descriptive name for the Concept.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11198,6 +11200,7 @@ No
 domain_id
 </td>
 <td style="text-align:left;width: 3in; ">
+A foreign key to the <a href="https://ohdsi.github.io/CommonDataModel/cdm531.html#domain">DOMAIN</a> table the Concept belongs to.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11224,6 +11227,7 @@ DOMAIN
 vocabulary_id
 </td>
 <td style="text-align:left;width: 3in; ">
+A foreign key to the <a href="https://ohdsi.github.io/CommonDataModel/cdm531.html#vocabulary">VOCABULARY</a> table indicating from which source the Concept has been adapted.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11250,6 +11254,7 @@ VOCABULARY
 concept_class_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The attribute or concept class of the Concept. Examples are ‘Clinical Drug’, ‘Ingredient’, ‘Clinical Finding’ etc.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11276,6 +11281,7 @@ CONCEPT_CLASS
 standard_concept
 </td>
 <td style="text-align:left;width: 3in; ">
+This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ‘S’ (Standard Concept) and ‘C’ (Classification Concept), otherwise the content is NULL.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11301,6 +11307,7 @@ No
 concept_code
 </td>
 <td style="text-align:left;width: 3in; ">
+The concept code represents the identifier of the Concept in the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc. Note that concept codes are not unique across vocabularies.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11326,6 +11333,7 @@ No
 valid_start_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The date when the Concept was first recorded. The default value is 1-Jan-1970, meaning, the Concept has no (known) date of inception.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11351,6 +11359,7 @@ No
 valid_end_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The date when the Concept became invalid because it was deleted or superseded (updated) by a new concept. The default value is 31-Dec-2099, meaning, the Concept is valid until it becomes deprecated.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11376,6 +11385,7 @@ No
 invalid_reason
 </td>
 <td style="text-align:left;width: 3in; ">
+Reason the Concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11467,7 +11477,1612 @@ No
 vocabulary_name
 </td>
 <td style="text-align:left;width: 3in; ">
-<p>The name describing the vocabulary, for example International Classification of Diseases, Ninth Revision, Clinical Modification, Volume 1 and 2 (NCHS)</p>
+The name describing the vocabulary, for example International Classification of Diseases, Ninth Revision, Clinical Modification, Volume 1 and 2 (NCHS) etc.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+vocabulary_reference
+</td>
+<td style="text-align:left;width: 3in; ">
+External reference to documentation or available download of the about the vocabulary.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+vocabulary_version
+</td>
+<td style="text-align:left;width: 3in; ">
+Version of the Vocabulary as indicated in the source.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+vocabulary_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A Concept that represents the Vocabulary the VOCABULARY record belongs to.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="domain" class="section level3 tabset tabset-pills">
+<h3>DOMAIN</h3>
+<p><strong>Table Description</strong></p>
+<p>The DOMAIN table includes a list of OMOP-defined Domains the Concepts of the Standardized Vocabularies can belong to. A Domain defines the set of allowable Concepts for the standardized fields in the CDM tables. For example, the “Condition” Domain contains Concepts that describe a condition of a patient, and these Concepts can only be stored in the condition_concept_id field of the CONDITION_OCCURRENCE and CONDITION_ERA tables. This reference table is populated with a single record for each Domain and includes a descriptive name for the Domain.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+domain_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A unique key for each domain.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+domain_name
+</td>
+<td style="text-align:left;width: 3in; ">
+The name describing the Domain, e.g. Condition, Procedure, Measurement etc.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+domain_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A Concept representing the Domain Concept the DOMAIN record belongs to.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="concept_class" class="section level3 tabset tabset-pills">
+<h3>CONCEPT_CLASS</h3>
+<p><strong>Table Description</strong></p>
+<p>The CONCEPT_CLASS table is a reference table, which includes a list of the classifications used to differentiate Concepts within a given Vocabulary. This reference table is populated with a single record for each Concept Class.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_class_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A unique key for each class.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_class_name
+</td>
+<td style="text-align:left;width: 3in; ">
+The name describing the Concept Class, e.g. Clinical Finding, Ingredient, etc.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_class_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A Concept that represents the Concept Class.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="concept_relationship" class="section level3 tabset tabset-pills">
+<h3>CONCEPT_RELATIONSHIP</h3>
+<p><strong>Table Description</strong></p>
+<p>The CONCEPT_RELATIONSHIP table contains records that define direct relationships between any two Concepts and the nature or type of the relationship. Each type of a relationship is defined in the RELATIONSHIP table.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_id_1
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_id_2
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+relationship_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The relationship between CONCEPT_ID_1 and CONCEPT_ID_2. Please see the <a href="https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#concept_relationships">Vocabulary Conventions</a>. for more information.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+RELATIONSHIP
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_start_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the relationship is first recorded.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_end_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the relationship is invalidated.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+invalid_reason
+</td>
+<td style="text-align:left;width: 3in; ">
+Reason the relationship was invalidated. Possible values are ‘D’ (deleted), ‘U’ (updated) or NULL.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="relationship" class="section level3 tabset tabset-pills">
+<h3>RELATIONSHIP</h3>
+<p><strong>Table Description</strong></p>
+<p>The RELATIONSHIP table provides a reference list of all types of relationships that can be used to associate any two concepts in the CONCEPT_RELATIONSHP table.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+relationship_id
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+relationship_name
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+is_hierarchical
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+defines_ancestry
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+reverse_relationship_id
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+relationship_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="concept_synonym" class="section level3 tabset tabset-pills">
+<h3>CONCEPT_SYNONYM</h3>
+<p><strong>Table Description</strong></p>
+<p>The CONCEPT_SYNONYM table is used to store alternate names and descriptions for Concepts.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_synonym_name
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1000)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+language_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="concept_ancestor" class="section level3 tabset tabset-pills">
+<h3>CONCEPT_ANCESTOR</h3>
+<p><strong>Table Description</strong></p>
+<p>The CONCEPT_ANCESTOR table is designed to simplify observational analysis by providing the complete hierarchical relationships between Concepts. Only direct parent-child relationships between Concepts are stored in the CONCEPT_RELATIONSHIP table. To determine higher level ancestry connections, all individual direct relationships would have to be navigated at analysis time. The CONCEPT_ANCESTOR table includes records for all parent-child relationships, as well as grandparent-grandchild relationships and those of any other level of lineage. Using the CONCEPT_ANCESTOR table allows for querying for all descendants of a hierarchical concept. For example, drug ingredients and drug products are all descendants of a drug class ancestor.</p>
+<p>This table is entirely derived from the CONCEPT, CONCEPT_RELATIONSHIP and RELATIONSHIP tables.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+ancestor_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept Id for the higher-level concept that forms the ancestor in the relationship.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+descendant_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept Id for the lower-level concept that forms the descendant in the relationship.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+min_levels_of_separation
+</td>
+<td style="text-align:left;width: 3in; ">
+The minimum separation in number of levels of hierarchy between ancestor and descendant concepts. This is an attribute that is used to simplify hierarchic analysis.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+max_levels_of_separation
+</td>
+<td style="text-align:left;width: 3in; ">
+The maximum separation in number of levels of hierarchy between ancestor and descendant concepts. This is an attribute that is used to simplify hierarchic analysis.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="source_to_concept_map" class="section level3 tabset tabset-pills">
+<h3>SOURCE_TO_CONCEPT_MAP</h3>
+<p><strong>Table Description</strong></p>
+<p>The source to concept map table is a legacy data structure within the OMOP Common Data Model, recommended for use in ETL processes to maintain local source codes which are not available as Concepts in the Standardized Vocabularies, and to establish mappings for each source code into a Standard Concept as target_concept_ids that can be used to populate the Common Data Model tables. The SOURCE_TO_CONCEPT_MAP table is no longer populated with content within the Standardized Vocabularies published to the OMOP community.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+source_code
+</td>
+<td style="text-align:left;width: 3in; ">
+The source code being translated into a Standard Concept.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(50)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+source_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A foreign key to the Source Concept that is being translated into a Standard Concept.
+</td>
+<td style="text-align:left;width: 4in; ">
+This is either 0 or should be a number above 2 billion, which are the Concepts reserved for site-specific codes and mappings.
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+source_vocabulary_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A foreign key to the VOCABULARY table defining the vocabulary of the source code that is being translated to a Standard Concept.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+source_code_description
+</td>
+<td style="text-align:left;width: 3in; ">
+An optional description for the source code. This is included as a convenience to compare the description of the source code to the name of the concept.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(255)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+target_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The target Concept to which the source code is being mapped.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+target_vocabulary_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Vocabulary of the target Concept.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+VOCABULARY
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_start_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the mapping instance was first recorded.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_end_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the mapping instance became invalid because it was deleted or superseded (updated) by a new relationship. Default value is 31-Dec-2099.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+invalid_reason
+</td>
+<td style="text-align:left;width: 3in; ">
+Reason the mapping instance was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="drug_strength" class="section level3 tabset tabset-pills">
+<h3>DRUG_STRENGTH</h3>
+<p><strong>Table Description</strong></p>
+<p>The DRUG_STRENGTH table contains structured content about the amount or concentration and associated units of a specific ingredient contained within a particular drug product. This table is supplemental information to support standardized analysis of drug utilization.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+drug_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept representing the Branded Drug or Clinical Drug Product.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+ingredient_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept representing the active ingredient contained within the drug product.
+</td>
+<td style="text-align:left;width: 4in; ">
+Combination Drugs will have more than one record in this table, one for each active Ingredient.
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+amount_value
+</td>
+<td style="text-align:left;width: 3in; ">
+The numeric value or the amount of active ingredient contained within the drug product.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+float
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+amount_unit_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept representing the Unit of measure for the amount of active ingredient contained within the drug product.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+numerator_value
+</td>
+<td style="text-align:left;width: 3in; ">
+The concentration of the active ingredient contained within the drug product.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+float
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+numerator_unit_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept representing the Unit of measure for the concentration of active ingredient.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+denominator_value
+</td>
+<td style="text-align:left;width: 3in; ">
+The amount of total liquid (or other divisible product, such as ointment, gel, spray, etc.).
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+float
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+denominator_unit_concept_id
+</td>
+<td style="text-align:left;width: 3in; ">
+The Concept representing the denominator unit for the concentration of active ingredient.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+box_size
+</td>
+<td style="text-align:left;width: 3in; ">
+The number of units of Clinical Branded Drug or Quanitified Clinical or Branded Drug contained in a box as dispensed to the patient.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+integer
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_start_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the Concept was first recorded. The default value is 1-Jan-1970.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_end_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when then Concept became invalid.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+invalid_reason
+</td>
+<td style="text-align:left;width: 3in; ">
+<p>Reason the concept was invalidated. Possible values are</p>
 </div>
 </div>
 </div>
