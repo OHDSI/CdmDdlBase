@@ -361,14 +361,14 @@ CONCEPT,vocabulary_id,Yes,varchar(20),"A foreign key to the [VOCABULARY](https:/
 table indicating from which source the
 Concept has been adapted.",,No,Yes,VOCABULARY,VOCABULARY_ID,,,
 CONCEPT,concept_class_id,Yes,varchar(20),"The attribute or concept class of the
-Concept. Examples are ‘Clinical Drug’,
-‘Ingredient’, ‘Clinical Finding’ etc.",,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
+Concept. Examples are 'Clinical Drug',
+'Ingredient', 'Clinical Finding' etc.",,No,Yes,CONCEPT_CLASS,CONCEPT_CLASS_ID,,,
 CONCEPT,standard_concept,No,varchar(1),"This flag determines where a Concept is
 a Standard Concept, i.e. is used in the
 data, a Classification Concept, or a
 non-standard Source Concept. The
-allowables values are ‘S’ (Standard
-Concept) and ‘C’ (Classification
+allowables values are 'S' (Standard
+Concept) and 'C' (Classification
 Concept), otherwise the content is NULL.",,No,No,,,,,
 CONCEPT,concept_code,Yes,varchar(50),"The concept code represents the identifier
 of the Concept in the source vocabulary,

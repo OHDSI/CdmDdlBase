@@ -11,7 +11,7 @@
 
 
 
-<title>CDM v5.3.1</title>
+<title>cdm531.utf8</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -416,33 +416,37 @@ div.tocify {
     </li>
   </ul>
 </li>
-<li>
-  <a href="faq.html">
-    <span class="fa fa-question"></span>
-     
-    FAQ
-  </a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-wrench"></span>
+    <span class="fa fa-question"></span>
      
-    Contribute
+    Help
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="contribute.html">Get involved</a>
+      <a href="faq.html">FAQ</a>
     </li>
-    <li class="dropdown-submenu">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">How to</a>
-      <ul class="dropdown-menu" role="menu">
-        <li class="dropdown-header">Download the DDL</li>
-        <li>
-          <a href="download.html"></a>
-        </li>
-      </ul>
+    <li>
+      <a href="contribute.html">Ask a Question</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-wrench"></span>
+     
+    How to
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="sqlScripts.html">SQL Scripts</a>
+    </li>
+    <li>
+      <a href="download.html">Download the DDL</a>
     </li>
   </ul>
 </li>
@@ -463,14 +467,15 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">CDM v5.3.1</h1>
 
 </div>
 
 
+<div id="cdm-v5.3.1" class="section level1">
+<h1><strong>CDM v5.3.1</strong></h1>
 <p><em>Documentation still in development</em> CB- describe the table below and what each column means. create an Rmd file with queries and examples add era queries link to forum posts - race and ethnicity add cohort table, results schema? REMOVE make sure v6.0 has bigints for ids link to csv of cdm link to pdf of cdm documentation link to forum on doc page</p>
 <div id="clinical-data-tables" class="section level2">
-<h2>Clinical Data Tables</h2>
+<h2><strong>Clinical Data Tables</strong></h2>
 <div id="person" class="section level3 tabset tabset-pills">
 <h3>PERSON</h3>
 <p><strong>Table Description</strong></p>
@@ -7056,7 +7061,7 @@ CONCEPT
 </div>
 </div>
 <div id="health-system-data-tables" class="section level2">
-<h2>Health System Data Tables</h2>
+<h2><strong>Health System Data Tables</strong></h2>
 <div id="location" class="section level3 tabset tabset-pills">
 <h3>LOCATION</h3>
 <p><strong>Table Description</strong></p>
@@ -7902,7 +7907,7 @@ CONCEPT
 </div>
 </div>
 <div id="health-economics-data-tables" class="section level2">
-<h2>Health Economics Data Tables</h2>
+<h2><strong>Health Economics Data Tables</strong></h2>
 <div id="payer_plan_period" class="section level3 tabset tabset-pills">
 <h3>PAYER_PLAN_PERIOD</h3>
 <p><strong>Table Description</strong></p>
@@ -9008,7 +9013,7 @@ No
 </div>
 </div>
 <div id="standardized-derived-elements" class="section level2">
-<h2>Standardized Derived Elements</h2>
+<h2><strong>Standardized Derived Elements</strong></h2>
 <div id="drug_era" class="section level3 tabset tabset-pills">
 <h3>DRUG_ERA</h3>
 <p><strong>Table Description</strong></p>
@@ -9651,7 +9656,7 @@ No
 </div>
 </div>
 <div id="metadata-tables" class="section level2">
-<h2>Metadata Tables</h2>
+<h2><strong>Metadata Tables</strong></h2>
 <div id="metadata" class="section level3 tabset tabset-pills">
 <h3>METADATA</h3>
 <p><strong>Table Description</strong></p>
@@ -10169,7 +10174,7 @@ No
 </div>
 </div>
 <div id="vocabulary-tables" class="section level2">
-<h2>Vocabulary Tables</h2>
+<h2><strong>Vocabulary Tables</strong></h2>
 <div id="concept" class="section level3 tabset tabset-pills">
 <h3>CONCEPT</h3>
 <p><strong>Table Description</strong></p>
@@ -10320,7 +10325,231 @@ VOCABULARY
 concept_class_id
 </td>
 <td style="text-align:left;width: 3in; ">
-<p>The attribute or concept class of the Concept. Examples are</p>
+The attribute or concept class of the Concept. Examples are ‘Clinical Drug’, ‘Ingredient’, ‘Clinical Finding’ etc.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+CONCEPT_CLASS
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+standard_concept
+</td>
+<td style="text-align:left;width: 3in; ">
+This flag determines where a Concept is a Standard Concept, i.e. is used in the data, a Classification Concept, or a non-standard Source Concept. The allowables values are ‘S’ (Standard Concept) and ‘C’ (Classification Concept), otherwise the content is NULL.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+concept_code
+</td>
+<td style="text-align:left;width: 3in; ">
+The concept code represents the identifier of the Concept in the source vocabulary, such as SNOMED-CT concept IDs, RxNorm RXCUIs etc. Note that concept codes are not unique across vocabularies.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(50)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_start_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the Concept was first recorded. The default value is 1-Jan-1970, meaning, the Concept has no (known) date of inception.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+valid_end_date
+</td>
+<td style="text-align:left;width: 3in; ">
+The date when the Concept became invalid because it was deleted or superseded (updated) by a new concept. The default value is 31-Dec-2099, meaning, the Concept is valid until it becomes deprecated.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+date
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+invalid_reason
+</td>
+<td style="text-align:left;width: 3in; ">
+Reason the Concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(1)
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="vocabulary" class="section level3 tabset tabset-pills">
+<h3>VOCABULARY</h3>
+<p><strong>Table Description</strong></p>
+<p>The VOCABULARY table includes a list of the Vocabularies collected from various sources or created de novo by the OMOP community. This reference table is populated with a single record for each Vocabulary source and includes a descriptive name and other associated attributes for the Vocabulary.</p>
+<table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+CDM Field
+</th>
+<th style="text-align:left;width: 3in; ">
+User Guide
+</th>
+<th style="text-align:left;width: 4in; ">
+ETL Conventions
+</th>
+<th style="text-align:left;width: 1in; ">
+Datatype
+</th>
+<th style="text-align:left;width: 1in; ">
+Required
+</th>
+<th style="text-align:left;width: 1in; ">
+Primary Key
+</th>
+<th style="text-align:left;width: 1in; ">
+Foreign Key
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Table
+</th>
+<th style="text-align:left;width: 1in; ">
+FK Domain
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+vocabulary_id
+</td>
+<td style="text-align:left;width: 3in; ">
+A unique identifier for each Vocabulary, such as ICD9CM, SNOMED, Visit.
+</td>
+<td style="text-align:left;width: 4in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+varchar(20)
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+Yes
+</td>
+<td style="text-align:left;width: 1in; ">
+No
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+<td style="text-align:left;width: 1in; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+vocabulary_name
+</td>
+<td style="text-align:left;width: 3in; ">
+<p>The name describing the vocabulary, for example</p>
+</div>
 </div>
 </div>
 

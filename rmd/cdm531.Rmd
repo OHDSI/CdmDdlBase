@@ -1,5 +1,4 @@
 ---
-title: "CDM v5.3.1"
 output: 
   html_document:
       toc: true
@@ -18,6 +17,8 @@ library(dplyr)
 library(stringr)
 
 ```
+
+# **CDM v5.3.1**
 
 *Documentation still in development* CB- describe the table below and what each column means.
 create an Rmd file with queries and examples
@@ -53,26 +54,26 @@ cdmSpecsClean[is.na(cdmSpecsClean)] <- ""
 for(tb in tables) {
   
   if(tb == 'PERSON'){
-    cat("## Clinical Data Tables\n\n")
+    cat("## **Clinical Data Tables**\n\n")
   }
   
   if(tb == 'LOCATION'){
-    cat("## Health System Data Tables\n\n")
+    cat("## **Health System Data Tables**\n\n")
   }
   
   if(tb == 'PAYER_PLAN_PERIOD'){
-    cat("## Health Economics Data Tables\n\n")
+    cat("## **Health Economics Data Tables**\n\n")
   }
   
   if(tb == 'DRUG_ERA'){
-    cat("## Standardized Derived Elements\n\n")
+    cat("## **Standardized Derived Elements**\n\n")
   }
   
   if(tb == 'METADATA'){
-    cat("## Metadata Tables\n\n")
+    cat("## **Metadata Tables**\n\n")
   }
   if(tb == 'CONCEPT'){
-    cat("## Vocabulary Tables\n\n")
+    cat("## **Vocabulary Tables**\n\n")
   }
   
   cat("###", tb, "{.tabset .tabset-pills} \n\n")

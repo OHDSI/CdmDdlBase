@@ -407,7 +407,7 @@ CONCEPT,invalid_reason,No,varchar(1),,,No,No,,,,,
 VOCABULARY,vocabulary_id,Yes,varchar(20),"A unique identifier for each Vocabulary, such
 as ICD9CM, SNOMED, Visit.",,Yes,No,,,,,
 VOCABULARY,vocabulary_name,Yes,varchar(255),"The name describing the vocabulary, for
-example “International Classification of
+example International Classification of
 Diseases, Ninth Revision, Clinical
 Modification, Volume 1 and 2 (NCHS)” etc.",,No,No,,,,,
 VOCABULARY,vocabulary_reference,Yes,varchar(255),"External reference to documentation or

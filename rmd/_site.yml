@@ -38,18 +38,20 @@ navbar:
               href: https://github.com/OHDSI/CommonDataModel/issues/252
             - text: "Units in Device Table"
               href: https://github.com/OHDSI/CommonDataModel/issues/264
-    - text: "FAQ"
+    - text: "Help"
       icon: fa-question
-      href: faq.html
-    - text: "Contribute"
+      menu:
+        - text: "FAQ"
+          href: faq.html
+        - text: "Ask a Question"
+          href: contribute.html
+    - text: "How to"
       icon: fa-wrench
       menu:
-        - text: "Get involved"
-          href: contribute.html
-        - text: "How to"
-          menu:
-            - text: "Download the DDL"
-            - href: download.html
+        - text: "SQL Scripts"
+          href: sqlScripts.html
+        - text: "Download the DDL"
+          href: download.html
 
   right:
     - icon: fa-github fa-lg
