@@ -448,6 +448,9 @@ div.tocify {
     <li>
       <a href="download.html">Download the DDL</a>
     </li>
+    <li>
+      <a href="drug_dose.html">Calculate Drug Dose</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -472,10 +475,10 @@ div.tocify {
 
 
 <div id="sql-scripts" class="section level1">
-<h1>SQL Scripts</h1>
+<h1><strong>SQL Scripts</strong></h1>
 <p>These SQL scripts have been developed by the community to facilitate the Extract, Transform, and Load (ETL) process from source data to the OMOP CDM.</p>
 <div id="vocabulary-mapping" class="section level2">
-<h2>Vocabulary Mapping</h2>
+<h2><strong>Vocabulary Mapping</strong></h2>
 <div id="source-to-standard" class="section level3">
 <h3>Source to Standard</h3>
 <p>This script will create a large table containing all source codes and the Standard Concepts they map to. By creating this table ahead of time and referencing it during ETL, you can save processing time than if you were to map source codes on the fly. It is important to note that this script will show ALL mappings, not just those to Standard, Valid Concepts. Be sure to add a filter that will only grab the correct Standard, Valid codes.</p>
@@ -514,7 +517,7 @@ div.tocify {
 </div>
 </div>
 <div id="era-tables" class="section level2">
-<h2>Era Tables</h2>
+<h2><strong>Era Tables</strong></h2>
 <div id="condition-eras" class="section level3">
 <h3>Condition Eras</h3>
 <p>This script will insert values into the CONDITION_ERA table given that the CONDITION_OCCURRENCE table is populated. It will string together condition records that have &lt;= 30 days between them into eras during which the Person is assumed to have the given condition.</p>
@@ -860,7 +863,7 @@ GROUP BY person_id
 </div>
 </div>
 <div id="bonus-queries" class="section level2">
-<h2>Bonus Queries</h2>
+<h2><strong>Bonus Queries</strong></h2>
 <div id="visit-concept-roll-up" class="section level3">
 <h3>Visit Concept Roll-up</h3>
 <p>The query below will utilize the Visit Concept hierarcy to find the highest-level ancestors. In the case that both the VISIT_OCCURRENCE and VISIT_DETAIL tables are populated, it is good practice (though not required) to use the highest-level ancestors as the VISIT_CONCEPT_IDs in the VISIT_OCCURRENCE table and their children as the VISIT_DETAIL_CONCEPT_IDs in the VISIT_DETAIL table. This relationship between the VISIT_OCCURRENCE and VISIT_DETAIL tables allow for standardized Visit logic to be written, building Visits from Visit Details. For more information on how this can be done, please see the <a href="https://ohdsi.github.io/ETL-LambdaBuilder/Optum%20Clinformatics/Optum_visit_occurrence.html">Optum Extended ETL documentation</a>.</p>

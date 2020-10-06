@@ -6,11 +6,11 @@ output:
       toc_float: TRUE
 ---
 
-# SQL Scripts
+# **SQL Scripts**
 
 These SQL scripts have been developed by the community to facilitate the Extract, Transform, and Load (ETL) process from source data to the OMOP CDM. 
 
-## Vocabulary Mapping
+## **Vocabulary Mapping**
 
 ### Source to Standard
 
@@ -54,7 +54,7 @@ SELECT c.concept_code AS SOURCE_CODE, c.concept_id AS SOURCE_CONCEPT_ID, c.CONCE
        WHERE stcm.INVALID_REASON IS NULL
 ```
 
-## Era Tables
+## **Era Tables**
 
 ### Condition Eras
 
@@ -405,7 +405,7 @@ GROUP BY person_id
 
 ```
 
-## Bonus Queries
+## **Bonus Queries**
 
 ### Visit Concept Roll-up
 

@@ -448,6 +448,9 @@ div.tocify {
     <li>
       <a href="download.html">Download the DDL</a>
     </li>
+    <li>
+      <a href="drug_dose.html">Calculate Drug Dose</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -473,7 +476,20 @@ div.tocify {
 
 <div id="cdm-v6.0" class="section level1">
 <h1><strong>CDM v6.0</strong></h1>
-<p><em>Documentation still in development</em> put same description of columns from v5.3.1 here. put changes from last version here</p>
+<p>Below is the specification document for the OMOP Common Data Model, v6.0. Each table is represented with a high-level description and ETL conventions that should be followed. This is continued with a discussion of each field in each table, any conventions related to the field, and constraints that should be followed (like primary key, foreign key, etc). Should you have questions please feel free to visit the <a href="https://forums.ohdsi.org/">forums</a> or the <a href="https://github.com/ohdsi/CommonDataModel/issues">github issue</a> page.</p>
+<p>–after regeneration of DDLs link to csv of cdm link to pdf of cdm documentation link to forum on doc page</p>
+<div id="changes-in-v6.0" class="section level2">
+<h2><strong>Changes in v6.0</strong></h2>
+<ul>
+<li>Latitude and Longitude added to <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#location">LOCATION</a></li>
+<li>Contract owner field added to <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#payer_plan_period">PAYER_PLAN_PERIOD</a></li>
+<li>All primary keys were changed to bigint</li>
+<li>The name of ADMISSION_SOURCE_CONCEPT_ID was changed to ADMITTED_FROM_CONCEPT_ID in <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#visit_occurrence">VISIT_OCCURRENCE</a> and <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#visit_detail">VISIT_DETAIL</a></li>
+<li>All Concept_Ids are now mandatory except for UNIT_CONCEPT_ID, VALUE_AS_CONCEPT_ID, and OPERATOR_CONCEPT_ID. If there is no value available then a Concept_Id should be set to 0 instead of NULL.</li>
+<li><a href="https://ohdsi.github.io/CommonDataModel/cdm531.html#death">DEATH</a> table removed and DEATH_DATETIME field added to the <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#person">PERSON</a> table. Cause of death is stored in the <a href="https://ohdsi.github.io/CommonDataModel/cdm60.html#condition_occurrence">CONDITION_OCCURRENCE</a></li>
+<li>DATETIME fields were made mandatory and date fields were made optional.</li>
+</ul>
+</div>
 <div id="clinical-data-tables" class="section level2">
 <h2><strong>Clinical Data Tables</strong></h2>
 <div id="person" class="section level3 tabset tabset-pills">
@@ -2976,7 +2992,7 @@ drug_exposure_end_date
 The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended for the patient.
 </td>
 <td style="text-align:left;width: 4in; ">
-If this information is not explicitly available in the data, infer the end date using the following methods: 1. Start first with duration or days supply using the calculation drug start date + days supply -1 day. 2. Use quantity divided by daily dose that you may obtain from the sig or a source field (or assumed daily dose of 1) for solid, indivisibile, drug products. If quantity represents ingredient amount, quantity divided by daily dose * concentration (from drug_strength) drug concept id tells you the dose form. 3. If it is an administration record, set drug end date equal to drug start date. If the record is a written prescription then set end date to start date + 29. If the record is a mail-order prescription set end date to start date + 89. The end date must be equal to or greater than the start date. Ibuprofen 20mg/mL oral solution concept tells us this is oral solution. Calculate duration as quantity (200 example) * daily dose (5mL) /concentation (20mg/mL) 200*5/20 = 50 days. SHOW EXAMPLES BY DOSE FORM
+If this information is not explicitly available in the data, infer the end date using the following methods:/n/n 1. Start first with duration or days supply using the calculation drug start date + days supply -1 day. 2. Use quantity divided by daily dose that you may obtain from the sig or a source field (or assumed daily dose of 1) for solid, indivisibile, drug products. If quantity represents ingredient amount, quantity divided by daily dose * concentration (from drug_strength) drug concept id tells you the dose form. 3. If it is an administration record, set drug end date equal to drug start date. If the record is a written prescription then set end date to start date + 29. If the record is a mail-order prescription set end date to start date + 89. The end date must be equal to or greater than the start date. Ibuprofen 20mg/mL oral solution concept tells us this is oral solution. Calculate duration as quantity (200 example) * daily dose (5mL) /concentation (20mg/mL) 200*5/20 = 50 days. SHOW EXAMPLES BY DOSE FORM
 </td>
 <td style="text-align:left;width: 1in; ">
 date
@@ -3137,7 +3153,7 @@ quantity
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
-If liquid, quantity stands for the total amount dispensed or ordered of ingredient in the units given by the drug_strength table. If the unit from the source data does not align with the unit in the drug_strength table the quantity should be converted to the correct unit given in drug_strength. Clinical drugs with fixed dose forms (tablets etc.): quantity number of units/tablets/capsulrs (can be partial, but then only 1/2 or 1/3, not 0.01) Clinical drugs with divisible dose forms (injections): amount of ingredient the patient got (2mg/mL but the patient got 80mL then quantity is 160) Quantified clinical drugs with divisible dose forms (prefilled syringes) amount of ingredient USE THESE TO CREATE EXAMPLE BY DOSE FORM
+If liquid, quantity stands for the total amount dispensed or ordered of ingredient in the units given by the drug_strength table. If the unit from the source data does not align with the unit in the drug_strength table the quantity should be converted to the correct unit given in drug_strength. Clinical drugs with fixed dose forms (tablets etc.) the quantity is the number of units/tablets/capsules prescribed or dispensed (can be partial, but then only 1/2 or 1/3, not 0.01). Clinical drugs with divisible dose forms (injections) the quantity is the amount of ingredient the patient got. For example, if the injection is 2mg/mL but the patient got 80mL then quantity is reported as 160. Quantified clinical drugs with divisible dose forms (prefilled syringes), the quantity is the amount of ingredient similiar to clinical drugs.
 </td>
 <td style="text-align:left;width: 1in; ">
 float
@@ -5555,11 +5571,17 @@ No
 <div id="note" class="section level3 tabset tabset-pills">
 <h3>NOTE</h3>
 <p><strong>Table Description</strong></p>
-<p>The NOTE table captures unstructured information that was recorded by a provider about a patient in free text notes on a given date.</p>
+<p>The NOTE table captures unstructured information that was recorded by a provider about a patient in free text (in ASCII, or preferably in UTF8 format) notes on a given date. The type of note_text is CLOB or varchar(MAX) depending on RDBMS.</p>
 <p><strong>ETL Conventions</strong></p>
-<p>The NOTE table contains free text (in ASCII, or preferably in UTF8 format). The type of note_text is CLOB or varchar(MAX) depending on RDBMS. Mapping of clinical documents to Clinical Document Ontology (CDO) and standard terminology HL7/LOINC CDO is a standard for consistent naming of documents to support a range of use cases: retrieval, organization, display, and exchange. It guides the creation of LOINC codes for clinical notes. CDO annotates each document with 5 dimensions:</p>
-<p>Kind of Document: Characterizes the general structure of the document at a macro level (e.g. Anesthesia Consent) Type of Service: Characterizes the kind of service or activity (e.g. evaluations, consultations, and summaries). The notion of time sequence, e.g., at the beginning (admission) at the end (discharge) is subsumed in this axis. Example: Discharge Teaching. Setting: Setting is an extension of CMS’s definitions (e.g. Inpatient, Outpatient) Subject Matter Domain (SMD): Characterizes the subject matter domain of a note (e.g. Anesthesiology) Role: Characterizes the training or professional level of the author of the document, but does not break down to specialty or subspecialty (e.g. Physician) Each combination of these 5 dimensions rolls up to a unique LOINC code.</p>
-<p>According to CDO requirements, only 2 of the 5 dimensions are required to properly annotate a document: Kind of Document and any one of the other 4 dimensions. However, not all the permutations of the CDO dimensions will necessarily yield an existing LOINC code.2 HL7/LOINC workforce is committed to establish new LOINC codes for each new encountered combination of CDO dimensions. Each of these dimensions are contained in the OMOP Vocabulary under the domain of ‘Meas Value’ with each dimension represented as a Concept Class. The full document ontology as it exists in the Vocabulary is too extensive to list here, but it is possible to explore through the ATHENA tool starting with the ‘LOINC Document Ontology - Type of Service and Kind of Document’ by walking through the ‘Is a’/‘Subsumes’ relationship hierarchies.</p>
+<p>HL7/LOINC CDO is a standard for consistent naming of documents to support a range of use cases: retrieval, organization, display, and exchange. It guides the creation of LOINC codes for clinical notes. CDO annotates each document with 5 dimensions:</p>
+<ul>
+<li><strong>Kind of Document</strong>: Characterizes the general structure of the document at a macro level (e.g. Anesthesia Consent)</li>
+<li><strong>Type of Service</strong>: Characterizes the kind of service or activity (e.g. evaluations, consultations, and summaries). The notion of time sequence, e.g., at the beginning (admission) at the end (discharge) is subsumed in this axis. Example: Discharge Teaching.</li>
+<li><strong>Setting</strong>: Setting is an extension of CMS’s definitions (e.g. Inpatient, Outpatient)</li>
+<li><strong>Subject Matter Domain (SMD)</strong>: Characterizes the subject matter domain of a note (e.g. Anesthesiology)</li>
+<li><strong>Role</strong>: Characterizes the training or professional level of the author of the document, but does not break down to specialty or subspecialty (e.g. Physician) Each combination of these 5 dimensions rolls up to a unique LOINC code.</li>
+</ul>
+<p>According to CDO requirements, only 2 of the 5 dimensions are required to properly annotate a document; Kind of Document and any one of the other 4 dimensions. However, not all the permutations of the CDO dimensions will necessarily yield an existing LOINC code. Each of these dimensions are contained in the OMOP Vocabulary under the domain of ‘Meas Value’ with each dimension represented as a Concept Class.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -5598,6 +5620,7 @@ FK Domain
 note_id
 </td>
 <td style="text-align:left;width: 3in; ">
+A unique identifier for each note.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5649,6 +5672,7 @@ PERSON
 note_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The date the note was recorded.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5676,6 +5700,7 @@ note_datetime
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+If time is not given set the time to midnight.
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -5699,8 +5724,10 @@ No
 note_type_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The provenance of the note. Most likely this will be EHR.
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the source system of the note, as in EHR record. <a href="https://athena.ohdsi.org/search-terms/terms?standardConcept=Standard&amp;domain=Type+Concept&amp;page=1&amp;pageSize=15&amp;query=">Accepted Concepts</a>.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5726,8 +5753,10 @@ Type Concept
 note_class_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+A Standard Concept Id representing the HL7 LOINC Document Type Vocabulary classification of the note.
 </td>
 <td style="text-align:left;width: 4in; ">
+Map the note classification to a Standard Concept. For more information see the ETL Conventions in the description of the NOTE table. <a href="https://athena.ohdsi.org/search-terms/terms?standardConcept=Standard&amp;conceptClass=Doc+Kind&amp;conceptClass=Doc+Role&amp;conceptClass=Doc+Setting&amp;conceptClass=Doc+Subject+Matter&amp;conceptClass=Doc+Type+of+Service&amp;domain=Meas+Value&amp;page=1&amp;pageSize=15&amp;query=">Accepte Concepts</a>. This Concept can alternatively be represented by concepts with the relationship ‘Kind of (LOINC)’ to <a href="https://athena.ohdsi.org/search-terms/terms/706391">706391</a> (Note).
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5752,6 +5781,7 @@ CONCEPT
 note_title
 </td>
 <td style="text-align:left;width: 3in; ">
+The title of the note.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5777,6 +5807,7 @@ No
 note_text
 </td>
 <td style="text-align:left;width: 3in; ">
+The content of the note.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5802,8 +5833,10 @@ No
 encoding_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+This is the Concept representing the character encoding type.
 </td>
 <td style="text-align:left;width: 4in; ">
+Put the Concept Id that represents the encoding character type here. Currently the only option is UTF-8 (<a href="https://athena.ohdsi.org/search-terms/terms/32678">32678</a>). It the note is encoded in any other type, like ASCII then put 0.
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5828,8 +5861,10 @@ CONCEPT
 language_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The language of the note.
 </td>
 <td style="text-align:left;width: 4in; ">
+Use Concepts that are decendants of the concept <a href="https://athena.ohdsi.org/search-terms/terms/4182347">4182347</a> (World Languages).
 </td>
 <td style="text-align:left;width: 1in; ">
 integer
@@ -5854,8 +5889,10 @@ CONCEPT
 provider_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Provider who wrote the note.
 </td>
 <td style="text-align:left;width: 4in; ">
+The ETL may need to make a determination on which provider to put here.
 </td>
 <td style="text-align:left;width: 1in; ">
 bigint
@@ -5880,6 +5917,7 @@ PROVIDER
 visit_occurrence_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Visit during which the note was written.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5906,6 +5944,7 @@ VISIT_OCCURRENCE
 visit_detail_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Visit Detail during which the note was written.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -5934,6 +5973,7 @@ note_source_value
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+The source value mapped to the NOTE_CLASS_CONCEPT_ID.
 </td>
 <td style="text-align:left;width: 1in; ">
 varchar(50)
@@ -9947,6 +9987,8 @@ No
 <h3>DRUG_ERA</h3>
 <p><strong>Table Description</strong></p>
 <p>A Drug Era is defined as a span of time when the Person is assumed to be exposed to a particular active ingredient. A Drug Era is not the same as a Drug Exposure: Exposures are individual records corresponding to the source when Drug was delivered to the Person, while successive periods of Drug Exposures are combined under certain rules to produce continuous Drug Eras.</p>
+<p><strong>ETL Conventions</strong></p>
+<p>The SQL script for generating DRUG_ERA records can be found <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html#drug_eras">here</a>.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -10036,6 +10078,7 @@ PERSON
 drug_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Concept Id representing the specific drug ingredient.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10065,7 +10108,7 @@ drug_era_start_date
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
-The Drug Era Start Date is the start date of the first Drug Exposure for a given ingredient. (NOT RIGHT)
+The Drug Era Start Date is the start date of the first Drug Exposure for a given ingredient, with at least 31 days since the previous exposure.
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -10091,7 +10134,7 @@ drug_era_end_date
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
-The Drug Era End Date is the end date of the last Drug Exposure. The End Date of each Drug Exposure is either taken from the field drug_exposure_end_date or, as it is typically not available, inferred using the following rules: For pharmacy prescription data, the date when the drug was dispensed plus the number of days of supply are used to extrapolate the End Date for the Drug Exposure. Depending on the country-specific healthcare system, this supply information is either explicitly provided in the day_supply field or inferred from package size or similar information. For Procedure Drugs, usually the drug is administered on a single date (i.e., the administration date). A standard Persistence Window of 30 days (gap, slack) is permitted between two subsequent such extrapolated DRUG_EXPOSURE records to be considered to be merged into a single Drug Era. (ARENT WE REQUIRING TO USE DRUG_EXPOSURE_END_DATE NOW????)
+The Drug Era End Date is the end date of the last Drug Exposure. The End Date of each Drug Exposure is either taken from the field drug_exposure_end_date or, as it is typically not available, inferred using the following rules: For pharmacy prescription data, the date when the drug was dispensed plus the number of days of supply are used to extrapolate the End Date for the Drug Exposure. Depending on the country-specific healthcare system, this supply information is either explicitly provided in the day_supply field or inferred from package size or similar information. For Procedure Drugs, usually the drug is administered on a single date (i.e., the administration date). A standard Persistence Window of 30 days (gap, slack) is permitted between two subsequent such extrapolated DRUG_EXPOSURE records to be considered to be merged into a single Drug Era.
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -10169,8 +10212,7 @@ No
 <p><strong>Table Description</strong></p>
 <p>A Dose Era is defined as a span of time when the Person is assumed to be exposed to a constant dose of a specific active ingredient.</p>
 <p><strong>ETL Conventions</strong></p>
-<p>Dose Eras will be derived from records in the DRUG_EXPOSURE table and the Dose information from the DRUG_STRENGTH table using a standardized algorithm. Dose Form information is not taken into account. So, if the patient changes between different formulations, or different manufacturers with the same formulation, the Dose Era is still spanning the entire time of exposure to the Ingredient. The total dose of a DRUG_EXPOSURE record is calculated with the help of the DRUG_STRENGTH table containing the dosage information for each drug as following:</p>
-<p>5 Tablets and other fixed amount formulations Example: Acetaminophen (Paracetamol) 500 mg, 20 tablets. DRUG_STRENGTH The denominator_unit is empty DRUG_EXPOSURE The quantity refers to number of pieces, e.g. tablets In the example: 20 Ingredient dose= quantity x amount_value [amount_unit_concept_id] Acetaminophen dose = 20 x 500mg = 10,000mg 6 Puffs of an inhaler Note: There is no difference to use case 1 besides that the DRUG_STRENGTH table may put {actuat} in the denominator unit. In this case the strength is provided in the numerator. DRUG_STRENGTH The denominator_unit is {actuat} DRUG_EXPOSURE The quantity refers to the number of pieces, e.g. puffs Ingredient dose= quantity x numerator_value [numerator_unit_concept_id] 7 Quantified Drugs which are formulated as a concentration Example: The Clinical Drug is Acetaminophen 250 mg/mL in a 5mL oral suspension. The Quantified Clinical Drug would have 1250 mg / 5 ml in the DRUG_STRENGTH table. Two suspensions are dispensed. DRUG_STRENGTH The denominator_unit is either mg or mL. The denominator_value might be different from 1. DRUG_EXPOSURE The quantity refers to a fraction or, multiple of the pack. Example: 2 Ingredient dose= quantity x numerator_value [numerator_unit_concept_id] Acetaminophen dose = 2 x 1250mg = 2500mg 8 Drugs with the total amount provided in quantity, e.g. chemotherapeutics Example: 42799258 “Benzyl Alcohol 0.1 ML/ML / Pramoxine hydrochloride 0.01 MG/MG Topical Gel” dispensed in a 1.25oz pack. DRUG_STRENGTH The denominator_unit is either mg or mL. Example: Benzyl Alcohol in mL and Pramoxine hydrochloride in mg DRUG_EXPOSURE The quantity refers to mL or g. Example: 1.25 x 30 (conversion factor oz -&gt; mL) = 37 Ingredient dose= quantity x numerator_value [numerator_unit_concept_id] Benzyl Alcohol dose = 37 x 0.1mL = 3.7mL Pramoxine hydrochloride dose = 37 x 0.01mg x 1000 = 370mg Note: The analytical side should check the denominator in the DRUG_STRENGTH table. As mg is used for the second ingredient the factor 1000 will be applied to convert between g and mg. 9 Compounded drugs Example: Ibuprofen 20%/Piroxicam 1% Cream, 30ml in 5ml tubes. DRUG_STRENGTH We need entries for the ingredients of Ibuprofen and Piroxicam, probably with an amount_value of 1 and a unit of mg. DRUG_EXPOSURE The quantity refers to the total amount of the compound. Use one record in the DRUG_EXPOSURE table for each compound. Example: 20% Ibuprofen of 30ml = 6mL, 1% Piroxicam of 30ml = 0.3mL Ingredient dose= Depends on the drugs involved: One of the use cases above. Ibuprofen dose = 6 x 1mg x 1000 = 6000mg Piroxicam dose = 0.3 x 1mg x 1000 = 300mg Note: The analytical side determines that the denominator for both ingredients in the DRUG_STRENGTH table is mg and applies the factor 1000 to convert between mL/g and mg. 10 Drugs with the active ingredient released over time, e.g. patches Example: Ethinyl Estradiol 0.000833 MG/HR / norelgestromin 0.00625 MG/HR Weekly Transdermal Patch DRUG_STRENGTH The denominator units refer to hour. Example: Ethinyl Estradiol 0.000833 mg/h / norelgestromin 0.00625 mg/h DRUG_EXPOSURE The quantity refers to the number of pieces. Example: 1 patch Ingredient rate= numerator_value [numerator_unit_concept_id] Ethinyl Estradiol rate = 0.000833 mg/h norelgestromin rate 0.00625 mg/h Note: This can be converted to a daily dosage by multiplying it with 24. (Assuming 1 patch at a time for at least 24 hours)</p>
+<p>Dose Eras will be derived from records in the DRUG_EXPOSURE table and the Dose information from the DRUG_STRENGTH table using a standardized algorithm. Dose Form information is not taken into account. So, if the patient changes between different formulations, or different manufacturers with the same formulation, the Dose Era is still spanning the entire time of exposure to the Ingredient.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -10260,6 +10302,7 @@ PERSON
 drug_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Concept Id representing the specific drug ingredient.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10287,6 +10330,7 @@ Drug
 unit_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Concept Id representing the unit of the specific drug ingredient.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10314,6 +10358,7 @@ Unit
 dose_value
 </td>
 <td style="text-align:left;width: 3in; ">
+The numeric value of the dosage of the drug_ingredient.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10339,6 +10384,7 @@ No
 dose_era_start_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The date the Person started on the specific dosage, with at least 31 days since any prior exposure.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10366,6 +10412,7 @@ dose_era_end_date
 <td style="text-align:left;width: 3in; ">
 </td>
 <td style="text-align:left;width: 4in; ">
+The date the Person was no longer exposed to the dosage of the specific drug ingredient. An era is ended if there are 31 days or more between dosage records.
 </td>
 <td style="text-align:left;width: 1in; ">
 datetime
@@ -10391,9 +10438,12 @@ No
 <h3>CONDITION_ERA</h3>
 <p><strong>Table Description</strong></p>
 <p>A Condition Era is defined as a span of time when the Person is assumed to have a given condition. Similar to Drug Eras, Condition Eras are chronological periods of Condition Occurrence. Combining individual Condition Occurrences into a single Condition Era serves two purposes:</p>
-<p>It allows aggregation of chronic conditions that require frequent ongoing care, instead of treating each Condition Occurrence as an independent event. It allows aggregation of multiple, closely timed doctor visits for the same Condition to avoid double-counting the Condition Occurrences. For example, consider a Person who visits her Primary Care Physician (PCP) and who is referred to a specialist. At a later time, the Person visits the specialist, who confirms the PCP’s original diagnosis and provides the appropriate treatment to resolve the condition. These two independent doctor visits should be aggregated into one Condition Era.</p>
+<ul>
+<li>It allows aggregation of chronic conditions that require frequent ongoing care, instead of treating each Condition Occurrence as an independent event.</li>
+<li>It allows aggregation of multiple, closely timed doctor visits for the same Condition to avoid double-counting the Condition Occurrences. For example, consider a Person who visits her Primary Care Physician (PCP) and who is referred to a specialist. At a later time, the Person visits the specialist, who confirms the PCP’s original diagnosis and provides the appropriate treatment to resolve the condition. These two independent doctor visits should be aggregated into one Condition Era.</li>
+</ul>
 <p><strong>ETL Conventions</strong></p>
-<p>Each Condition Era corresponds to one or many Condition Occurrence records that form a continuous interval. The condition_concept_id field contains Concepts that are identical to those of the CONDITION_OCCURRENCE table records that make up the Condition Era. In contrast to Drug Eras, Condition Eras are not aggregated to contain Conditions of different hierarchical layers. The Condition Era Start Date is the start date of the first Condition Occurrence. The Condition Era End Date is the end date of the last Condition Occurrence. Condition Eras are built with a Persistence Window of 30 days, meaning, if no occurrence of the same condition_concept_id happens within 30 days of any one occurrence, it will be considered the condition_era_end_date.</p>
+<p>Each Condition Era corresponds to one or many Condition Occurrence records that form a continuous interval. The condition_concept_id field contains Concepts that are identical to those of the CONDITION_OCCURRENCE table records that make up the Condition Era. In contrast to Drug Eras, Condition Eras are not aggregated to contain Conditions of different hierarchical layers. The SQl Script for generating CONDITION_ERA records can be found <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html#condition_eras">here</a> The Condition Era Start Date is the start date of the first Condition Occurrence. The Condition Era End Date is the end date of the last Condition Occurrence. Condition Eras are built with a Persistence Window of 30 days, meaning, if no occurrence of the same condition_concept_id happens within 30 days of any one occurrence, it will be considered the condition_era_end_date.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -10483,6 +10533,7 @@ PERSON
 condition_concept_id
 </td>
 <td style="text-align:left;width: 3in; ">
+The Concept Id representing the Condition.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10510,6 +10561,7 @@ Condition
 condition_era_start_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The start date for the Condition Era constructed from the individual instances of Condition Occurrences. It is the start date of the very first chronologically recorded instance of the condition with at least 31 days since any prior record of the same Condition.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10535,6 +10587,7 @@ No
 condition_era_end_date
 </td>
 <td style="text-align:left;width: 3in; ">
+The end date for the Condition Era constructed from the individual instances of Condition Occurrences. It is the end date of the final continuously recorded instance of the Condition.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -10560,6 +10613,7 @@ No
 condition_occurrence_count
 </td>
 <td style="text-align:left;width: 3in; ">
+The number of individual Condition Occurrences used to construct the condition era.
 </td>
 <td style="text-align:left;width: 4in; ">
 </td>
@@ -11109,7 +11163,7 @@ No
 <p><strong>Table Description</strong></p>
 <p>The Standardized Vocabularies contains records, or Concepts, that uniquely identify each fundamental unit of meaning used to express clinical information in all domain tables of the CDM. Concepts are derived from vocabularies, which represent clinical information across a domain (e.g. conditions, drugs, procedures) through the use of codes and associated descriptions. Some Concepts are designated Standard Concepts, meaning these Concepts can be used as normative expressions of a clinical entity within the OMOP Common Data Model and within standardized analytics. Each Standard Concept belongs to one domain, which defines the location where the Concept would be expected to occur within data tables of the CDM.</p>
 <p>Concepts can represent broad categories (like ‘Cardiovascular disease’), detailed clinical elements (‘Myocardial infarction of the anterolateral wall’) or modifying characteristics and attributes that define Concepts at various levels of detail (severity of a disease, associated morphology, etc.).</p>
-<p>Records in the Standardized Vocabularies tables are derived from national or international vocabularies such as SNOMED-CT, RxNorm, and LOINC, or custom Concepts defined to cover various aspects of observational data analysis. For a detailed description of these vocabularies, their use in the OMOP CDM and their relationships to each other please refer to the <a href="http://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary">specifications</a>.</p>
+<p>Records in the Standardized Vocabularies tables are derived from national or international vocabularies such as SNOMED-CT, RxNorm, and LOINC, or custom Concepts defined to cover various aspects of observational data analysis.</p>
 <table class="table table-condensed table-hover" style="font-size: 13px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>

@@ -52,6 +52,8 @@ navbar:
           href: sqlScripts.html
         - text: "Download the DDL"
           href: download.html
+        - text: "Calculate Drug Dose"
+          href: drug_dose.html
 
   right:
     - icon: fa-github fa-lg

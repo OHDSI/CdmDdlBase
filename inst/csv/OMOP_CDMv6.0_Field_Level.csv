@@ -92,15 +92,14 @@ DRUG_EXPOSURE,person_id,Yes,bigint,The PERSON_ID of the PERSON for whom the drug
 DRUG_EXPOSURE,drug_concept_id,Yes,integer,"The DRUG_CONCEPT_ID field is recommended for primary use in analyses, and must be used for network studies. This is the standard concept mapped from the source concept id which represents a drug product or molecule otherwise introduced to the body. The drug concepts can have a varying degree of information about drug strength and dose. This information is relevant in the context of quantity and administration information in the subsequent fields plus strength information from the DRUG_STRENGTH table, provided as part of the standard vocabulary download.","The CONCEPT_ID that the DRUG_SOURCE_VALUE maps to. The concept id should be derived either from mapping from the source concept id or by picking the drug concept representing the most amount of detail you have. Records whose source values map to standard concepts with a domain of Drug should go in this table. When the Drug Source Value of the code cannot be translated into Standard Drug Concept IDs, a Drug exposure entry is stored with only the corresponding SOURCE_CONCEPT_ID and DRUG_SOURCE_VALUE and a DRUG_CONCEPT_ID of 0. The Drug Concept with the most detailed content of information is preferred during the mapping process. These are indicated in the CONCEPT_CLASS_ID field of the Concept and are recorded in the following order of precedence: 'Branded Pack', 'Clinical Pack', 'Branded Drug', 'Clinical Drug', 'Branded Drug Component', 'Clinical Drug Component', 'Branded Drug Form', 'Clinical Drug Form', and only if no other information is available 'Ingredient'. Note: If only the drug class is known, the DRUG_CONCEPT_ID field should contain 0. [Accepted Concepts](https://athena.ohdsi.org/search-terms/terms?domain=Drug&standardConcept=Standard&page=1&pageSize=15&query=).",No,Yes,CONCEPT,CONCEPT_ID,Drug,,
 DRUG_EXPOSURE,drug_exposure_start_date,Yes,date,Use this date to determine the start date of the drug record.,"Valid entries include a start date of a prescription, the date a prescription was filled, or the date on which a Drug administration was recorded. It is a valid ETL choice to use the date the drug was ordered as the DRUG_EXPOSURE_START_DATE.",No,No,,,,,
 DRUG_EXPOSURE,drug_exposure_start_datetime,No,datetime,,"This is not required, though it is in v6. If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)",No,No,,,,,
-DRUG_EXPOSURE,drug_exposure_end_date,Yes,date,The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended for the patient.,"If this information is not explicitly available in the data, infer the end date using the following methods: 1. Start first with duration or days supply using the calculation drug start date + days supply -1 day. 2. Use quantity divided by daily dose that you may obtain from the sig or a source field (or assumed daily dose of 1) for solid, indivisibile, drug products. If quantity represents ingredient amount, quantity divided by daily dose * concentration (from drug_strength) drug concept id tells you the dose form. 3. If it is an administration record, set drug end date equal to drug start date. If the record is a written prescription then set end date to start date + 29. If the record is a mail-order prescription set end date to start date + 89. The end date must be equal to or greater than the start date. Ibuprofen 20mg/mL oral solution concept tells us this is oral solution. Calculate duration as quantity (200 example) * daily dose (5mL) /concentation (20mg/mL) 200*5/20 = 50 days. SHOW EXAMPLES BY DOSE FORM",No,No,,,,,
+DRUG_EXPOSURE,drug_exposure_end_date,Yes,date,The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended for the patient.,"If this information is not explicitly available in the data, infer the end date using the following methods:/n/n 1. Start first with duration or days supply using the calculation drug start date + days supply -1 day. 2. Use quantity divided by daily dose that you may obtain from the sig or a source field (or assumed daily dose of 1) for solid, indivisibile, drug products. If quantity represents ingredient amount, quantity divided by daily dose * concentration (from drug_strength) drug concept id tells you the dose form. 3. If it is an administration record, set drug end date equal to drug start date. If the record is a written prescription then set end date to start date + 29. If the record is a mail-order prescription set end date to start date + 89. The end date must be equal to or greater than the start date. Ibuprofen 20mg/mL oral solution concept tells us this is oral solution. Calculate duration as quantity (200 example) * daily dose (5mL) /concentation (20mg/mL) 200*5/20 = 50 days. SHOW EXAMPLES BY DOSE FORM",No,No,,,,,
 DRUG_EXPOSURE,drug_exposure_end_datetime,No,datetime,,"This is not required, though it is in v6. If a source does not specify datetime the convention is to set the time to midnight (00:00:0000)",No,No,,,,,
 DRUG_EXPOSURE,verbatim_end_date,No,date,"This is the end date of the drug exposure as it appears in the source data, if it is given",Put the end date or discontinuation date as it appears from the source data or leave blank if unavailable.,No,No,,,,,
 DRUG_EXPOSURE,drug_type_concept_id,Yes,integer,"You can use the TYPE_CONCEPT_ID to delineate between prescriptions written vs. prescriptions dispensed vs. medication history vs. patient-reported exposure, etc.","Choose the drug_type_concept_id that best represents the provenance of the record, for example whether it came from a record of a prescription written or physician administered drug. [Accepted Concepts](https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&standardConcept=Standard&page=1&pageSize=15&query=).",No,Yes,CONCEPT,CONCEPT_ID,Type Concept,,
 DRUG_EXPOSURE,stop_reason,No,varchar(20),"The reason a person stopped a medication as it is represented in the source. Reasons include regimen completed, changed, removed, etc. This field will be retired in v6.0.",This information is often not populated in source data and it is a valid etl choice to leave it blank if the information does not exist.,No,No,,,,,
 DRUG_EXPOSURE,refills,No,integer,This is only filled in when the record is coming from a prescription written this field is meant to represent intended refills at time of the prescription.,,No,No,,,,,
-DRUG_EXPOSURE,quantity,No,float,,"If liquid, quantity stands for the total amount dispensed or ordered of ingredient in the units given by the drug_strength table. If the unit from the source data does not align with the unit in the drug_strength table the quantity should be converted to the correct unit given in drug_strength. Clinical drugs with fixed dose forms (tablets etc.): quantity number of units/tablets/capsulrs (can be partial, but then only 1/2 or 1/3, not 0.01)
-Clinical drugs with divisible dose forms (injections): amount of ingredient the patient got (2mg/mL but the patient got 80mL then quantity is 160)
-Quantified clinical drugs with divisible dose forms (prefilled syringes) amount of ingredient USE THESE TO CREATE EXAMPLE BY DOSE FORM
+DRUG_EXPOSURE,quantity,No,float,,"If liquid, quantity stands for the total amount dispensed or ordered of ingredient in the units given by the drug_strength table. If the unit from the source data does not align with the unit in the drug_strength table the quantity should be converted to the correct unit given in drug_strength. Clinical drugs with fixed dose forms (tablets etc.) the quantity is the number of units/tablets/capsules prescribed or dispensed (can be partial, but then only 1/2 or 1/3, not 0.01). Clinical drugs with divisible dose forms (injections) the quantity is the amount of ingredient the patient got. For example, if the injection is 2mg/mL but the patient got 80mL then quantity is reported as 160.
+Quantified clinical drugs with divisible dose forms (prefilled syringes), the quantity is the amount of ingredient similiar to clinical drugs. 
 ",No,No,,,,,
 DRUG_EXPOSURE,days_supply,No,integer,,Days supply of the drug. This should be the verbatim days_supply as given on the prescription. If the drug is physician administered use duration end date if given or set to 1 as default if duration is not available.,No,No,,,,,
 DRUG_EXPOSURE,sig,No,varchar(MAX),This is the verbatim instruction for the drug as written by the provider.,"Put the written out instructions for the drug as it is verbatim in the source, if available.",No,No,,,,,
@@ -190,20 +189,21 @@ DEATH,death_type_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Type Concept,
 DEATH,cause_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 DEATH,cause_source_value,No,varchar(50),,,No,No,,,,,
 DEATH,cause_source_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-NOTE,note_id,Yes,integer,,,Yes,No,,,,,
+NOTE,note_id,Yes,integer,A unique identifier for each note.,,Yes,No,,,,,
 NOTE,person_id,Yes,bigint,,,No,Yes,PERSON,PERSON_ID,,,
-NOTE,note_date,Yes,date,,,No,No,,,,,
-NOTE,note_datetime,No,datetime,,,No,No,,,,,
-NOTE,note_type_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Type Concept,,
-NOTE,note_class_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-NOTE,note_title,No,varchar(250),,,No,No,,,,,
-NOTE,note_text,Yes,varchar(MAX),,,No,No,,,,,
-NOTE,encoding_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-NOTE,language_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
-NOTE,provider_id,No,bigint,,,No,Yes,PROVIDER,PROVIDER_ID,,,
-NOTE,visit_occurrence_id,No,bigint,,,No,Yes,VISIT_OCCURRENCE,VISIT_OCCURRENCE_ID,,,
-NOTE,visit_detail_id,No,bigint,,,No,Yes,VISIT_DETAIL,VISIT_DETAIL_ID,,,
-NOTE,note_source_value,No,varchar(50),,,No,No,,,,,
+NOTE,note_date,Yes,date,The date the note was recorded.,,No,No,,,,,
+NOTE,note_datetime,No,datetime,,If time is not given set the time to midnight.,No,No,,,,,
+NOTE,note_type_concept_id,Yes,integer,The provenance of the note. Most likely this will be EHR. ,"Put the source system of the note, as in EHR record. [Accepted Concepts](https://athena.ohdsi.org/search-terms/terms?standardConcept=Standard&domain=Type+Concept&page=1&pageSize=15&query=).",No,Yes,CONCEPT,CONCEPT_ID,Type Concept,,
+NOTE,note_class_concept_id,Yes,integer,"A Standard Concept Id representing the HL7 LOINC
+Document Type Vocabulary classification of the note.",Map the note classification to a Standard Concept. For more information see the ETL Conventions in the description of the NOTE table. [Accepte Concepts](https://athena.ohdsi.org/search-terms/terms?standardConcept=Standard&conceptClass=Doc+Kind&conceptClass=Doc+Role&conceptClass=Doc+Setting&conceptClass=Doc+Subject+Matter&conceptClass=Doc+Type+of+Service&domain=Meas+Value&page=1&pageSize=15&query=). This Concept can alternatively be represented by concepts with the relationship 'Kind of (LOINC)' to [706391](https://athena.ohdsi.org/search-terms/terms/706391) (Note).,No,Yes,CONCEPT,CONCEPT_ID,,,
+NOTE,note_title,No,varchar(250),The title of the note.,,No,No,,,,,
+NOTE,note_text,Yes,varchar(MAX),The content of the note.,,No,No,,,,,
+NOTE,encoding_concept_id,Yes,integer,This is the Concept representing the character encoding type. ,"Put the Concept Id that represents the encoding character type here. Currently the only option is UTF-8 ([32678](https://athena.ohdsi.org/search-terms/terms/32678)). It the note is encoded in any other type, like ASCII then put 0. ",No,Yes,CONCEPT,CONCEPT_ID,,,
+NOTE,language_concept_id,Yes,integer,The language of the note. ,Use Concepts that are decendants of the concept [4182347](https://athena.ohdsi.org/search-terms/terms/4182347) (World Languages).,No,Yes,CONCEPT,CONCEPT_ID,,,
+NOTE,provider_id,No,bigint,The Provider who wrote the note.,The ETL may need to make a determination on which provider to put here.,No,Yes,PROVIDER,PROVIDER_ID,,,
+NOTE,visit_occurrence_id,No,bigint,The Visit during which the note was written. ,,No,Yes,VISIT_OCCURRENCE,VISIT_OCCURRENCE_ID,,,
+NOTE,visit_detail_id,No,bigint,The Visit Detail during which the note was written.,,No,Yes,VISIT_DETAIL,VISIT_DETAIL_ID,,,
+NOTE,note_source_value,No,varchar(50),,The source value mapped to the NOTE_CLASS_CONCEPT_ID.,No,No,,,,,
 NOTE_NLP,note_nlp_id,Yes,bigint,,,Yes,No,,,,,
 NOTE_NLP,note_id,Yes,integer,,,No,No,,,,,
 NOTE_NLP,section_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
@@ -356,27 +356,39 @@ COST,drg_concept_id,No,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 COST,drg_source_value,No,VARCHAR(3),Diagnosis Related Groups are US codes used to classify hospital cases into one of approximately 500 groups. ,,No,No,,,,,
 DRUG_ERA,drug_era_id,Yes,bigint,,,Yes,No,,,,,
 DRUG_ERA,person_id,Yes,bigint,,,No,Yes,PERSON,PERSON_ID,,,
-DRUG_ERA,drug_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Drug,Ingredient,
-DRUG_ERA,drug_era_start_date,Yes,datetime,,The Drug Era Start Date is the start date of the first Drug Exposure for a given ingredient.  (NOT RIGHT),No,No,,,,,
+DRUG_ERA,drug_concept_id,Yes,integer,The Concept Id representing the specific drug ingredient.,,No,Yes,CONCEPT,CONCEPT_ID,Drug,Ingredient,
+DRUG_ERA,drug_era_start_date,Yes,datetime,,"The Drug Era Start Date is the start date of the first Drug Exposure for a given ingredient, with at least 31 days since the previous exposure. ",No,No,,,,,
 DRUG_ERA,drug_era_end_date,Yes,datetime,,"The Drug Era End Date is the end date of the last Drug Exposure. The End Date of each Drug Exposure is either taken from the field drug_exposure_end_date or, as it is typically not available, inferred using the following rules:
 For pharmacy prescription data, the date when the drug was dispensed plus the number of days of supply are used to extrapolate the End Date for the Drug Exposure. Depending on the country-specific healthcare system, this supply information is either explicitly provided in the day_supply field or inferred from package size or similar information.
 For Procedure Drugs, usually the drug is administered on a single date (i.e., the administration date).
-A standard Persistence Window of 30 days (gap, slack) is permitted between two subsequent such extrapolated DRUG_EXPOSURE records to be considered to be merged into a single Drug Era.   (ARENT WE REQUIRING TO USE DRUG_EXPOSURE_END_DATE NOW????)",No,No,,,,,
+A standard Persistence Window of 30 days (gap, slack) is permitted between two subsequent such extrapolated DRUG_EXPOSURE records to be considered to be merged into a single Drug Era.",No,No,,,,,
 DRUG_ERA,drug_exposure_count,No,integer,,,No,No,,,,,
 DRUG_ERA,gap_days,No,integer,,"The Gap Days determine how many total drug-free days are observed between all Drug Exposure events that contribute to a DRUG_ERA record. It is assumed that the drugs are ""not stockpiled"" by the patient, i.e. that if a new drug prescription or refill is observed (a new DRUG_EXPOSURE record is written), the remaining supply from the previous events is abandoned.   The difference between Persistence Window and Gap Days is that the former is the maximum drug-free time allowed between two subsequent DRUG_EXPOSURE records, while the latter is the sum of actual drug-free days for the given Drug Era under the above assumption of non-stockpiling.",No,No,,,,,
 DOSE_ERA,dose_era_id,Yes,bigint,,,Yes,No,,,,,
 DOSE_ERA,person_id,Yes,bigint,,,No,Yes,PERSON,PERSON_ID,,,
-DOSE_ERA,drug_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Drug,Ingredient,
-DOSE_ERA,unit_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Unit,,
-DOSE_ERA,dose_value,Yes,float,,,No,No,,,,,
-DOSE_ERA,dose_era_start_date,Yes,datetime,,,No,No,,,,,
-DOSE_ERA,dose_era_end_date,Yes,datetime,,,No,No,,,,,
+DOSE_ERA,drug_concept_id,Yes,integer,The Concept Id representing the specific drug ingredient.,,No,Yes,CONCEPT,CONCEPT_ID,Drug,Ingredient,
+DOSE_ERA,unit_concept_id,Yes,integer,The Concept Id representing the unit of the specific drug ingredient.,,No,Yes,CONCEPT,CONCEPT_ID,Unit,,
+DOSE_ERA,dose_value,Yes,float,The numeric value of the dosage of the drug_ingredient.,,No,No,,,,,
+DOSE_ERA,dose_era_start_date,Yes,datetime,"The date the Person started on the specific dosage, with at least 31 days since any prior exposure.",,No,No,,,,,
+DOSE_ERA,dose_era_end_date,Yes,datetime,,The date the Person was no longer exposed to the dosage of the specific drug ingredient. An era is ended if there are 31 days or more between dosage records.,No,No,,,,,
 CONDITION_ERA,condition_era_id,Yes,integer,,,Yes,No,,,,,
 CONDITION_ERA,person_id,Yes,bigint,,,No,No,PERSON,PERSON_ID,,,
-CONDITION_ERA,condition_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,Condition,,
-CONDITION_ERA,condition_era_start_date,Yes,datetime,,,No,No,,,,,
-CONDITION_ERA,condition_era_end_date,Yes,datetime,,,No,No,,,,,
-CONDITION_ERA,condition_occurrence_count,No,integer,,,No,No,,,,,
+CONDITION_ERA,condition_concept_id,Yes,integer,The Concept Id representing the Condition.,,No,Yes,CONCEPT,CONCEPT_ID,Condition,,
+CONDITION_ERA,condition_era_start_date,Yes,datetime,"The start date for the Condition Era
+constructed from the individual
+instances of Condition Occurrences.
+It is the start date of the very first
+chronologically recorded instance of
+the condition with at least 31 days since any prior record of the same Condition. ",,No,No,,,,,
+CONDITION_ERA,condition_era_end_date,Yes,datetime,"The end date for the Condition Era
+constructed from the individual
+instances of Condition Occurrences.
+It is the end date of the final
+continuously recorded instance of the
+Condition.",,No,No,,,,,
+CONDITION_ERA,condition_occurrence_count,No,integer,"The number of individual Condition
+Occurrences used to construct the
+condition era.",,No,No,,,,,
 METADATA,metadata_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 METADATA,metadata_type_concept_id,Yes,integer,,,No,Yes,CONCEPT,CONCEPT_ID,,,
 METADATA,name,Yes,varchar(250),,,No,No,,,,,
