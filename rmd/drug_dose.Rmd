@@ -1,11 +1,10 @@
 ---
-title: "drug_dose"
 author: "Clair Blacketer"
 date: "October 6, 2020"
 output: html_document
 ---
 
-# How to Calculate Drug Dose
+# **How to Calculate Drug Dose**
 
 These examples have been curated to show how to calculate drug dose for different drug formulations.
 
