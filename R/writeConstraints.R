@@ -17,10 +17,13 @@
 #' Write constraint script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
-#' @param cdmVersion The version of the CDM that you are creating the constraints for
+#' @param cdmVersion The version of the CDM that you are creating the primary keys for
+#' @param cdmDatabaseSchema The name of the schema where the cdm sits.
+#' @param sqlFilename The name of the file that should be rendered and translated to a different dbms.
 #'
 #' @export
-writeConstraints <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
+
+writeConstraints <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFileName) {
 if(!dir.exists("output")){
   dir.create("output")
 }
@@ -29,8 +32,8 @@ if(!dir.exists(paste0("output/",targetdialect))){
   dir.create(paste0("output/",targetdialect))
 }
 
-sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM constraints.sql",
-                                         packageName = "DDLGeneratr",
+sql <- SqlRender::loadRenderTranslateSql(sqlFilename = sqlFileName,
+                                         packageName = "CdmDdlBase",
                                          dbms = targetdialect,
                                          targetdialect = targetdialect,
                                          cdmDatabaseSchema = cdmDatabaseSchema)

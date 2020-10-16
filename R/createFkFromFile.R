@@ -33,7 +33,7 @@ createFkFromFile <- function(cdmVersionNum = cdmVersion,
   fks$key <- paste0(fks$cdmTableName,"_",fks$cdmFieldName)
 
   s <- c()
-  s <- c(paste0("--CDM Foreign Key Constraints for OMOP Common Data Model ",cdmVersionNum, "\n"))
+  s <- c(paste0("--@targetdialect CDM Foreign Key Constraints for OMOP Common Data Model ",cdmVersionNum, "\n"))
   for (t in fks$key){
 
       q <- subset(fks, fks$key==t)

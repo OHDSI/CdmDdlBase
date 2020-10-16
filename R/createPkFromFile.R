@@ -34,7 +34,7 @@ createPkFromFile <- function(cdmVersionNum = cdmVersion,
   pkFields <- pks$cdmFieldName
 
   s <- c()
-  s <- c(paste0("--CDM Primary Key Constraints for OMOP Common Data Model ",cdmVersionNum, "\n"))
+  s <- c(paste0("--@targetdialect CDM Primary Key Constraints for OMOP Common Data Model ",cdmVersionNum, "\n"))
   for (f in pkFields){
 
     q <- subset(pks, cdmFieldName==f)

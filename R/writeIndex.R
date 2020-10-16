@@ -17,10 +17,12 @@
 #' Write Index script
 #'
 #' @param targetdialect  The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"
-#' @param cdmVersion The version of the CDM that you are creating the index for
+#' @param cdmVersion The version of the CDM that you are creating the primary keys for
+#' @param cdmDatabaseSchema The name of the schema where the cdm sits.
+#' @param sqlFilename The name of the file that should be rendered and translated to a different dbms. This is either "OMOP CDM indices v5_3_1.sql" or "OMOP CDM indices v6_0.sql".
 #'
 #' @export
-writeIndex <- function(targetdialect, cdmVersion, cdmDatabaseSchema) {
+writeIndex <- function(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFilename) {
 if(!dir.exists("output")){
   dir.create("output")
 }
@@ -29,13 +31,13 @@ if(!dir.exists(paste0("output/",targetdialect))){
   dir.create(paste0("output/",targetdialect))
 }
 
-sql <- SqlRender::loadRenderTranslateSql(sqlFilename = "OMOP CDM pk indexes required.sql",
-                                         packageName = "DDLGeneratr",
+sql <- SqlRender::loadRenderTranslateSql(sqlFilename = sqlFilename,
+                                         packageName = "CdmDdlBase",
                                          dbms = targetdialect,
                                          targetdialect = targetdialect,
                                          cdmDatabaseSchema = cdmDatabaseSchema)
 
 SqlRender::writeSql(sql = sql,
-                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ", cdmVersion, " pk indexes.sql"))
+                    targetFile = paste0("output/",targetdialect,"/OMOP CDM ",targetdialect," ", cdmVersion, " indices.sql"))
 
 }

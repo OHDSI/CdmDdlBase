@@ -2,30 +2,10 @@ DBMS:
 sql server
 
 Error:
-com.microsoft.sqlserver.jdbc.SQLServerException: There is already an object named 'PERSON' in the database.
+com.microsoft.sqlserver.jdbc.SQLServerException: 'fpk_NOTE_person_id' is not a constraint.
 
 SQL:
---HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.dbo.PERSON (
- 
-			person_id integer NOT NULL, 
-			gender_concept_id integer NOT NULL, 
-			year_of_birth integer NOT NULL, 
-			month_of_birth integer NULL, 
-			day_of_birth integer NULL, 
-			birth_datetime datetime NULL, 
-			race_concept_id integer NOT NULL, 
-			ethnicity_concept_id integer NOT NULL, 
-			location_id integer NULL, 
-			provider_id integer NULL, 
-			care_site_id integer NULL, 
-			person_source_value varchar(50) NULL, 
-			gender_source_value varchar(50) NULL, 
-			gender_source_concept_id Integer NULL, 
-			race_source_value varchar(50) NULL, 
-			race_source_concept_id Integer NULL, 
-			ethnicity_source_value varchar(50) NULL, 
-			ethnicity_source_concept_id Integer NULL )
+ALTER TABLE ohdsi.dbo.NOTE DROP CONSTRAINT fpk_NOTE_person_id 
 
 R version:
 R version 3.4.2 (2017-09-28)
@@ -43,5 +23,4 @@ Attached base packages:
 - base
 
 Other attached packages:
-- DatabaseConnector (2.4.1)
 - CdmDdlBase (0.1.0)

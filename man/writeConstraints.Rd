@@ -4,12 +4,16 @@
 \alias{writeConstraints}
 \title{Write constraint script}
 \usage{
-writeConstraints(targetdialect, cdmVersion, cdmDatabaseSchema)
+writeConstraints(targetdialect, cdmVersion, cdmDatabaseSchema, sqlFileName)
 }
 \arguments{
 \item{targetdialect}{The dialect of the target database. Choices are "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sql server"}
 
-\item{cdmVersion}{The version of the CDM that you are creating the constraints for}
+\item{cdmVersion}{The version of the CDM that you are creating the primary keys for}
+
+\item{cdmDatabaseSchema}{The name of the schema where the cdm sits.}
+
+\item{sqlFilename}{The name of the file that should be rendered and translated to a different dbms.}
 }
 \description{
 Write constraint script

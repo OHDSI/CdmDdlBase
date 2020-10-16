@@ -1,7 +1,7 @@
 --postgresql CDM DDL Specification for OMOP Common Data Model v5_3_1 
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.PERSON (
+ CREATE TABLE @cdmDatabaseSchema.PERSON (
  
 			person_id integer NOT NULL, 
 			gender_concept_id integer NOT NULL, 
@@ -16,23 +16,23 @@
 			care_site_id integer NULL, 
 			person_source_value varchar(50) NULL, 
 			gender_source_value varchar(50) NULL, 
-			gender_source_concept_id Integer NULL, 
+			gender_source_concept_id integer NULL, 
 			race_source_value varchar(50) NULL, 
-			race_source_concept_id Integer NULL, 
+			race_source_concept_id integer NULL, 
 			ethnicity_source_value varchar(50) NULL, 
-			ethnicity_source_concept_id Integer NULL );  
+			ethnicity_source_concept_id integer NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.OBSERVATION_PERIOD (
+ CREATE TABLE @cdmDatabaseSchema.OBSERVATION_PERIOD (
  
 			observation_period_id integer NOT NULL, 
 			person_id integer NOT NULL, 
 			observation_period_start_date date NOT NULL, 
 			observation_period_end_date date NOT NULL, 
-			period_type_concept_id Integer NOT NULL );  
+			period_type_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.VISIT_OCCURRENCE (
+ CREATE TABLE @cdmDatabaseSchema.VISIT_OCCURRENCE (
  
 			visit_occurrence_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -53,10 +53,33 @@
 			preceding_visit_occurrence_id integer NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.CONDITION_OCCURRENCE (
+ CREATE TABLE @cdmDatabaseSchema.VISIT_DETAIL (
  
-			condition_occurrence_id bigint NOT NULL, 
-			person_id bigint NOT NULL, 
+			visit_detail_id integer NOT NULL, 
+			person_id integer NOT NULL, 
+			visit_detail_concept_id integer NOT NULL, 
+			visit_detail_start_date date NOT NULL, 
+			visit_detail_start_datetime TIMESTAMP NULL, 
+			visit_detail_end_date date NOT NULL, 
+			visit_detail_end_datetime TIMESTAMP NULL, 
+			visit_detail_type_concept_id integer NOT NULL, 
+			provider_id integer NULL, 
+			care_site_id integer NULL, 
+			visit_detail_source_value varchar(50) NULL, 
+			visit_detail_source_concept_id Integer NULL, 
+			admitting_source_value Varchar(50) NULL, 
+			admitting_source_concept_id Integer NULL, 
+			discharge_to_source_value Varchar(50) NULL, 
+			discharge_to_concept_id integer NULL, 
+			preceding_visit_detail_id integer NULL, 
+			visit_detail_parent_id integer NULL, 
+			visit_occurrence_id integer NOT NULL );  
+
+--HINT DISTRIBUTE ON KEY (person_id)
+ CREATE TABLE @cdmDatabaseSchema.CONDITION_OCCURRENCE (
+ 
+			condition_occurrence_id integer NOT NULL, 
+			person_id integer NOT NULL, 
 			condition_concept_id integer NOT NULL, 
 			condition_start_date date NOT NULL, 
 			condition_start_datetime TIMESTAMP NULL, 
@@ -73,10 +96,10 @@
 			condition_status_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.DRUG_EXPOSURE (
+ CREATE TABLE @cdmDatabaseSchema.DRUG_EXPOSURE (
  
-			drug_exposure_id bigint NOT NULL, 
-			person_id bigint NOT NULL, 
+			drug_exposure_id integer NOT NULL, 
+			person_id integer NOT NULL, 
 			drug_concept_id integer NOT NULL, 
 			drug_exposure_start_date date NOT NULL, 
 			drug_exposure_start_datetime TIMESTAMP NULL, 
@@ -100,7 +123,7 @@
 			dose_unit_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.PROCEDURE_OCCURRENCE (
+ CREATE TABLE @cdmDatabaseSchema.PROCEDURE_OCCURRENCE (
  
 			procedure_occurrence_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -118,10 +141,10 @@
 			modifier_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.DEVICE_EXPOSURE (
+ CREATE TABLE @cdmDatabaseSchema.DEVICE_EXPOSURE (
  
-			device_exposure_id bigint NOT NULL, 
-			person_id bigint NOT NULL, 
+			device_exposure_id integer NOT NULL, 
+			person_id integer NOT NULL, 
 			device_concept_id integer NOT NULL, 
 			device_exposure_start_date date NOT NULL, 
 			device_exposure_start_datetime TIMESTAMP NULL, 
@@ -137,7 +160,7 @@
 			device_source_concept_id integer NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.MEASUREMENT (
+ CREATE TABLE @cdmDatabaseSchema.MEASUREMENT (
  
 			measurement_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -161,66 +184,7 @@
 			value_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.VISIT_DETAIL (
- 
-			visit_detail_id integer NOT NULL, 
-			person_id integer NOT NULL, 
-			visit_detail_concept_id integer NOT NULL, 
-			visit_detail_start_date date NOT NULL, 
-			visit_detail_start_datetime TIMESTAMP NULL, 
-			visit_detail_end_date date NOT NULL, 
-			visit_detail_end_datetime TIMESTAMP NULL, 
-			visit_detail_type_concept_id Integer NOT NULL, 
-			provider_id integer NULL, 
-			care_site_id integer NULL, 
-			visit_detail_source_value varchar(50) NULL, 
-			visit_detail_source_concept_id Integer NULL, 
-			admitting_source_value Varchar(50) NULL, 
-			admitting_source_concept_id Integer NULL, 
-			discharge_to_source_value Varchar(50) NULL, 
-			discharge_to_concept_id Integer NULL, 
-			preceding_visit_detail_id Integer NULL, 
-			visit_detail_parent_id Integer NULL, 
-			visit_occurrence_id Integer NOT NULL );  
-
---HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.NOTE (
- 
-			note_id integer NOT NULL, 
-			person_id integer NOT NULL, 
-			note_date date NOT NULL, 
-			note_datetime TIMESTAMP NULL, 
-			note_type_concept_id integer NOT NULL, 
-			note_class_concept_id integer NOT NULL, 
-			note_title varchar(250) NULL, 
-			note_text TEXT NOT NULL, 
-			encoding_concept_id integer NOT NULL, 
-			language_concept_id integer NOT NULL, 
-			provider_id integer NULL, 
-			visit_occurrence_id integer NULL, 
-			visit_detail_id integer NULL, 
-			note_source_value varchar(50) NULL );  
-
---HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.NOTE_NLP (
- 
-			note_nlp_id integer NOT NULL, 
-			note_id integer NOT NULL, 
-			section_concept_id integer NULL, 
-			snippet varchar(250) NULL, 
-			"offset" varchar(50) NULL, 
-			lexical_variant varchar(250) NOT NULL, 
-			note_nlp_concept_id integer NULL, 
-			note_nlp_source_concept_id integer NULL, 
-			nlp_system varchar(250) NULL, 
-			nlp_date date NOT NULL, 
-			nlp_datetime TIMESTAMP NULL, 
-			term_exists varchar(1) NULL, 
-			term_temporal varchar(50) NULL, 
-			term_modifiers varchar(2000) NULL );  
-
---HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.OBSERVATION (
+ CREATE TABLE @cdmDatabaseSchema.OBSERVATION (
  
 			observation_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -242,7 +206,54 @@
 			qualifier_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.SPECIMEN (
+ CREATE TABLE @cdmDatabaseSchema.DEATH (
+ 
+			person_id integer NULL, 
+			death_date date NULL, 
+			death_datetime TIMESTAMP NULL, 
+			death_type_concept_id integer NULL, 
+			cause_concept_id integer NULL, 
+			cause_source_value varchar(50) NULL, 
+			cause_source_concept_id integer NULL );  
+
+--HINT DISTRIBUTE ON KEY (person_id)
+ CREATE TABLE @cdmDatabaseSchema.NOTE (
+ 
+			note_id integer NOT NULL, 
+			person_id integer NOT NULL, 
+			note_date date NOT NULL, 
+			note_datetime TIMESTAMP NULL, 
+			note_type_concept_id integer NOT NULL, 
+			note_class_concept_id integer NOT NULL, 
+			note_title varchar(250) NULL, 
+			note_text TEXT NOT NULL, 
+			encoding_concept_id integer NOT NULL, 
+			language_concept_id integer NOT NULL, 
+			provider_id integer NULL, 
+			visit_occurrence_id integer NULL, 
+			visit_detail_id integer NULL, 
+			note_source_value varchar(50) NULL );  
+
+--HINT DISTRIBUTE ON RANDOM
+ CREATE TABLE @cdmDatabaseSchema.NOTE_NLP (
+ 
+			note_nlp_id integer NOT NULL, 
+			note_id integer NOT NULL, 
+			section_concept_id integer NULL, 
+			snippet varchar(250) NULL, 
+			"offset" varchar(50) NULL, 
+			lexical_variant varchar(250) NOT NULL, 
+			note_nlp_concept_id integer NULL, 
+			note_nlp_source_concept_id integer NULL, 
+			nlp_system varchar(250) NULL, 
+			nlp_date date NOT NULL, 
+			nlp_datetime TIMESTAMP NULL, 
+			term_exists varchar(1) NULL, 
+			term_temporal varchar(50) NULL, 
+			term_modifiers varchar(2000) NULL );  
+
+--HINT DISTRIBUTE ON KEY (person_id)
+ CREATE TABLE @cdmDatabaseSchema.SPECIMEN (
  
 			specimen_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -261,7 +272,7 @@
 			disease_status_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.FACT_RELATIONSHIP (
+ CREATE TABLE @cdmDatabaseSchema.FACT_RELATIONSHIP (
  
 			domain_concept_id_1 integer NOT NULL, 
 			fact_id_1 integer NOT NULL, 
@@ -270,7 +281,7 @@
 			relationship_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.LOCATION (
+ CREATE TABLE @cdmDatabaseSchema.LOCATION (
  
 			location_id integer NOT NULL, 
 			address_1 varchar(50) NULL, 
@@ -282,7 +293,7 @@
 			location_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CARE_SITE (
+ CREATE TABLE @cdmDatabaseSchema.CARE_SITE (
  
 			care_site_id integer NOT NULL, 
 			care_site_name varchar(255) NULL, 
@@ -292,7 +303,7 @@
 			place_of_service_source_value varchar(50) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.PROVIDER (
+ CREATE TABLE @cdmDatabaseSchema.PROVIDER (
  
 			provider_id integer NOT NULL, 
 			provider_name varchar(255) NULL, 
@@ -309,7 +320,7 @@
 			gender_source_concept_id integer NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.PAYER_PLAN_PERIOD (
+ CREATE TABLE @cdmDatabaseSchema.PAYER_PLAN_PERIOD (
  
 			payer_plan_period_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -330,11 +341,11 @@
 			stop_reason_source_concept_id integer NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.COST (
+ CREATE TABLE @cdmDatabaseSchema.COST (
  
-			cost_id INTEGER NOT NULL, 
-			cost_event_id INTEGER NOT NULL, 
-			cost_domain_id VARCHAR(20) NOT NULL, 
+			cost_id integer NOT NULL, 
+			cost_event_id integer NOT NULL, 
+			cost_domain_id varchar(20) NOT NULL, 
 			cost_type_concept_id integer NOT NULL, 
 			currency_concept_id integer NULL, 
 			total_charge NUMERIC NULL, 
@@ -348,15 +359,15 @@
 			paid_by_primary NUMERIC NULL, 
 			paid_ingredient_cost NUMERIC NULL, 
 			paid_dispensing_fee NUMERIC NULL, 
-			payer_plan_period_id INTEGER NULL, 
+			payer_plan_period_id integer NULL, 
 			amount_allowed NUMERIC NULL, 
 			revenue_code_concept_id integer NULL, 
-			revenue_code_source_value VARCHAR(50) NULL, 
+			revenue_code_source_value varchar(50) NULL, 
 			drg_concept_id integer NULL, 
-			drg_source_value VARCHAR(3) NULL );  
+			drg_source_value varchar(3) NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.DRUG_ERA (
+ CREATE TABLE @cdmDatabaseSchema.DRUG_ERA (
  
 			drug_era_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -367,7 +378,7 @@
 			gap_days integer NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.DOSE_ERA (
+ CREATE TABLE @cdmDatabaseSchema.DOSE_ERA (
  
 			dose_era_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -378,7 +389,7 @@
 			dose_era_end_date TIMESTAMP NOT NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.CONDITION_ERA (
+ CREATE TABLE @cdmDatabaseSchema.CONDITION_ERA (
  
 			condition_era_id integer NOT NULL, 
 			person_id integer NOT NULL, 
@@ -388,7 +399,32 @@
 			condition_occurrence_count integer NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CONCEPT (
+ CREATE TABLE @cdmDatabaseSchema.METADATA (
+ 
+			metadata_concept_id integer NOT NULL, 
+			metadata_type_concept_id integer NOT NULL, 
+			name varchar(250) NOT NULL, 
+			value_as_string varchar(250) NULL, 
+			value_as_concept_id integer NULL, 
+			metadata_date date NULL, 
+			metadata_datetime TIMESTAMP NULL );  
+
+--HINT DISTRIBUTE ON RANDOM
+ CREATE TABLE @cdmDatabaseSchema.CDM_SOURCE (
+ 
+			cdm_source_name varchar(255) NOT NULL, 
+			cdm_source_abbreviation varchar(25) NULL, 
+			cdm_holder varchar(255) NULL, 
+			source_description TEXT NULL, 
+			source_documentation_reference varchar(255) NULL, 
+			cdm_etl_reference varchar(255) NULL, 
+			source_release_date date NULL, 
+			cdm_release_date date NULL, 
+			cdm_version varchar(10) NULL, 
+			vocabulary_version varchar(20) NULL );  
+
+--HINT DISTRIBUTE ON RANDOM
+ CREATE TABLE @cdmDatabaseSchema.CONCEPT (
  
 			concept_id integer NOT NULL, 
 			concept_name varchar(255) NOT NULL, 
@@ -402,7 +438,7 @@
 			invalid_reason varchar(1) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.VOCABULARY (
+ CREATE TABLE @cdmDatabaseSchema.VOCABULARY (
  
 			vocabulary_id varchar(20) NOT NULL, 
 			vocabulary_name varchar(255) NOT NULL, 
@@ -411,21 +447,21 @@
 			vocabulary_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.DOMAIN (
+ CREATE TABLE @cdmDatabaseSchema.DOMAIN (
  
 			domain_id varchar(20) NOT NULL, 
 			domain_name varchar(255) NOT NULL, 
 			domain_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CONCEPT_CLASS (
+ CREATE TABLE @cdmDatabaseSchema.CONCEPT_CLASS (
  
 			concept_class_id varchar(20) NOT NULL, 
 			concept_class_name varchar(255) NOT NULL, 
 			concept_class_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CONCEPT_RELATIONSHIP (
+ CREATE TABLE @cdmDatabaseSchema.CONCEPT_RELATIONSHIP (
  
 			concept_id_1 integer NOT NULL, 
 			concept_id_2 integer NOT NULL, 
@@ -435,7 +471,7 @@
 			invalid_reason varchar(1) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.RELATIONSHIP (
+ CREATE TABLE @cdmDatabaseSchema.RELATIONSHIP (
  
 			relationship_id varchar(20) NOT NULL, 
 			relationship_name varchar(255) NOT NULL, 
@@ -445,14 +481,14 @@
 			relationship_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CONCEPT_SYNONYM (
+ CREATE TABLE @cdmDatabaseSchema.CONCEPT_SYNONYM (
  
 			concept_id integer NOT NULL, 
 			concept_synonym_name varchar(1000) NOT NULL, 
 			language_concept_id integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CONCEPT_ANCESTOR (
+ CREATE TABLE @cdmDatabaseSchema.CONCEPT_ANCESTOR (
  
 			ancestor_concept_id integer NOT NULL, 
 			descendant_concept_id integer NOT NULL, 
@@ -460,7 +496,7 @@
 			max_levels_of_separation integer NOT NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.SOURCE_TO_CONCEPT_MAP (
+ CREATE TABLE @cdmDatabaseSchema.SOURCE_TO_CONCEPT_MAP (
  
 			source_code varchar(50) NOT NULL, 
 			source_concept_id integer NOT NULL, 
@@ -473,7 +509,7 @@
 			invalid_reason varchar(1) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.DRUG_STRENGTH (
+ CREATE TABLE @cdmDatabaseSchema.DRUG_STRENGTH (
  
 			drug_concept_id integer NOT NULL, 
 			ingredient_concept_id integer NOT NULL, 
@@ -489,7 +525,7 @@
 			invalid_reason varchar(1) NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.COHORT_DEFINITION (
+ CREATE TABLE @cdmDatabaseSchema.COHORT_DEFINITION (
  
 			cohort_definition_id integer NOT NULL, 
 			cohort_definition_name varchar(255) NOT NULL, 
@@ -500,46 +536,10 @@
 			cohort_initiation_date date NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.ATTRIBUTE_DEFINITION (
+ CREATE TABLE @cdmDatabaseSchema.ATTRIBUTE_DEFINITION (
  
 			attribute_definition_id integer NOT NULL, 
 			attribute_name varchar(255) NOT NULL, 
 			attribute_description TEXT NULL, 
 			attribute_type_concept_id integer NOT NULL, 
-			attribute_syntax TEXT NULL );  
-
---HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.METADATA (
- 
-			metadata_concept_id integer NOT NULL, 
-			metadata_type_concept_id integer NOT NULL, 
-			name varchar(250) NOT NULL, 
-			value_as_string varchar(250) NULL, 
-			value_as_concept_id integer NULL, 
-			metadata_date date NULL, 
-			metadata_datetime TIMESTAMP NULL );  
-
---HINT DISTRIBUTE ON RANDOM
- CREATE TABLE ohdsi.CDM_SOURCE (
- 
-			cdm_source_name varchar(255) NOT NULL, 
-			cdm_source_abbreviation varchar(25) NULL, 
-			cdm_holder varchar(255) NULL, 
-			source_description TEXT NULL, 
-			source_documentation_reference varchar(255) NULL, 
-			cdm_etl_reference varchar(255) NULL, 
-			source_release_date date NULL, 
-			cdm_release_date date NULL, 
-			cdm_version varchar(10) NULL, 
-			vocabulary_version varchar(20) NULL );  
-
---HINT DISTRIBUTE ON KEY (person_id)
- CREATE TABLE ohdsi.DEATH (
- 
-			person_id integer NULL, 
-			death_date date NULL, 
-			death_datetime TIMESTAMP NULL, 
-			death_type_concept_id integer NULL, 
-			cause_concept_id integer NULL, 
-			cause_source_value varchar(50) NULL, 
-			cause_source_concept_id integer NULL ); 
+			attribute_syntax TEXT NULL ); 

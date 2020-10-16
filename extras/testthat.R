@@ -17,8 +17,8 @@ DatabaseConnector::executeSql(connection = conn,
                               progressBar = TRUE
                               )
 
-## Run oracle primary keys and indices
-sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle", cdmVersion," primary keys.sql"))
+## Run oracle primary keys
+sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle ", cdmVersion," primary keys.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -27,6 +27,14 @@ DatabaseConnector::executeSql(connection = conn,
 
 ## Run oracle constraints
 sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle ", cdmVersion," constraints.sql"))
+
+DatabaseConnector::executeSql(connection = conn,
+                              sql = sql,
+                              progressBar = TRUE
+)
+
+## Run oracle indices
+sql <- SqlRender::readSql(paste0("output/oracle/OMOP CDM oracle ", cdmVersion," indices.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -78,6 +86,14 @@ DatabaseConnector::executeSql(connection = conn,
                               progressBar = TRUE
 )
 
+## Run postgres indices
+sql <- SqlRender::readSql(paste0("output/postgresql/OMOP CDM postgresql ", cdmVersion," indices.sql"))
+
+DatabaseConnector::executeSql(connection = conn,
+                              sql = sql,
+                              progressBar = TRUE
+)
+
 ## Remove postgres tables
 sql <- SqlRender::readSql(paste0("output/postgresql/postgresql testCleanUp ", "v5_3_1",".sql"))
 
@@ -107,7 +123,7 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Run sql server primary keys and indices
-sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server", cdmVersion," primary keys.sql"))
+sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server ", cdmVersion," primary keys.sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,
@@ -115,15 +131,23 @@ DatabaseConnector::executeSql(connection = conn,
 )
 
 ## Run sql server constraints
-# sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server ", cdmVersion," constraints.sql"))
-#
-# DatabaseConnector::executeSql(connection = conn,
-#                               sql = sql,
-#                               progressBar = TRUE
-# )
+sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server ", cdmVersion," constraints.sql"))
+
+DatabaseConnector::executeSql(connection = conn,
+                              sql = sql,
+                              progressBar = TRUE
+)
+
+## Run sql server indices
+sql <- SqlRender::readSql(paste0("output/sql server/OMOP CDM sql server ", cdmVersion," indices.sql"))
+
+DatabaseConnector::executeSql(connection = conn,
+                              sql = sql,
+                              progressBar = TRUE
+)
 
 ## Remove sql server tables
-sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", "v5_3_1",".sql"))
+sql <- SqlRender::readSql(paste0("output/sql server/sql server testCleanUp ", "v6_0",".sql"))
 
 DatabaseConnector::executeSql(connection = conn,
                               sql = sql,

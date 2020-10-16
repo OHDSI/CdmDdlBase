@@ -1,4 +1,4 @@
---oracle CDM DDL Specification for OMOP Common Data Model v5_3_1 
+--@targetdialect CDM DDL Specification for OMOP Common Data Model v5_3_1 
 
 --HINT DISTRIBUTE ON KEY (person_id)
  CREATE TABLE @cdmDatabaseSchema.PERSON (
@@ -8,7 +8,7 @@
 			year_of_birth integer NOT NULL, 
 			month_of_birth integer NULL, 
 			day_of_birth integer NULL, 
-			birth_datetime TIMESTAMP NULL, 
+			birth_datetime datetime NULL, 
 			race_concept_id integer NOT NULL, 
 			ethnicity_concept_id integer NOT NULL, 
 			location_id integer NULL, 
@@ -38,9 +38,9 @@
 			person_id integer NOT NULL, 
 			visit_concept_id integer NOT NULL, 
 			visit_start_date date NOT NULL, 
-			visit_start_datetime TIMESTAMP NULL, 
+			visit_start_datetime datetime NULL, 
 			visit_end_date date NOT NULL, 
-			visit_end_datetime TIMESTAMP NULL, 
+			visit_end_datetime datetime NULL, 
 			visit_type_concept_id Integer NOT NULL, 
 			provider_id integer NULL, 
 			care_site_id integer NULL, 
@@ -59,9 +59,9 @@
 			person_id integer NOT NULL, 
 			visit_detail_concept_id integer NOT NULL, 
 			visit_detail_start_date date NOT NULL, 
-			visit_detail_start_datetime TIMESTAMP NULL, 
+			visit_detail_start_datetime datetime NULL, 
 			visit_detail_end_date date NOT NULL, 
-			visit_detail_end_datetime TIMESTAMP NULL, 
+			visit_detail_end_datetime datetime NULL, 
 			visit_detail_type_concept_id integer NOT NULL, 
 			provider_id integer NULL, 
 			care_site_id integer NULL, 
@@ -82,9 +82,9 @@
 			person_id integer NOT NULL, 
 			condition_concept_id integer NOT NULL, 
 			condition_start_date date NOT NULL, 
-			condition_start_datetime TIMESTAMP NULL, 
+			condition_start_datetime datetime NULL, 
 			condition_end_date date NULL, 
-			condition_end_datetime TIMESTAMP NULL, 
+			condition_end_datetime datetime NULL, 
 			condition_type_concept_id integer NOT NULL, 
 			condition_status_concept_id integer NULL, 
 			stop_reason varchar(20) NULL, 
@@ -102,16 +102,16 @@
 			person_id integer NOT NULL, 
 			drug_concept_id integer NOT NULL, 
 			drug_exposure_start_date date NOT NULL, 
-			drug_exposure_start_datetime TIMESTAMP NULL, 
+			drug_exposure_start_datetime datetime NULL, 
 			drug_exposure_end_date date NOT NULL, 
-			drug_exposure_end_datetime TIMESTAMP NULL, 
+			drug_exposure_end_datetime datetime NULL, 
 			verbatim_end_date date NULL, 
 			drug_type_concept_id integer NOT NULL, 
 			stop_reason varchar(20) NULL, 
 			refills integer NULL, 
 			quantity float NULL, 
 			days_supply integer NULL, 
-			sig CLOB NULL, 
+			sig varchar(MAX) NULL, 
 			route_concept_id integer NULL, 
 			lot_number varchar(50) NULL, 
 			provider_id integer NULL, 
@@ -129,7 +129,7 @@
 			person_id integer NOT NULL, 
 			procedure_concept_id integer NOT NULL, 
 			procedure_date date NOT NULL, 
-			procedure_datetime TIMESTAMP NULL, 
+			procedure_datetime datetime NULL, 
 			procedure_type_concept_id integer NOT NULL, 
 			modifier_concept_id integer NULL, 
 			quantity integer NULL, 
@@ -147,9 +147,9 @@
 			person_id integer NOT NULL, 
 			device_concept_id integer NOT NULL, 
 			device_exposure_start_date date NOT NULL, 
-			device_exposure_start_datetime TIMESTAMP NULL, 
+			device_exposure_start_datetime datetime NULL, 
 			device_exposure_end_date date NULL, 
-			device_exposure_end_datetime TIMESTAMP NULL, 
+			device_exposure_end_datetime datetime NULL, 
 			device_type_concept_id integer NOT NULL, 
 			unique_device_id varchar(50) NULL, 
 			quantity integer NULL, 
@@ -166,7 +166,7 @@
 			person_id integer NOT NULL, 
 			measurement_concept_id integer NOT NULL, 
 			measurement_date date NOT NULL, 
-			measurement_datetime TIMESTAMP NULL, 
+			measurement_datetime datetime NULL, 
 			measurement_time varchar(10) NULL, 
 			measurement_type_concept_id integer NOT NULL, 
 			operator_concept_id integer NULL, 
@@ -190,7 +190,7 @@
 			person_id integer NOT NULL, 
 			observation_concept_id integer NOT NULL, 
 			observation_date date NOT NULL, 
-			observation_datetime TIMESTAMP NULL, 
+			observation_datetime datetime NULL, 
 			observation_type_concept_id integer NOT NULL, 
 			value_as_number float NULL, 
 			value_as_string varchar(60) NULL, 
@@ -210,7 +210,7 @@
  
 			person_id integer NULL, 
 			death_date date NULL, 
-			death_datetime TIMESTAMP NULL, 
+			death_datetime datetime NULL, 
 			death_type_concept_id integer NULL, 
 			cause_concept_id integer NULL, 
 			cause_source_value varchar(50) NULL, 
@@ -222,11 +222,11 @@
 			note_id integer NOT NULL, 
 			person_id integer NOT NULL, 
 			note_date date NOT NULL, 
-			note_datetime TIMESTAMP NULL, 
+			note_datetime datetime NULL, 
 			note_type_concept_id integer NOT NULL, 
 			note_class_concept_id integer NOT NULL, 
 			note_title varchar(250) NULL, 
-			note_text CLOB NOT NULL, 
+			note_text varchar(MAX) NOT NULL, 
 			encoding_concept_id integer NOT NULL, 
 			language_concept_id integer NOT NULL, 
 			provider_id integer NULL, 
@@ -247,7 +247,7 @@
 			note_nlp_source_concept_id integer NULL, 
 			nlp_system varchar(250) NULL, 
 			nlp_date date NOT NULL, 
-			nlp_datetime TIMESTAMP NULL, 
+			nlp_datetime datetime NULL, 
 			term_exists varchar(1) NULL, 
 			term_temporal varchar(50) NULL, 
 			term_modifiers varchar(2000) NULL );  
@@ -260,7 +260,7 @@
 			specimen_concept_id integer NOT NULL, 
 			specimen_type_concept_id integer NOT NULL, 
 			specimen_date date NOT NULL, 
-			specimen_datetime TIMESTAMP NULL, 
+			specimen_datetime datetime NULL, 
 			quantity float NULL, 
 			unit_concept_id integer NULL, 
 			anatomic_site_concept_id integer NULL, 
@@ -372,8 +372,8 @@
 			drug_era_id integer NOT NULL, 
 			person_id integer NOT NULL, 
 			drug_concept_id integer NOT NULL, 
-			drug_era_start_date TIMESTAMP NOT NULL, 
-			drug_era_end_date TIMESTAMP NOT NULL, 
+			drug_era_start_date datetime NOT NULL, 
+			drug_era_end_date datetime NOT NULL, 
 			drug_exposure_count integer NULL, 
 			gap_days integer NULL );  
 
@@ -385,8 +385,8 @@
 			drug_concept_id integer NOT NULL, 
 			unit_concept_id integer NOT NULL, 
 			dose_value float NOT NULL, 
-			dose_era_start_date TIMESTAMP NOT NULL, 
-			dose_era_end_date TIMESTAMP NOT NULL );  
+			dose_era_start_date datetime NOT NULL, 
+			dose_era_end_date datetime NOT NULL );  
 
 --HINT DISTRIBUTE ON KEY (person_id)
  CREATE TABLE @cdmDatabaseSchema.CONDITION_ERA (
@@ -394,8 +394,8 @@
 			condition_era_id integer NOT NULL, 
 			person_id integer NOT NULL, 
 			condition_concept_id integer NOT NULL, 
-			condition_era_start_date TIMESTAMP NOT NULL, 
-			condition_era_end_date TIMESTAMP NOT NULL, 
+			condition_era_start_date datetime NOT NULL, 
+			condition_era_end_date datetime NOT NULL, 
 			condition_occurrence_count integer NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
@@ -407,7 +407,7 @@
 			value_as_string varchar(250) NULL, 
 			value_as_concept_id integer NULL, 
 			metadata_date date NULL, 
-			metadata_datetime TIMESTAMP NULL );  
+			metadata_datetime datetime NULL );  
 
 --HINT DISTRIBUTE ON RANDOM
  CREATE TABLE @cdmDatabaseSchema.CDM_SOURCE (
@@ -415,7 +415,7 @@
 			cdm_source_name varchar(255) NOT NULL, 
 			cdm_source_abbreviation varchar(25) NULL, 
 			cdm_holder varchar(255) NULL, 
-			source_description CLOB NULL, 
+			source_description varchar(MAX) NULL, 
 			source_documentation_reference varchar(255) NULL, 
 			cdm_etl_reference varchar(255) NULL, 
 			source_release_date date NULL, 
@@ -529,9 +529,9 @@
  
 			cohort_definition_id integer NOT NULL, 
 			cohort_definition_name varchar(255) NOT NULL, 
-			cohort_definition_description CLOB NULL, 
+			cohort_definition_description varchar(MAX) NULL, 
 			definition_type_concept_id integer NOT NULL, 
-			cohort_definition_syntax CLOB NULL, 
+			cohort_definition_syntax varchar(MAX) NULL, 
 			subject_concept_id integer NOT NULL, 
 			cohort_initiation_date date NULL );  
 
@@ -540,6 +540,6 @@
  
 			attribute_definition_id integer NOT NULL, 
 			attribute_name varchar(255) NOT NULL, 
-			attribute_description CLOB NULL, 
+			attribute_description varchar(MAX) NULL, 
 			attribute_type_concept_id integer NOT NULL, 
-			attribute_syntax CLOB NULL ); 
+			attribute_syntax varchar(MAX) NULL ); 
