@@ -487,7 +487,7 @@ div.tocify {
              JOIN CONCEPT_RELATIONSHIP CR
                         ON C.CONCEPT_ID = CR.CONCEPT_ID_1
                         AND CR.invalid_reason IS NULL
-                        AND cr.relationship_id = &#39;Maps To&#39;
+                        AND lower(cr.relationship_id) = &#39;maps to&#39;
               JOIN CONCEPT C1
                         ON CR.CONCEPT_ID_2 = C1.CONCEPT_ID
                         AND C1.INVALID_REASON IS NULL
