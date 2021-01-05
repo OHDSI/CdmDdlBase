@@ -35,9 +35,9 @@ Year_of_birth, month_of_birth, day_of_birth and birth_datetime are all fields in
 
 **6. How are gender, race, and ethnicity captured in the model? Are they coded using values a human reader can understand?**
 
-Standard Concepts are used to denote all clinical entities throughout the OMOP common data model, including gender, race, and ethnicity. Source values are mapped to Standard Concepts during the extract, transform, load (ETL) process of converting a database to the OMOP Common Data Model. These are then stored in the Gender_concept_id, Race_concept_id and Ethnicity_concept_id fields in the Person table.  Because the standard concepts span across all clinical domains, and in keeping with Cimino’s ‘Desiderata for Controlled Medical Vocabularies in the Twenty-First Century’, the identifiers are unique, persistent nonsematic identifiers.  Gender, for example, is stored as either 8532 (female) or 8507 (male) in gender_concept_id while the original value from the source is stored in gender_source_value (M, male, F, etc)..
+Standard Concepts are used to denote all clinical entities throughout the OMOP common data model, including gender, race, and ethnicity. Source values are mapped to Standard Concepts during the extract, transform, load (ETL) process of converting a database to the OMOP Common Data Model. These are then stored in the Gender_concept_id, Race_concept_id and Ethnicity_concept_id fields in the Person table.  Because the standard concepts span across all clinical domains, and in keeping with Cimino’s ‘Desiderata for Controlled Medical Vocabularies in the Twenty-First Century’, the identifiers are unique, persistent nonsematic identifiers.  Gender, for example, is stored as either 8532 (female) or 8507 (male) in gender_concept_id while the original value from the source is stored in gender_source_value (M, male, F, etc).
 
-**7. Are there conditions/procedures/drugs or other domains that should be masked or hidden in the CDM? 
+**7. Are there conditions/procedures/drugs or other domains that should be masked or hidden in the CDM?** 
 
 The masking of information related to a person is dependent on the organization's privacy policies and may vary by data asset ([THEMIS issue #21](https://github.com/OHDSI/Themis/issues/21)). 
 
