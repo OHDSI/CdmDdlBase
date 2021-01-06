@@ -261,7 +261,7 @@ SURVEY_CONDUCT,survey_start_date,No,date,Date on which the survey was started.,,
 SURVEY_CONDUCT,survey_start_datetime,No,datetime,,"If no time given, set to midnight.",No,No,,,,,
 SURVEY_CONDUCT,survey_end_date,No,date,Date on which the survey was completed.,,No,No,,,,,
 SURVEY_CONDUCT,survey_end_datetime,Yes,datetime,,"If no time given, set to midnight.",No,No,,,,,
-SURVEY_CONDUCT,provider_id,No ,bigint,This is the Provider associated with the survey completion.,The ETL may need to make a choice as to which Provider to put here. This could either be the provider that ordered the survey or the provider who observed the completion of the survey.,No,Yes,PROVIDER,PROVIDER_ID,,,
+SURVEY_CONDUCT,provider_id,No,bigint,This is the Provider associated with the survey completion.,The ETL may need to make a choice as to which Provider to put here. This could either be the provider that ordered the survey or the provider who observed the completion of the survey.,No,Yes,PROVIDER,PROVIDER_ID,,,
 SURVEY_CONDUCT,assisted_concept_id,Yes,integer,This is a Concept that represents whether the survey was completed with assistance or independently.,"There is no specific domain or class for this field, just choose the one that best represents the value given in the source.",No,Yes,CONCEPT,CONCEPT_ID,,,
 SURVEY_CONDUCT,respondent_type_concept_id,Yes,integer,"This is a Concept that represents who actually recorded the answers to the survey. For example, this could be the patient or a research associate.","There is no specific domain or class for this field, just choose the one that best represents the value given in the source.",No,Yes,CONCEPT,CONCEPT_ID,,,
 SURVEY_CONDUCT,timing_concept_id,Yes,integer,This is a Concept that represents the timing of the survey. For example this could be the 3-month follow-up appointment.,"There is no specific domain or class for this field, just choose the one that best represents the value given in the source.",No,Yes,CONCEPT,CONCEPT_ID,,,
@@ -270,7 +270,7 @@ SURVEY_CONDUCT,assisted_source_value,No,varchar(50),"Source value representing w
 SURVEY_CONDUCT,respondent_type_source_value,No,varchar(100),Source code representing role of person who completed the survey.,,No,No,,,,,
 SURVEY_CONDUCT,timing_source_value,No,varchar(100),"Text string representing the timing of the survey. Example: Baseline, 6-month follow-up.",,No,No,,,,,
 SURVEY_CONDUCT,collection_method_source_value,No,varchar(100),The collection method as it appears in the source data.,,No,No,,,,,
-SURVEY_CONDUCT,survey_source_value,No,varchar(100),The survey name/title as it appears in the source data.,,No,No,,,,,
+SURVEY_CONDUCT,survey_source_value,No,varchar(100),The survey name as it appears in the source data.,,No,No,,,,,
 SURVEY_CONDUCT,survey_source_concept_id,Yes,integer,,"If unavailable, set to 0.",No,Yes,CONCEPT,CONCEPT_ID,,,
 SURVEY_CONDUCT,survey_source_identifier,No,varchar(100),Unique identifier for each completed survey in source system.,,No,No,,,,,
 SURVEY_CONDUCT,validated_survey_concept_id,Yes,integer,,"If unavailable, set to 0.",No,Yes,CONCEPT,CONCEPT_ID,,,
@@ -537,10 +537,7 @@ DRUG_STRENGTH,valid_start_date,Yes,date,"The date when the Concept was first
 recorded. The default value is
 1-Jan-1970.",,No,No,,,,,
 DRUG_STRENGTH,valid_end_date,Yes,date,The date when then Concept became invalid.,,No,No,,,,,
-DRUG_STRENGTH,invalid_reason,No,varchar(1),"Reason the concept was invalidated.
-Possible values are ‘D’ (deleted), ‘U’
-(replaced with an update) or NULL when
-valid_end_date has the default value.",,No,No,,,,,
+DRUG_STRENGTH,invalid_reason,No,varchar(1),"Reason the concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_id,Yes,integer,"This is the identifier given to the cohort, usually by the ATLAS application",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_name,Yes,varchar(255),A short description of the cohort,,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_description,No,varchar(MAX),A complete description of the cohort.,,No,No,,,,,

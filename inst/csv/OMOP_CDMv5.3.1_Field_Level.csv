@@ -486,12 +486,7 @@ instance became invalid because it
 was deleted or superseded
 (updated) by a new relationship.
 Default value is 31-Dec-2099.",,No,No,,,,,
-SOURCE_TO_CONCEPT_MAP,invalid_reason,No,varchar(1),"Reason the mapping instance was
-invalidated. Possible values are D
-(deleted), U (replaced with an
-update) or NULL when
-valid_end_date has the default
-value.",,No,No,,,,,
+SOURCE_TO_CONCEPT_MAP,invalid_reason,No,varchar(1),"Reason the mapping instance was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.",,No,No,,,,,
 DRUG_STRENGTH,drug_concept_id,Yes,integer,The Concept representing the Branded Drug or Clinical Drug Product.,,No,Yes,CONCEPT,CONCEPT_ID,,,
 DRUG_STRENGTH,ingredient_concept_id,Yes,integer,The Concept representing the active ingredient contained within the drug product.,"Combination Drugs will have more than one record in this table, one for each active Ingredient.",No,Yes,CONCEPT,CONCEPT_ID,,,
 DRUG_STRENGTH,amount_value,No,float,The numeric value or the amount of active ingredient contained within the drug product.,,No,No,,,,,
@@ -505,10 +500,7 @@ DRUG_STRENGTH,valid_start_date,Yes,date,"The date when the Concept was first
 recorded. The default value is
 1-Jan-1970.",,No,No,,,,,
 DRUG_STRENGTH,valid_end_date,Yes,date,The date when then Concept became invalid.,,No,No,,,,,
-DRUG_STRENGTH,invalid_reason,No,varchar(1),"Reason the concept was invalidated.
-Possible values are ‘D’ (deleted), ‘U’
-(replaced with an update) or NULL when
-valid_end_date has the default value.",,No,No,,,,,
+DRUG_STRENGTH,invalid_reason,No,varchar(1),"Reason the concept was invalidated. Possible values are D (deleted), U (replaced with an update) or NULL when valid_end_date has the default value.",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_id,Yes,integer,"This is the identifier given to the cohort, usually by the ATLAS application",,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_name,Yes,varchar(255),A short description of the cohort,,No,No,,,,,
 COHORT_DEFINITION,cohort_definition_description,No,varchar(MAX),A complete description of the cohort.,,No,No,,,,,
