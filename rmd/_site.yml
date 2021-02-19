@@ -14,13 +14,19 @@ navbar:
       href: index.html
     - text: "Background"
       icon: fa-landmark
-      href: background.html
+      menu:
+        - text: "Model Background"
+          href: background.html
+        - text: "How the Vocabulary is Built"
+          href: vocabulary.html
     - text: "Conventions"
       icon: fa-list-alt
       href: dataModelConventions.html
     - text: "CDM Versions"
       icon: fa-history
       menu:
+        - text: "CDM v3.0"
+          href: cdm30.html
         - text: "CDM v5.3.1"
           href: cdm531.html
         - text: "CDM v6.0"
